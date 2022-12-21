@@ -1,0 +1,8 @@
+<template>
+    <lightning-modal-header label="My Modal Heading"></lightning-modal-header>
+    <lightning-modal-body> Content: {content} </lightning-modal-body>
+    <lightning-modal-footer>
+        <button disabled={saveInProcess} onclick={handleCloseClick} aria-label="Cancel and close" class="slds-button slds-button_destructive">Cancel</button>
+        <button disabled={saveInProcess} onclick={handleSaveClick} class="slds-button slds-button_success">Save</button>
+    </lightning-modal-footer>
+</template>
