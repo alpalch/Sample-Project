@@ -1,0 +1,39 @@
+<template>
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+        <thead>
+            <th class="" scope="col">
+                <div class="slds-truncate" title="Name">Proposal Number</div>
+            </th>
+            <th>
+                <div class="slds-truncate" title="Total Price">Total Price</div>
+            </th>
+            <th>
+                <div class="slds-truncate" title="Real Margin">Real Margin</div>
+            </th>
+            <th>
+                <div class="slds-truncate" title="Status">Status</div>
+            </th>
+            <th>
+                <div class="slds-truncate" title="Actions">Actions</div>
+            </th>
+        </thead>
+        <tbody>
+            <template for:each={proposals.data} for:item="proposal">
+                <tr key={proposal.Name}>
+                    <td><lightning-button variant='base' label={proposal.Name} onclick={navigateToProposal} value={proposal.Id}></lightning-button></td>
+                    <td>{proposal.Total_Price__c}</td>
+                    <td>{proposal.Real_Margin__c}%</td>
+                    <td>{proposal.Status__c}</td>
+                    <td><div class="slds-p-around_medium lgc-bg">
+                        <lightning-button-menu alternative-text="Show menu" variant="container">
+                            <lightning-menu-item value="MenuItemOne" label="Menu Item One"></lightning-menu-item>
+                            <lightning-menu-item value="MenuItemTwo" label="Menu Item Two"></lightning-menu-item>
+                            <lightning-menu-item value="MenuItemThree" label="Menu Item Three"></lightning-menu-item>
+                            <lightning-menu-item value="MenuItemFour" label="Menu Item Four"></lightning-menu-item>
+                        </lightning-button-menu>
+                    </div></td>
+                </tr>
+            </template>
+        </tbody>
+    </table>
+</template>
