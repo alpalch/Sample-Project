@@ -1,0 +1,24 @@
+<template>
+    <div>
+        <lightning-combobox
+                name="progress"
+                label="Equipment Category"
+                value={value}
+                placeholder="Select Category"
+                options={options}
+                onchange={handleChange} 
+                style="width: 40%;">
+            </lightning-combobox>
+        <div class="slds-m-top_medium slds-m-bottom_x-large slds-float_right" style="width: 30%;">
+        
+            <div class="slds-p-around_medium lgc-bg">
+                <lightning-input type="text" label="Enter equipment name" onchange={handleInputChange}></lightning-input>
+            </div>
+        
+            <div class="slds-m-vertical_medium">
+                <p>The value of the input field is: <span class="slds-text-heading_small">{clickedButtonLabel}</span></p>
+            </div>
+            <lightning-button variant="success" label="Search" title="Successful action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+        </div>
+    </div>
+</template>

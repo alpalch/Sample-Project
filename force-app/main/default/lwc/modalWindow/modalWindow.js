@@ -7,6 +7,7 @@ export default class ModalWindow extends LightningModal {
     handleCloseClick() {
         this.close('canceled');
     }
+    
     mitigateSaveFailure() {
         // depending on how easily the failure can be resolved
         // you may need to immediately set disableClose = false
