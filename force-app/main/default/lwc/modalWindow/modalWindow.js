@@ -1,5 +1,6 @@
-import { api } from 'lwc';
+import { api, track, wire } from 'lwc';
 import LightningModal from 'lightning/modal';
+import getEquipment from '@salesforce/apex/ModalWindowController.getEquipment';
 
 export default class ModalWindow extends LightningModal {
     @api content;
@@ -45,4 +46,40 @@ export default class ModalWindow extends LightningModal {
           showFormErrors(this.formData);
         }
     }
+
+    @track searchValue;
+    @track searchParams;
+    @track tableData;
+    @track error;
+    handleSearchValue(event){
+      this.searchValue = event.detail;
+      if(this.searchValue){
+        this.searchParams = this.searchValue.split('/');
+      }
+      getEquipment({searchCategory: this.searchParams[1], searchEquipment: this.searchParams[0]})
+            .then((result) => {
+                this.tableData = result;
+                console.log(this.tableData);
+                this.error = undefined;
+            })
+            .catch((error) => {
+                this.error = error;
+                this.tableData = undefined;
+            });
+      }
+
+      @track value = [];
+      get options() {
+          return [
+              { label: 'Add', value: 'true' },
+          ];
+      }
+
+      get selectedValues() {
+          return this.value;
+      }
+
+      handleChange(e) {
+          this.value = e.detail.value;
+      }
 }

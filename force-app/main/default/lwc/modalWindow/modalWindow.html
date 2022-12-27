@@ -2,7 +2,10 @@
     <lightning-modal-header label="New Proposal"></lightning-modal-header>
     <lightning-modal-body>
         <div>
-            <c-modal-picklist-and-searchbox></c-modal-picklist-and-searchbox>
+            <c-modal-picklist-and-searchbox ongetsearchvalue={handleSearchValue}></c-modal-picklist-and-searchbox>
+            <p>Search Value: {searchValue}</p>
+            <p>Data From Apex: {tableData}</p>
+            <p>Value: {value}</p>
         </div>
         <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
             <thead>
@@ -20,7 +23,19 @@
                 </th>
             </thead>
             <tbody>
-
+                <template for:each={tableData} for:item="equipment">
+                    <tr key={equipment.Name}>
+                        <td>{equipment.Equipment_Category__r.Name}</td>
+                        <td>{equipment.Name}</td>
+                        <td>{equipment.Cost__c}</td>
+                        <td><div class="slds-p-around_medium lgc-bg">
+                            <lightning-checkbox-group name="Checkbox Group"
+                              options={options}
+                              value={equipment.Name}
+                              onchange={handleChange}></lightning-checkbox-group>
+                        </div></td>
+                    </tr>
+                </template>
             </tbody>
         </table>
     </lightning-modal-body>

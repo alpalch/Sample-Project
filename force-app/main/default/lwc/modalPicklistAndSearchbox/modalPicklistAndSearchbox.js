@@ -1,12 +1,16 @@
-import { LightningElement, wire } from 'lwc';
+import { LightningElement, wire, track } from 'lwc';
 import getEquipmentCategories from '@salesforce/apex/ModalPicklistAndSearchboxController.getEquipmentCategories';
 
 export default class ModalPicklistAndSearchbox extends LightningElement {
+
+    categories =[];
+    
     @wire(getEquipmentCategories)
     transformDataForOptions({data, error}){
         if(data){
             this.errors = undefined;
-            data.forEach(element => this.categories.push( {label: element.Name, value: element.Name} ));
+           // data.forEach(element => this.categories.push( {label: element.Name, value: element.Id} ));
+            this.categories = data.map(element => ({ label: element.Name, value: element.Id }));
             console.log(1);
         }
         if (error){
@@ -15,19 +19,18 @@ export default class ModalPicklistAndSearchbox extends LightningElement {
         }
     }
 
-    categories =[];
     errors;
     selectedCategory;
 
-    get options() {
+   /* get options() {
         return this.categories;
     }
-
+*/
     handleChange(event) {
         this.selectedCategory = event.detail.value;
     }
 
-    textValue;
+    textEquipmentName;
 
     handleInputFocus(event) {
         // modify parent to properly highlight visually
@@ -42,11 +45,13 @@ export default class ModalPicklistAndSearchbox extends LightningElement {
     }
 
     handleInputChange(event) {
-        this.textValue = event.detail.value;
+        this.textEquipmentName = event.detail.value;
     }
     clickedButtonLabel;
 
     handleClick(event) {
-        this.clickedButtonLabel = this.textValue + ' ' + this.selectedCategory;
+        this.clickedButtonLabel = this.textEquipmentName + '/' + this.selectedCategory;
+        const searchEvent = new CustomEvent('getsearchvalue', {detail: this.clickedButtonLabel});
+        this.dispatchEvent(searchEvent);
     }
 }
