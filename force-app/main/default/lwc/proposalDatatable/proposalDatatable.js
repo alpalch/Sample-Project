@@ -1,7 +1,7 @@
 import { LightningElement, wire, track } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 
-import getProposals from '@salesforce/apex/ProposalDetailBodyController.getProposals';
+import getProposals from '@salesforce/apex/ProposalDatatableController.getProposals';
 
 
 export default class ProposalDatatable extends NavigationMixin(LightningElement) {
@@ -24,5 +24,19 @@ export default class ProposalDatatable extends NavigationMixin(LightningElement)
                 actionName: 'view'
             }
         });
+    }
+
+    selectedItemValue;
+
+    handleOnselect(event) {
+        this.selectedItemValue = event.detail.value;
+        if(this.selectedItemValue != 'Delete'){
+            this[NavigationMixin.Navigate]({
+                type: 'standard__webPage',
+                attributes: {
+                    url: '/apex/RenderProposalAsPdf',
+                }
+            })
+        }
     }
 }

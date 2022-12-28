@@ -25,9 +25,9 @@
                     <td>{proposal.Real_Margin__c}%</td>
                     <td>{proposal.Status__c}</td>
                     <td><div class="slds-p-around_medium lgc-bg">
-                        <lightning-button-menu alternative-text="Show menu" variant="container">
-                            <lightning-menu-item value="MenuItemOne" label="Delete"></lightning-menu-item>
-                            <lightning-menu-item value="MenuItemTwo" label="Send"></lightning-menu-item>
+                        <lightning-button-menu alternative-text="Show menu" variant="container" onselect={handleOnselect}>
+                            <lightning-menu-item value="Delete" label="Delete"></lightning-menu-item>
+                            <lightning-menu-item value={proposal.Id} label="Send"></lightning-menu-item>
                         </lightning-button-menu>
                     </div></td>
                 </tr>

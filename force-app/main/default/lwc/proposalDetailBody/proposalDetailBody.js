@@ -1,15 +1,35 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, track, wire, api } from 'lwc';
 import ModalWindow from 'c/modalWindow';
+import createNewProposal from '@salesforce/apex/ProposalDetailBodyController.createNewProposal';
 
 export default class MyApp extends LightningElement {
+
+    @track saveValue;
+    @api recordId;
+
+    handleGetSaveDataEvent(detail) {
+        this.saveValue = detail;
+        createNewProposal( {equipIds: this.saveValue, OppId: this.recordId} )
+            .then((result) => {
+                console.log(result);
+                this.error = undefined;
+            })
+            .catch((error) => {
+                console.log(error);
+                this.tableData = undefined;
+            });
+      }
+
     async handleClick() {
-        const result = await ModalWindow.open({
+        ModalWindow.open({
             size: 'medium',
-            description: 'Accessible description of modal\'s purpose',
+            description: 'Accessible description of modals purpose',
             content: 'Passed into content api',
+            ongetsavedata: (e) => {
+                // stop further propagation of the event
+                e.stopPropagation();
+                this.handleGetSaveDataEvent(e.detail);
+            }
         });
-        // if modal closed with X button, promise returns result = 'undefined'
-        // if modal closed with OK button, promise returns result = 'okay'
-        console.log(result);
     }
 }
