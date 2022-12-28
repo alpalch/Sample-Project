@@ -11,7 +11,6 @@ export default class ModalPicklistAndSearchbox extends LightningElement {
             this.errors = undefined;
            // data.forEach(element => this.categories.push( {label: element.Name, value: element.Id} ));
             this.categories = data.map(element => ({ label: element.Name, value: element.Id }));
-            console.log(1);
         }
         if (error){
             this.errors = error;
