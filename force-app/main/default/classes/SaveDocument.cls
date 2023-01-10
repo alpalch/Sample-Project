@@ -6,7 +6,11 @@ public with sharing class SaveDocument {
         Blob body;
         PageReference pageRef = new PageReference('/apex/RenderProposalAsPdf');
         pageRef.getParameters().put('proposalId', proposalId );
-        body = pageRef.getContentAsPDF();
+        if(Test.isRunningTest()) { 
+            body = blob.valueOf('Unit.Test');
+          } else {
+            body = pageRef.getContentAsPDF();
+          }
 
         ContentVersion contentVersion = new contentVersion(
             Title = account.Name + ' proposal ' + Date.today(),

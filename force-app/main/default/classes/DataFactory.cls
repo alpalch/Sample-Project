@@ -35,6 +35,22 @@ public without sharing class DataFactory {
         return acc;
     }
 
+    public static Account createBuyerAccount(){
+        
+        Account acc = new Account(
+            recordTypeId = Constants.BUYER_RECORD_TYPE_ID,
+            Payment__c = 'Wire',
+            Name = 'test ',
+            Phone = '12345',
+            ShippingStreet = 'Test Street',
+            ShippingCity = 'Test City',
+            ShippingPostalCode = '12345',
+            ShippingState = 'New York',
+            ShippingCountry = 'United States'
+            );
+        return acc;
+    }
+
     public static List<Equipment_Category__c> createMultipleEquipmentCategory(Integer catNumber){
         List<Equipment_Category__c> listToReturn = new List<Equipment_Category__c>();
         for(Integer i = 0; i < catNumber; i++){
@@ -49,7 +65,7 @@ public without sharing class DataFactory {
     public static Equipment_Category__c createEquipmentCategory(){
             Equipment_Category__c ec = new Equipment_Category__c();
             ec.Name = 'Test';
-            ec.Margin__c = 5; 
+            ec.Margin__c = 10; 
         return ec;
     }
 
@@ -66,6 +82,36 @@ public without sharing class DataFactory {
             Cost__c = 10
         );
         return equip;
+    }
+
+    public static List<Opportunity> createMultipleOpportunity(Integer oppNumber){
+        Account acc = createBuyerAccount();
+        insert acc;
+        List<Opportunity> listToReturn = new List<Opportunity>();
+        for(Integer i = 0; i < oppNumber; i++){
+            Opportunity opp = new Opportunity(
+                Name = 'testOpp ' + i,
+                StageName = 'Preparing Proposal',
+                CloseDate = Date.today() + 14,
+                AccountId = acc.Id,
+                LeadId__c = '123456789012345678'
+            );
+            listToReturn.add(opp);
+        }
+        return listToReturn;
+    }
+
+    public static Opportunity createOpportunity(){
+        Account acc = createBuyerAccount();
+        insert acc;
+        Opportunity oppToReturn = new Opportunity(
+            Name = 'testOpp ',
+            StageName = 'Preparing Proposal',
+            CloseDate = Date.today() + 14,
+            AccountId = acc.Id,
+            LeadId__c = '123456789012345678'
+            );
+        return oppToReturn;
     }
 
     public static List<Opportunity> oppsForOppTriggerHandler(Integer oppCount, Integer conCount) {
@@ -109,8 +155,7 @@ public without sharing class DataFactory {
         insert conList;
         insert oppList;
 
-        return oppList;
-        
+        return oppList;      
     }
 
     public static List<Proposal_Equipment__c> propEquipForProposalEquipmentHandler (Integer propEquipCount){
@@ -179,5 +224,28 @@ public without sharing class DataFactory {
             listToInsert.add(propEquip);
         }
         return listToInsert;
+    }
+
+    public static Proposal__c createProposal(){
+        Opportunity opp = createOpportunity();
+        insert opp;
+        Proposal__c propToReturn = new Proposal__c(
+            Opportunity__c = opp.Id,
+            Status__c = 'Draft'
+        );
+        return propToReturn;
+    }
+
+    public static Proposal_Equipment__c createProposalEquipment(){
+        Proposal__c prop = createProposal();
+        insert prop;
+        Equipment__c equip = createEquipment();
+        insert equip;
+        Proposal_Equipment__c eqToReturn = new Proposal_Equipment__c(
+            Name = 'Test',
+            Proposal__c = prop.Id,
+            Equipment__c = equip.Id
+        );
+        return eqToReturn;
     }
 }
