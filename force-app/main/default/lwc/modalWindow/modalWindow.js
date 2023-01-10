@@ -38,8 +38,16 @@ export default class ModalWindow extends LightningModal {
 
       // Value from Add button
       @track equipmentIds = [];
+      disabledButton = true;
+
+      enableButton(){
+        if(this.equipmentIds.length > 0){
+          this.disabledButton = false;
+        }
+      }
 
       handleAddClick(event) {
-          this.equipmentIds.push(event.target.value);
+        this.equipmentIds.push(event.target.value);
+        this.enableButton();
       }
 }

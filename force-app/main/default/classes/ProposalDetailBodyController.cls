@@ -13,7 +13,11 @@ public with sharing class ProposalDetailBodyController {
         );
         insert proposal;
 
-        proposal = [SELECT Id FROM Proposal__c ORDER BY CreatedDate DESC LIMIT 1][0];
+        // Pick just created proposal. It the last one
+        List<Proposal__c> proposals = [SELECT Id FROM Proposal__c ORDER BY CreatedDate DESC LIMIT 1];
+        if(!proposals.isEmpty()){
+            proposal = proposals[0];
+        }
 
         // Select all equipments in setOfEquipIds to get equipment names
         List<Equipment__c> equips = [SELECT Id, Name FROM Equipment__c WHERE Id IN :setOfEquipIds];

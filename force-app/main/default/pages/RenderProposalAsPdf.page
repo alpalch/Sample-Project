@@ -1,11 +1,54 @@
-<apex:page standardController="Contact" recordSetVar="contacts" renderAs="pdf">
-    <apex:pageBlock title="Contacts List">
-        <!-- Contacts List -->
-        <apex:pageBlockTable value="{! contacts }" var="ct">
-            <apex:column value="{! ct.FirstName }"/>
-            <apex:column value="{! ct.LastName }"/>
-            <apex:column value="{! ct.Email }"/>
-            <apex:column value="{! ct.Account.Name }"/>
-        </apex:pageBlockTable>
+<apex:page controller="RenderProposalAsPdfController" renderAs="pdf">
+    <apex:pageBlock>
+        <div>
+            <div style="margin-left: 15%">
+                <apex:image url="{!$Resource.Logo1}" width="80" height="60"></apex:image>
+                <apex:outputText value="{0,date, DD.MM.YYYY}" style="float:right; margin-top:1cm"> <apex:param value="{!TODAY()}" /> </apex:outputText>
+            </div>
+        </div>
+        <div style="margin:auto; width:100%">
+            <h2 style="text-align: center">{!proposalAccount.Name}</h2>
+        </div>
+        <div style="display: block; margin-left: auto; margin-right: auto; width: 50%;">
+            <apex:image url="{!$Resource.Logo2}" width="400"></apex:image>
+        </div>
+        <h2 style="text-align: center; color:gray">Prepared for:</h2>
+        <h2 style="text-align: center">{!proposalContact.Name}</h2>
+        <h3 style="text-align: center">{!proposalContact.Email}</h3>
     </apex:pageBlock>
+    
+    <p style="page-break-after: always"></p>
+
+    <apex:pageBlock>
+        <h4><b><apex:outputText value="{!bodyLegalText1}"></apex:outputText></b></h4>
+        <p><apex:outputText value="{!bodyLegalText2}"></apex:outputText>
+            {!proposalAccount.Name}
+            <apex:outputText value="{!bodyLegalText3}"></apex:outputText></p>
+        <h4><b><apex:outputText value="{!bodyLegalText4}"></apex:outputText></b></h4>
+        <p><apex:outputText value="{!bodyLegalText5}"></apex:outputText></p>
+        <h4><b><apex:outputText value="{!bodyLegalText6}"></apex:outputText></b></h4>
+        <p><apex:outputText value="{!bodyLegalText7}"></apex:outputText></p>
+        <h4><b><apex:outputText value="{!bodyLegalText8}"></apex:outputText></b></h4>
+        <p><apex:outputText value="{!bodyLegalText9}"></apex:outputText></p>
+        <h4><b><apex:outputText value="{!bodyLegalText10}"></apex:outputText></b></h4>
+        <p><apex:outputText value="{!bodyLegalText11}"></apex:outputText>
+            <b>{!$User.Email}</b></p>
+        <p><apex:outputText value="{!bodyLegalText12}"></apex:outputText>
+            <apex:outputText value="{0,date, DD.MM.YYYY}"> <apex:param value="{!TODAY()}" /> </apex:outputText> </p>
+        
+    </apex:pageBlock>
+
+    <p style="page-break-after: always"></p>
+    
+    <apex:pageBlock>
+        <p>{!proposal.Name}</p>
+        <apex:dataTable value="{!proposalEquipment}" var="equip" style="width: 100%">
+            <apex:column value="{!equip['equipmentName']}" headerValue="Name" style="width: 25%"></apex:column>
+            <apex:column value="{!equip['Quantity']}" headerValue="Quantity" style="width: 25%"></apex:column>
+            <apex:column value="{!equip['Price']}" headerValue="Price" style="width: 25%"></apex:column>
+            <apex:column value="{!equip['totalPrice']}" headerValue="Total Price" style="width: 25%"></apex:column>
+        </apex:dataTable>
+        <p>Total: <apex:outputText value="{!proposal.Total_Price__c}" style="float: right; margin-right: 20%"></apex:outputText></p>
+    </apex:pageBlock>
+
 </apex:page>

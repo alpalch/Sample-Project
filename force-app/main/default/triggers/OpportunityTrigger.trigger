@@ -5,7 +5,7 @@ trigger OpportunityTrigger on Opportunity (after insert, before update) {
     }
     if(Trigger.isBefore && Trigger.isUpdate){
         OpportunityTriggerHandler.setClosedDateToday(Trigger.new, Trigger.old);
-        OpportunityTriggerHandler.setActualAmount(Trigger.new);
+        OpportunityTriggerHandler.setActualAmount(Trigger.new, Trigger.old);
     }
 
 }

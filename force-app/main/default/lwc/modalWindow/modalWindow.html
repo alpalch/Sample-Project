@@ -26,10 +26,9 @@
                         <td>{equipment.Name}</td>
                         <td>{equipment.Cost__c}</td>
                         <td>
-                            <lightning-button 
-                                variant="base" label="Add" title="Add action" icon-name="utility:add" 
+                            <lightning-input type="checkbox-button" label="Add" title="Add action" 
                                 onclick={handleAddClick} value={equipment.Id} class="slds-m-left_x-small">
-                            </lightning-button>
+                            </lightning-input>
                         </td>
                     </tr>
                 </template>
@@ -38,6 +37,6 @@
     </lightning-modal-body>
     <lightning-modal-footer>
         <button onclick={handleCloseClick} aria-label="Cancel and close" class="slds-button slds-button_destructive">Cancel</button>
-        <button onclick={handleSaveClick} class="slds-button slds-button_success">Save</button>
+        <button onclick={handleSaveClick} class="slds-button slds-button_success" disabled={disabledButton}>Save</button>
     </lightning-modal-footer>
 </template>

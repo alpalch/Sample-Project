@@ -1,4 +1,4 @@
-import { LightningElement, track, wire, api } from 'lwc';
+import { LightningElement, track, api } from 'lwc';
 import ModalWindow from 'c/modalWindow';
 import createNewProposal from '@salesforce/apex/ProposalDetailBodyController.createNewProposal';
 
@@ -11,6 +11,7 @@ export default class MyApp extends LightningElement {
         this.saveValue = detail;
         createNewProposal( {equipIds: this.saveValue, OppId: this.recordId} )
             .then((result) => {
+                window.location.reload();
                 console.log(result);
                 this.error = undefined;
             })
@@ -18,6 +19,7 @@ export default class MyApp extends LightningElement {
                 console.log(error);
                 this.tableData = undefined;
             });
+        
       }
 
     async handleClick() {

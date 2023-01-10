@@ -1,5 +1,73 @@
 public without sharing class DataFactory {
 
+    public static List<Account> createMultipleVendorAccounts(Integer accNumber){
+        List<Account> accList = new List<Account>();
+        for(Integer i = 0; i < accNumber; i++){
+            Account acc = new Account(
+                recordTypeId = Constants.VENDOR_RECORD_TYPE_ID,
+                Payment__c = 'Wire',
+                Name = 'test '+ i,
+                Phone = '12345'+ i,
+                BillingStreet = 'Test Street',
+                BillingCity = 'Test City',
+                BillingPostalCode = '12345',
+                BillingState = 'New York',
+                BillingCountry = 'United States'
+                );
+            accList.add(acc);
+        }
+        return accList;
+    }
+
+    public static Account createVendorAccount(){
+        
+        Account acc = new Account(
+            recordTypeId = Constants.VENDOR_RECORD_TYPE_ID,
+            Payment__c = 'Wire',
+            Name = 'test ',
+            Phone = '12345',
+            BillingStreet = 'Test Street',
+            BillingCity = 'Test City',
+            BillingPostalCode = '12345',
+            BillingState = 'New York',
+            BillingCountry = 'United States'
+            );
+        return acc;
+    }
+
+    public static List<Equipment_Category__c> createMultipleEquipmentCategory(Integer catNumber){
+        List<Equipment_Category__c> listToReturn = new List<Equipment_Category__c>();
+        for(Integer i = 0; i < catNumber; i++){
+            Equipment_Category__c ec = new Equipment_Category__c();
+            ec.Name = 'Test ' + i;
+            ec.Margin__c = 5;
+            listToReturn.add(ec);
+        }
+        return listToReturn;
+    }
+
+    public static Equipment_Category__c createEquipmentCategory(){
+            Equipment_Category__c ec = new Equipment_Category__c();
+            ec.Name = 'Test';
+            ec.Margin__c = 5; 
+        return ec;
+    }
+
+    public static Equipment__c createEquipment(){
+        Account acc = createVendorAccount();
+        insert acc;
+        Equipment_Category__c eq = createEquipmentCategory();
+        insert eq;
+        Equipment__c equip = new Equipment__c(
+            Account__c = acc.Id,
+            Equipment_Category__c = eq.Id,
+            Name = 'Test',
+            Description__c = 'Test',
+            Cost__c = 10
+        );
+        return equip;
+    }
+
     public static List<Opportunity> oppsForOppTriggerHandler(Integer oppCount, Integer conCount) {
         List<Account> accList = new List<Account>();
         List<Opportunity> oppList = new List<Opportunity>();
@@ -56,11 +124,11 @@ public without sharing class DataFactory {
             Payment__c = 'Wire',
             name = 'Test Account',
             Phone = '12345',
-            ShippingStreet = 'Test Street',
-            ShippingCity = 'Test City',
-            ShippingPostalCode = '12345',
-            ShippingState = 'New York',
-            ShippingCountry = 'United States'
+            BillingStreet = 'Test Street',
+            BillingCity = 'Test City',
+            BillingPostalCode = '12345',
+            BillingState = 'New York',
+            BillingCountry = 'United States'
             );
         insert accVendor;
 

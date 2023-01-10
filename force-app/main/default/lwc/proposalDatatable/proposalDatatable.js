@@ -1,20 +1,45 @@
-import { LightningElement, wire, track } from 'lwc';
+import { LightningElement, wire, track, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
+import PreviewModal from 'c/previewModal';
+
 
 import getProposals from '@salesforce/apex/ProposalDatatableController.getProposals';
+import deleteProposal from '@salesforce/apex/ProposalDatatableController.deleteProposal';
 
 
 export default class ProposalDatatable extends NavigationMixin(LightningElement) {
+    @api recordId;
     oppId = this.getOppId();
+    @track wiredProposals = [];
 
     getOppId(){
         let oppIdFromURL = window.location.pathname.split('/');
         return oppIdFromURL[oppIdFromURL.length - 2];
     }
 
-    @track proposals;
-    @wire(getProposals, { oppId: '$oppId' }) proposals;
-
+    @wire(getProposals, { oppId: '$oppId' }) 
+    gettedProposals({data, error}){
+        if(data){
+            this.errors = undefined;
+            this.wiredProposals = data.map(element => ({
+                Id: element.Id,
+                Name: element.Name,
+                Status: element.Status__c,
+                Total_Price: element.Total_Price__c,
+                Real_Margin: element.Real_Margin__c,
+                Disabled: true
+            }));
+            this.wiredProposals.forEach(element => {
+                element.Status == 'Draft' ? element.Disabled = false : element.Disabled = true;
+                console.log(element);
+            });
+            console.log('Proposals ' + this.wiredProposals);
+        }
+        if (error){
+            this.errors = error;
+            this.categories = undefined;
+        }
+    }
     navigateToProposal(event) {
         this[NavigationMixin.Navigate]({
             type: 'standard__recordPage',
@@ -28,15 +53,37 @@ export default class ProposalDatatable extends NavigationMixin(LightningElement)
 
     selectedItemValue;
 
-    handleOnselect(event) {
-        this.selectedItemValue = event.detail.value;
-        if(this.selectedItemValue != 'Delete'){
-            this[NavigationMixin.Navigate]({
-                type: 'standard__webPage',
-                attributes: {
-                    url: '/apex/RenderProposalAsPdf',
+    handleDeleteProposal(event){
+        console.log(event.target.value);
+        deleteProposal({ proposalId: event.target.value })
+            .then(result => {
+                if(result){
+                    console.log('Deleted');
                 }
             })
-        }
+            .catch(error => {
+                if(error){
+                    console.log('Error while deleting proposal');
+                    console.log(error);
+                }
+            })
+        window.location.reload(true);
     }
+
+    async handlePreview(event) {
+        PreviewModal.open({
+            size: 'medium',
+            description: 'Accessible description of modals purpose',
+            content: event.target.value,
+            ongetsavedata: (e) => {
+                // stop further propagation of the event
+                e.stopPropagation();
+                this.handleGetSaveDataEvent(e.detail);
+            }
+        });
+    }
+
+    handleGetSaveDataEvent(detail) {
+        console.log(detail);
+      }
 }

@@ -1,22 +1,23 @@
 <template>
-    <div>
-        <lightning-combobox
-                name="progress"
-                label="Equipment Category"
-                value={value}
-                placeholder="Select Category"
-                options={categories}
-                onchange={handleChange} 
-                style="width: 40%;">
-            </lightning-combobox>
-        <div class="slds-m-top_medium slds-m-bottom_x-large slds-float_right" style="width: 30%;">
-        
-            <div class="slds-p-around_medium lgc-bg">
-                <lightning-input type="text" label="Enter equipment name" onchange={handleInputChange}></lightning-input>
+    <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+        <lightning-layout multiple-rows>
+            <lightning-layout-item size="4" padding="around-large">
+                <lightning-combobox
+                    name="progress"
+                    value={value}
+                    placeholder="Select Equipment Category"
+                    options={categories}
+                    onchange={handleChange}>
+                </lightning-combobox>
+            </lightning-layout-item>
+            <lightning-layout-item size="6" padding="around-large">
+                <lightning-input type="text" placeholder="Enter Equipment Name" onchange={handleInputChange}></lightning-input>
+            </lightning-layout-item>
+            <div class="slds-align_absolute-center">
+                <lightning-layout-item size="12" padding="around-small">
+                    <lightning-button variant="success" label="Search" title="Successful action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+                </lightning-layout-item>
             </div>
-            <div class="slds-m-vertical_medium">
-            </div>
-            <lightning-button variant="success" label="Search" title="Successful action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
-        </div>
+        </lightning-layout>
     </div>
 </template>

@@ -3,15 +3,13 @@ public without sharing class OpportunityTriggerHandler {
     public static void setPrimaryContact(List<Opportunity> triggerList){
         // not execute the trigger if the opportunity created by lead conversion
         if(triggerList[0].LeadId__c == null){
-            List<AccountContactRelation> listACR = [SELECT CreatedDate, ContactId FROM AccountContactRelation WHERE AccountId = :triggerList[0].AccountId];
+            List<AccountContactRelation> listACR = [
+                SELECT CreatedDate, ContactId 
+                FROM AccountContactRelation 
+                WHERE AccountId = :triggerList[0].AccountId 
+                ORDER BY CreatedDate DESC LIMIT 1];
 
-            AccountContactRelation latestDate = new AccountContactRelation();
-
-            for(AccountContactRelation con :listACR){
-                if(con.CreatedDate > latestDate.CreatedDate || latestDate.CreatedDate == null){
-                    latestDate = con;
-                }
-            }
+            AccountContactRelation latestDate = listACR[0];
 
             List<OpportunityContactRole> listOCR = new List<OpportunityContactRole>();
             OpportunityContactRole ocr = new OpportunityContactRole(
@@ -39,9 +37,14 @@ public without sharing class OpportunityTriggerHandler {
         }
     }
 
-    public static void setActualAmount(List<Opportunity> triggerList){
-        for(Opportunity opp: triggerList){
-            opp.Amount = opp.Actual_Sum_Of_Accepted_Proposals__c;
+    public static void setActualAmount(List<Opportunity> triggerNewList, List<Opportunity> triggerOldList){
+        for(Opportunity oppNew: triggerNewList){
+            for(Opportunity oppOld: triggerOldList){
+                if(oppNew.Actual_Sum_Of_Accepted_Proposals__c != oppOld.Actual_Sum_Of_Accepted_Proposals__c){
+                    // Actual_Sum_Of_Accepted_Proposals__c -> rollup sum of accepted proposals
+                    oppNew.Amount = oppNew.Actual_Sum_Of_Accepted_Proposals__c;
+                }
+            }
         }
     }
     

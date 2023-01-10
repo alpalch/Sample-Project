@@ -18,16 +18,21 @@
             </th>
         </thead>
         <tbody>
-            <template for:each={proposals.data} for:item="proposal">
+            <template for:each={wiredProposals} for:item="proposal">
                 <tr key={proposal.Name}>
                     <td><lightning-button variant='base' label={proposal.Name} onclick={navigateToProposal} value={proposal.Id}></lightning-button></td>
-                    <td>{proposal.Total_Price__c}</td>
-                    <td>{proposal.Real_Margin__c}%</td>
-                    <td>{proposal.Status__c}</td>
+                    <td>{proposal.Total_Price}</td>
+                    <td>{proposal.Real_Margin}%</td>
+                    <td>{proposal.Status}</td>
                     <td><div class="slds-p-around_medium lgc-bg">
-                        <lightning-button-menu alternative-text="Show menu" variant="container" onselect={handleOnselect}>
-                            <lightning-menu-item value="Delete" label="Delete"></lightning-menu-item>
-                            <lightning-menu-item value={proposal.Id} label="Send"></lightning-menu-item>
+                        <lightning-button-menu alternative-text="Show menu" variant="container" >
+                            <!-- onselect={handleOnselect} -->
+                            <lightning-menu-item 
+                            onclick={handleDeleteProposal} label="Delete" 
+                            value={proposal.Id} disabled={proposal.Disabled}></lightning-menu-item>
+                            <lightning-menu-item 
+                            onclick={handlePreview} label="Preview as PDF" aria-haspopup="modal" 
+                            value={proposal.Id} disabled={proposal.Disabled}></lightning-menu-item>
                         </lightning-button-menu>
                     </div></td>
                 </tr>
