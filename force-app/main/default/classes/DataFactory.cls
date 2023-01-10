@@ -84,6 +84,25 @@ public without sharing class DataFactory {
         return equip;
     }
 
+    public static List<Equipment__c> createMultipleEquipment(Integer equipNumber){
+        Account acc = createVendorAccount();
+        insert acc;
+        Equipment_Category__c eq = createEquipmentCategory();
+        insert eq;
+        List<Equipment__c> listToReturn = new List<Equipment__c>();
+        for(Integer i = 0; i < equipNumber; i++){
+            Equipment__c equip = new Equipment__c(
+                Account__c = acc.Id,
+                Equipment_Category__c = eq.Id,
+                Name = 'Test',
+                Description__c = 'Test',
+                Cost__c = 10
+            );
+            listToReturn.add(equip);
+        }
+        return listToReturn;
+    }
+
     public static List<Opportunity> createMultipleOpportunity(Integer oppNumber){
         Account acc = createBuyerAccount();
         insert acc;

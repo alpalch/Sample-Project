@@ -13,7 +13,7 @@ public with sharing class ProposalDetailBodyController {
         );
         insert proposal;
 
-        // Pick just created proposal. It the last one
+        // Pick just created proposal. It is the last one
         List<Proposal__c> proposals = [SELECT Id FROM Proposal__c ORDER BY CreatedDate DESC LIMIT 1];
         if(!proposals.isEmpty()){
             proposal = proposals[0];
