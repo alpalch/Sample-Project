@@ -1,4 +1,4 @@
-public without sharing class ProposalEquipmentHandler {
+public without sharing class ProposalEquipmentTriggerHandler {
 
     public static void setEquipmentMargin(List<Proposal_Equipment__c> triggerList) {
         Map<Id, Proposal_Equipment__c> mapEquipIdProposalEquip = new Map<Id, Proposal_Equipment__c>();

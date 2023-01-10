@@ -1,5 +1,5 @@
 @isTest
-public class ProposalEquipmentHandlerTest {
+public class ProposalEquipmentTriggerHandlerTest {
     @isTest
     public static void mainTest(){
         List<Proposal_Equipment__c> propEquipBefore = DataFactory.propEquipForProposalEquipmentHandler(1);
