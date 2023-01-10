@@ -11,4 +11,15 @@ public with sharing class ProposalDatatableControllerTest {
 
         System.assertEquals(5, listToAssert.size());
     }
+
+    @isTest
+    public static void deleteProposalSuccessTest(){
+        Proposal__c prop = DataFactory.createProposal();
+        insert prop;
+
+        ProposalDatatableController.deleteProposal(String.valueOf(prop.Id));
+        List<Proposal__c> listToAssert = [SELECT Id FROM Proposal__c WHERE Id = :prop.Id];
+
+        System.assertEquals(true, listToAssert.isEmpty());
+    }
 }
