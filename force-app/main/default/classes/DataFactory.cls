@@ -236,6 +236,20 @@ public without sharing class DataFactory {
         return propToReturn;
     }
 
+    public static List<Proposal__c> createMultipleProposal(Integer proposalNumber){
+        Opportunity opp = createOpportunity();
+        insert opp;
+        List<Proposal__c> listToReturn = new List<Proposal__c>();
+        for(Integer i = 0; i < proposalNumber; i++){
+            Proposal__c prop = new Proposal__c(
+                Status__c = 'Draft',
+                Opportunity__c = opp.Id
+            );
+            listToReturn.add(prop);
+        }
+        return listToReturn;
+    }
+
     public static Proposal_Equipment__c createProposalEquipment(){
         Proposal__c prop = createProposal();
         insert prop;
