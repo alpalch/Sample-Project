@@ -20,20 +20,20 @@
     <p style="page-break-after: always"></p>
 
     <apex:pageBlock>
-        <h4><b><apex:outputText value="{!bodyLegalText1}"></apex:outputText></b></h4>
-        <p><apex:outputText value="{!bodyLegalText2}"></apex:outputText>
+        <h4><b>{!$Label.Legal_Text_part_1}</b></h4>
+        <p>{!$Label.Legal_Text_part_2}
             {!proposalAccount.Name}
-            <apex:outputText value="{!bodyLegalText3}"></apex:outputText></p>
-        <h4><b><apex:outputText value="{!bodyLegalText4}"></apex:outputText></b></h4>
-        <p><apex:outputText value="{!bodyLegalText5}"></apex:outputText></p>
-        <h4><b><apex:outputText value="{!bodyLegalText6}"></apex:outputText></b></h4>
-        <p><apex:outputText value="{!bodyLegalText7}"></apex:outputText></p>
-        <h4><b><apex:outputText value="{!bodyLegalText8}"></apex:outputText></b></h4>
-        <p><apex:outputText value="{!bodyLegalText9}"></apex:outputText></p>
-        <h4><b><apex:outputText value="{!bodyLegalText10}"></apex:outputText></b></h4>
-        <p><apex:outputText value="{!bodyLegalText11}"></apex:outputText>
+            {!$Label.Legal_Text_part_3}</p>
+        <h4><b>{!$Label.Legal_Text_part_4}</b></h4>
+        <p>{!$Label.Legal_Text_part_5}</p>
+        <h4><b>{!$Label.Legal_Text_part_6}</b></h4>
+        <p>{!$Label.Legal_Text_part_7}</p>
+        <h4><b>{!$Label.Legal_Text_part_8}</b></h4>
+        <p>{!$Label.Legal_Text_part_9}</p>
+        <h4><b>{!$Label.Legal_Text_part_10}</b></h4>
+        <p>{!$Label.Legal_Text_part_11}
             <b>{!$User.Email}</b></p>
-        <p><apex:outputText value="{!bodyLegalText12}"></apex:outputText>
+        <p>{!$Label.Legal_Text_part_12}
             <apex:outputText value="{0,date, DD.MM.YYYY}"> <apex:param value="{!TODAY()}" /> </apex:outputText> </p>
         
     </apex:pageBlock>
