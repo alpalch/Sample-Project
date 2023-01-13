@@ -10,7 +10,7 @@ public class ProposalEquipmentTriggerHandlerTest {
 
         System.debug(propEquipAfter);
 
-        System.assertEquals(100, propEquipAfter[0].cost__c);
+        System.assertEquals(10, propEquipAfter[0].cost__c);
         System.assertEquals(10, propEquipAfter[0].margin__c);
     }
 }

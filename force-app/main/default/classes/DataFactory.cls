@@ -1,23 +1,24 @@
 public without sharing class DataFactory {
 
-    public static List<Account> createMultipleVendorAccounts(Integer accNumber){
-        List<Account> accList = new List<Account>();
-        for(Integer i = 0; i < accNumber; i++){
-            Account acc = new Account(
-                recordTypeId = Constants.VENDOR_RECORD_TYPE_ID,
-                Payment__c = 'Wire',
-                Name = 'test '+ i,
-                Phone = '12345'+ i,
-                BillingStreet = 'Test Street',
-                BillingCity = 'Test City',
-                BillingPostalCode = '12345',
-                BillingState = 'New York',
-                BillingCountry = 'United States'
-                );
-            accList.add(acc);
-        }
-        return accList;
-    }
+    // Method for the future
+    // public static List<Account> createMultipleVendorAccounts(Integer accNumber){
+    //     List<Account> accList = new List<Account>();
+    //     for(Integer i = 0; i < accNumber; i++){
+    //         Account acc = new Account(
+    //             recordTypeId = Constants.VENDOR_RECORD_TYPE_ID,
+    //             Payment__c = 'Wire',
+    //             Name = 'test '+ i,
+    //             Phone = '12345'+ i,
+    //             BillingStreet = 'Test Street',
+    //             BillingCity = 'Test City',
+    //             BillingPostalCode = '12345',
+    //             BillingState = 'New York',
+    //             BillingCountry = 'United States'
+    //             );
+    //         accList.add(acc);
+    //     }
+    //     return accList;
+    // }
 
     public static Account createVendorAccount(){
         
@@ -49,6 +50,25 @@ public without sharing class DataFactory {
             ShippingCountry = 'United States'
             );
         return acc;
+    }
+
+    public static List<Account> createMultipleBuyerAccounts(Integer accNumber){
+        List<Account> accList = new List<Account>();
+        for(Integer i = 0; i < accNumber; i++){
+            Account acc = new Account(
+                recordTypeId = Constants.Buyer_RECORD_TYPE_ID,
+                Payment__c = 'Wire',
+                Name = 'test '+ i,
+                Phone = '12345'+ i,
+                ShippingStreet = 'Test Street',
+                ShippingCity = 'Test City',
+                ShippingPostalCode = '12345',
+                ShippingState = 'New York',
+                ShippingCountry = 'United States'
+                );
+            accList.add(acc);
+        }
+        return accList;
     }
 
     public static List<Equipment_Category__c> createMultipleEquipmentCategory(Integer catNumber){
@@ -134,25 +154,10 @@ public without sharing class DataFactory {
     }
 
     public static List<Opportunity> oppsForOppTriggerHandler(Integer oppCount, Integer conCount) {
-        List<Account> accList = new List<Account>();
+        List<Account> accList = createMultipleBuyerAccounts(oppCount);
+        insert accList;
         List<Opportunity> oppList = new List<Opportunity>();
         List<Contact> conList = new List<Contact>();
-
-        for(Integer i = 0; i < oppCount; i++){
-            Account acc = new Account(
-                recordTypeId = Constants.BUYER_RECORD_TYPE_ID,
-                Payment__c = 'Wire',
-                name = 'test '+ i,
-                Phone = '12345'+ i,
-                ShippingStreet = 'Test Street',
-                ShippingCity = 'Test City',
-                ShippingPostalCode = '12345',
-                ShippingState = 'New York',
-                ShippingCountry = 'United States'
-                );
-            accList.add(acc);
-        }
-        insert accList;
 
         for(Account acc :accList){
             Opportunity opp = new Opportunity(
@@ -178,53 +183,11 @@ public without sharing class DataFactory {
     }
 
     public static List<Proposal_Equipment__c> propEquipForProposalEquipmentHandler (Integer propEquipCount){
-        Equipment_Category__c equipCategory = new Equipment_Category__c(
-            name = 'Test Category', 
-            margin__c = 10);
-        insert equipCategory;
 
-        Account accVendor = new Account(
-            recordTypeId = Constants.VENDOR_RECORD_TYPE_ID,
-            Payment__c = 'Wire',
-            name = 'Test Account',
-            Phone = '12345',
-            BillingStreet = 'Test Street',
-            BillingCity = 'Test City',
-            BillingPostalCode = '12345',
-            BillingState = 'New York',
-            BillingCountry = 'United States'
-            );
-        insert accVendor;
-
-        Account accBuyer = new Account(
-            recordTypeId = Constants.BUYER_RECORD_TYPE_ID,
-            Payment__c = 'Wire',
-            name = 'Test Account',
-            Phone = '12345',
-            ShippingStreet = 'Test Street',
-            ShippingCity = 'Test City',
-            ShippingPostalCode = '12345',
-            ShippingState = 'New York',
-            ShippingCountry = 'United States'
-            );
-        insert accBuyer;
-
-        Equipment__c equip = new Equipment__c(
-            Account__c = accVendor.id,
-            Name = 'Test Equipment',
-            Equipment_Category__c = equipCategory.Id,
-            Cost__c = 100,
-            Description__c = 'Some Desc'
-        );
+        Equipment__c equip = createEquipment();
         insert equip;
 
-        Opportunity opp = new Opportunity(
-            Name = 'Test Opp',
-            AccountId = accBuyer.Id,
-            LeadId__c = '012710000001111111',
-            CloseDate = Date.today() + 5,
-            StageName = 'Appointment Scheduled'
-        );
+        Opportunity opp = createOpportunity();
         insert opp;
 
         Proposal__c prop= new Proposal__c(Opportunity__c = opp.Id);
