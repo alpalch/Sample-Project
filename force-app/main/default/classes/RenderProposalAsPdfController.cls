@@ -5,10 +5,14 @@ public class RenderProposalAsPdfController {
 
     public RenderProposalAsPdfController() {
         this.currentProposalId = ApexPages.CurrentPage().getparameters().get('proposalId');
+    }
+
+    public void assignProposal(){
         this.proposal = [SELECT Id, Name, Opportunity__c, Total_Price__c FROM Proposal__c WHERE Id = :Id.valueOf(this.currentProposalId)][0];
     }
     
     public Proposal__c getProposal(){
+        this.assignProposal();
         return proposal;
     }
 
@@ -28,12 +32,13 @@ public class RenderProposalAsPdfController {
     }
 
     public Account getProposalAccount(){
+        this.assignProposal();
         List<Opportunity> listOpp = [SELECT AccountId FROM Opportunity WHERE Id = :proposal.Opportunity__c];
         return [SELECT Name FROM Account WHERE Id = :listOpp[0].AccountId][0];
     }
 
     public Contact getProposalContact(){
-        
+        this.assignProposal();
         List<OpportunityContactRole> listOCR = [SELECT Id, ContactId FROM OpportunityContactRole WHERE OpportunityId = :proposal.Opportunity__c AND IsPrimary = true];
         return [SELECT Name, Email FROM Contact WHERE Id = :listOCR[0].ContactId][0];
     }

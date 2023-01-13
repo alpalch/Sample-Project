@@ -281,4 +281,31 @@ public without sharing class DataFactory {
         );
         return eqToReturn;
     }
+
+    public static Contact createContact(){
+        Account acc = createBuyerAccount();
+        insert acc;
+
+        Contact contactToReturn = new Contact(
+            LastName = 'Doe',
+            Email = 'test@test.com',
+            AccountId = acc.Id
+        );
+        return contactToReturn;
+    }
+
+    public static OpportunityContactRole createOCR(){
+        Opportunity opp = createOpportunity();
+        insert opp;
+        Contact con = createContact();
+        insert con;
+
+        OpportunityContactRole ocrToReturn = new OpportunityContactRole(
+            OpportunityId = opp.Id,
+            ContactId = con.Id,
+            IsPrimary = true
+        );
+
+        return ocrToReturn;
+    }
 }
