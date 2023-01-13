@@ -17,7 +17,6 @@ export default class PreviewModal extends LightningModal {
                 if(result){
                     this.result = result;
                     this.link = '/sfc/servlet.shepherd/document/download/' + result;
-                    console.log('Result is: ' + result);
                     console.log('Success');
                 }
             })
@@ -33,8 +32,6 @@ export default class PreviewModal extends LightningModal {
     }
 
     handleSendClick(){
-        console.log('SendClick');
-        console.log(this.result);
         sendEmailWithAttachment( {contentDocumentId: this.result, proposalId: this.content} )
             .then(result => {
                 if(result){
@@ -51,8 +48,6 @@ export default class PreviewModal extends LightningModal {
     }
 
     handleCancelClick(){
-        console.log('CancelClick');
-        console.log(this.result);
         closePreview( {contentDocumentId: this.result} )
             .then(result => {
                 if(result){

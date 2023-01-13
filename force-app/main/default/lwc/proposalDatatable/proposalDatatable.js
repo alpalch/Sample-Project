@@ -31,7 +31,6 @@ export default class ProposalDatatable extends NavigationMixin(LightningElement)
             }));
             this.wiredProposals.forEach(element => {
                 element.Status == 'Draft' ? element.Disabled = false : element.Disabled = true;
-                console.log(element);
             });
             console.log('Proposals ' + this.wiredProposals);
         }
@@ -54,7 +53,6 @@ export default class ProposalDatatable extends NavigationMixin(LightningElement)
     selectedItemValue;
 
     handleDeleteProposal(event){
-        console.log(event.target.value);
         deleteProposal({ proposalId: event.target.value })
             .then(result => {
                 if(result){
