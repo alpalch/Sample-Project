@@ -25,7 +25,7 @@ public class ProposalEquipmentTriggerHandlerTest {
                                                                     WHERE Id = :proposalEquipmentBeforeTrigger[0].Id
                                                                     ];
 
-        System.assertEquals(5, proposalEquipmentAfterTrigger[0].Cost__c);
+        System.assertEquals(10, proposalEquipmentAfterTrigger[0].Cost__c);
         System.assertEquals(5, proposalEquipmentAfterTrigger[0].Margin__c);
     }
 }

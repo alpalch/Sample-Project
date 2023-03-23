@@ -1,25 +1,27 @@
 /**
- * @description       : 
+ * @description       : Handler for ProposalEquipmentTrigger
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 07-03-2023
+ * @last modified on  : 23-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 public without sharing class ProposalEquipmentTriggerHandler {
 
-    public static void setEquipmentMargin(List<Proposal_Equipment__c> triggerList) {
-        Map<Id, Proposal_Equipment__c> equipIdProposalEquipment = new Map<Id, Proposal_Equipment__c>();
+    public static void setEquipmentMargin(List<Proposal_Equipment__c> proposalEquipments) {
+        Map<Id, Proposal_Equipment__c> proposalEquipmentByEquipId = new Map<Id, Proposal_Equipment__c>();
 
-        for(Proposal_Equipment__c propEq :triggerList){
-            equipIdProposalEquipment.put(propeq.Equipment__c, propEq);
+        for(Proposal_Equipment__c proposalEquipment :proposalEquipments){
+            proposalEquipmentByEquipId.put(proposalEquipment.Equipment__c, proposalEquipment);
         }
 
-        List <Equipment__c> listEquip = [SELECT cost__c, Equipment_Category__r.margin__c FROM Equipment__c WHERE Id IN :equipIdProposalEquipment.keySet()];
+        List <Equipment__c> equipments = [SELECT cost__c, Equipment_Category__r.margin__c 
+                                          FROM Equipment__c 
+                                          WHERE Id IN :proposalEquipmentByEquipId.keySet()];
         
-        for(Equipment__c equip :listEquip){
-            Proposal_Equipment__c propEquip = equipIdProposalEquipment.get(equip.Id);
-            propEquip.cost__c = equip.cost__c;
-            propEquip.margin__c = equip.Equipment_Category__r.margin__c;
+        for(Equipment__c equipment :equipments){
+            Proposal_Equipment__c proposalEquipment = proposalEquipmentByEquipId.get(equipment.Id);
+            proposalEquipment.Cost__c = equipment.Cost__c;
+            proposalEquipment.Margin__c = equipment.Equipment_Category__r.Margin__c;
         }
     }
 }
