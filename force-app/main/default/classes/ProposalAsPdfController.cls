@@ -5,12 +5,12 @@
  * @last modified on  : 07-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
-public class RenderProposalAsPdfController {
+public class ProposalAsPdfController {
 
     public String currentProposalId;
     public Proposal__c proposal = new Proposal__c();
 
-    public RenderProposalAsPdfController() {
+    public ProposalAsPdfController() {
         this.currentProposalId = ApexPages.CurrentPage().getparameters().get('proposalId');
     }
 

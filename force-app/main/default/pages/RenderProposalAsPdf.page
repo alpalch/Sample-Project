@@ -1,4 +1,4 @@
-<apex:page controller="RenderProposalAsPdfController" renderAs="pdf">
+<apex:page controller="ProposalAsPdfController" renderAs="pdf">
     <apex:pageBlock >
         <div>
             <div style="margin-left: 15%">

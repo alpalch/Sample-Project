@@ -5,7 +5,7 @@
  * @last modified on  : 07-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
-public with sharing class SaveDocument {
+public with sharing class GenerateProposal {
     public static Proposal__c proposalForView = new Proposal__c();
 
     public static Id makeContentVersion(String proposalId){

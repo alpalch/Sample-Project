@@ -1,4 +1,4 @@
-public without sharing class DataFactory {
+public without sharing class TestDataFactory {
 
     // Method for the future
     // public static List<Account> createMultipleVendorAccounts(Integer accNumber){
