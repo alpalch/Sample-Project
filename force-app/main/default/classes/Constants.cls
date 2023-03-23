@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : @ValeriyPalchenko
+ * @group             : 
+ * @last modified on  : 06-03-2023
+ * @last modified by  : @ValeriyPalchenko
+**/
 global without sharing class Constants {
     global static final String BUYER_RECORD_TYPE_NAME = 'Buyer';
     global static final String VENDOR_RECORD_TYPE_NAME = 'Vendor';

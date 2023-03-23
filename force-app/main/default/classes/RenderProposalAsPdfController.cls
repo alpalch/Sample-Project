@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : @ValeriyPalchenko
+ * @group             : 
+ * @last modified on  : 07-03-2023
+ * @last modified by  : @ValeriyPalchenko
+**/
 public class RenderProposalAsPdfController {
 
     public String currentProposalId;
@@ -17,18 +24,21 @@ public class RenderProposalAsPdfController {
     }
 
     public List<Map<String, String>> getProposalEquipment(){
-        List<Proposal_Equipment__c> listPE = [SELECT Equipment__r.Name , Quantity__c, Price__c FROM Proposal_Equipment__c WHERE Proposal__c = :Id.valueOf(currentProposalId)];
-        List<Map<String, String>> returnList = new List<Map<String,String>>();
-        for(Proposal_Equipment__c pe :listPE){
+        List<Proposal_Equipment__c> proposalEquipments = [
+            SELECT Equipment__r.Name , Quantity__c, Price__c 
+            FROM Proposal_Equipment__c 
+            WHERE Proposal__c = :Id.valueOf(currentProposalId)];
+        List<Map<String, String>> listToReturn = new List<Map<String,String>>();
+        for(Proposal_Equipment__c pe :proposalEquipments){
             Map<String, String> mapPE = new Map<String, String>{
                 'equipmentName' => pe.Equipment__r.Name,
                 'Quantity' => String.valueOf(pe.Quantity__c),
                 'Price' => String.valueOf(pe.Price__c),
                 'totalPrice' => String.valueOf(pe.Price__c * pe.Quantity__c)
             };
-            returnList.add(mapPE);
+            listToReturn.add(mapPE);
         }
-        return returnList;
+        return listToReturn;
     }
 
     public Account getProposalAccount(){

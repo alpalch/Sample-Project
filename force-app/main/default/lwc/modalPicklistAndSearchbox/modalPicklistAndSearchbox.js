@@ -1,8 +1,19 @@
+/**
+ * @description       : 
+ * @author            : @ValeriyPalchenko
+ * @group             : 
+ * @last modified on  : 07-03-2023
+ * @last modified by  : @ValeriyPalchenko
+**/
 import { LightningElement, wire, track } from 'lwc';
 import getEquipmentCategories from '@salesforce/apex/ModalPicklistAndSearchboxController.getEquipmentCategories';
 
 export default class ModalPicklistAndSearchbox extends LightningElement {
 
+    errors;
+    selectedCategory;
+    textEquipmentName;
+    clickedButtonLabel;
     categories =[];
     
     @wire(getEquipmentCategories)
@@ -18,18 +29,9 @@ export default class ModalPicklistAndSearchbox extends LightningElement {
         }
     }
 
-    errors;
-    selectedCategory;
-
-   /* get options() {
-        return this.categories;
-    }
-*/
     handleChange(event) {
         this.selectedCategory = event.detail.value;
     }
-
-    textEquipmentName;
 
     handleInputFocus(event) {
         // modify parent to properly highlight visually
@@ -46,7 +48,6 @@ export default class ModalPicklistAndSearchbox extends LightningElement {
     handleInputChange(event) {
         this.textEquipmentName = event.detail.value;
     }
-    clickedButtonLabel;
 
     handleClick(event) {
         this.clickedButtonLabel = this.textEquipmentName + '/' + this.selectedCategory;

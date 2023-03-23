@@ -1,5 +1,5 @@
 <apex:page controller="RenderProposalAsPdfController" renderAs="pdf">
-    <apex:pageBlock>
+    <apex:pageBlock >
         <div>
             <div style="margin-left: 15%">
                 <apex:image url="{!$Resource.Logo1}" width="80" height="60"></apex:image>
@@ -19,7 +19,7 @@
     
     <p style="page-break-after: always"></p>
 
-    <apex:pageBlock>
+    <apex:pageBlock >
         <h4><b>{!$Label.Legal_Text_part_1}</b></h4>
         <p>{!$Label.Legal_Text_part_2}
             {!proposalAccount.Name}
@@ -40,7 +40,7 @@
 
     <p style="page-break-after: always"></p>
     
-    <apex:pageBlock>
+    <apex:pageBlock >
         <p>{!proposal.Name}</p>
         <apex:dataTable value="{!proposalEquipment}" var="equip" style="width: 100%">
             <apex:column value="{!equip['equipmentName']}" headerValue="Name" style="width: 25%"></apex:column>

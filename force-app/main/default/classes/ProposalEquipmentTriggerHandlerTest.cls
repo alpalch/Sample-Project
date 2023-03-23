@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : @ValeriyPalchenko
+ * @group             : 
+ * @last modified on  : 07-03-2023
+ * @last modified by  : @ValeriyPalchenko
+**/
 @isTest
 public class ProposalEquipmentTriggerHandlerTest {
     @isTest

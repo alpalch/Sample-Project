@@ -1,26 +1,29 @@
+/**
+ * @description       : 
+ * @author            : @ValeriyPalchenko
+ * @group             : 
+ * @last modified on  : 06-03-2023
+ * @last modified by  : @ValeriyPalchenko
+**/
 public without sharing class OpportunityTriggerHandler {
 	
     public static void setPrimaryContact(List<Opportunity> triggerList){
         // not execute the trigger if the opportunity created by lead conversion
         if(triggerList[0].LeadId__c == null){
-            List<AccountContactRelation> listACR = [
+            List<AccountContactRelation> firstCreatedContact = [
                 SELECT CreatedDate, ContactId 
                 FROM AccountContactRelation 
                 WHERE AccountId = :triggerList[0].AccountId 
                 ORDER BY CreatedDate DESC LIMIT 1];
 
-            AccountContactRelation latestDate = listACR[0];
-
-            List<OpportunityContactRole> listOCR = new List<OpportunityContactRole>();
             OpportunityContactRole ocr = new OpportunityContactRole(
                     OpportunityId = triggerList[0].Id, 
-                    ContactId = latestDate.ContactId, 
+                    ContactId = firstCreatedContact[0]?.ContactId, 
                     isPrimary = true, 
                     Role = 'Decision Maker'
                     );
-            listOCR.add(ocr);
 
-            insert ListOCR;
+            insert ocr;
         }
     }
 

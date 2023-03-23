@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : @ValeriyPalchenko
+ * @group             : 
+ * @last modified on  : 06-03-2023
+ * @last modified by  : @ValeriyPalchenko
+**/
 @isTest
 public without sharing class OpportunityTriggerHandlerTest {
     @isTest
@@ -6,20 +13,21 @@ public without sharing class OpportunityTriggerHandlerTest {
         List<Opportunity> opps = DataFactory.oppsForOppTriggerHandler(1, 2);
         List<OpportunityContactRole> ocrs = [SELECT Id FROM OpportunityContactRole WHERE OpportunityId IN :opps];
         List<OpportunityContactRole> ocrsPrimary = [SELECT Id FROM OpportunityContactRole WHERE OpportunityId IN :opps AND isPrimary = true];
+
         System.assertEquals(1, ocrs.size());
         System.assertEquals(1, ocrsPrimary.size());
     }
 
     @isTest
     public static void setClosedDateTodaySuccessTest(){
-        List<Opportunity> listOpp = DataFactory.createMultipleOpportunity(5);
-        insert listOpp;
-        for(Opportunity opp :listOpp){
+        List<Opportunity> opps = DataFactory.createMultipleOpportunity(5);
+        insert opps;
+        for(Opportunity opp :opps){
             opp.StageName = 'Closed Won';
         }
-        update listOpp;
+        update opps;
 
-        List<Opportunity> listToAssert = [SELECT CloseDate FROM Opportunity WHERE Id IN :listOpp];
+        List<Opportunity> listToAssert = [SELECT CloseDate FROM Opportunity WHERE Id IN :opps];
 
         Integer assertCounter = 0;
         for(Opportunity opp :listToAssert){
@@ -27,6 +35,7 @@ public without sharing class OpportunityTriggerHandlerTest {
                 assertCounter++;
             }
         }
+
         System.assertEquals(5, assertCounter);
     }
 
@@ -34,6 +43,7 @@ public without sharing class OpportunityTriggerHandlerTest {
     public static void setActualAmountSuccessTest(){
         Proposal_Equipment__c propEquip = DataFactory.createProposalEquipment();
         insert propEquip;
+
         Proposal__c prop = [SELECT Status__c, Total_Price__c, Opportunity__c FROM Proposal__c WHERE Id = :propEquip.Proposal__c][0];
         prop.Status__c = 'Accepted';
         update prop; 

@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : @ValeriyPalchenko
+ * @group             : 
+ * @last modified on  : 07-03-2023
+ * @last modified by  : @ValeriyPalchenko
+**/
 import { api, track, wire } from 'lwc';
 import LightningModal from 'lightning/modal';
 import getContentDocumentId from '@salesforce/apex/PreviewModalController.getContentDocumentId';

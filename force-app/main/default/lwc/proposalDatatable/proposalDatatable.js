@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : @ValeriyPalchenko
+ * @group             : 
+ * @last modified on  : 07-03-2023
+ * @last modified by  : @ValeriyPalchenko
+**/
 import { LightningElement, wire, track, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import PreviewModal from 'c/previewModal';
@@ -9,8 +16,9 @@ import deleteProposal from '@salesforce/apex/ProposalDatatableController.deleteP
 
 export default class ProposalDatatable extends NavigationMixin(LightningElement) {
     @api recordId;
-    oppId = this.getOppId();
     @track wiredProposals = [];
+    oppId = this.getOppId();
+    selectedItemValue;
 
     getOppId(){
         let oppIdFromURL = window.location.pathname.split('/');
@@ -18,39 +26,27 @@ export default class ProposalDatatable extends NavigationMixin(LightningElement)
     }
 
     @wire(getProposals, { oppId: '$oppId' }) 
-    gettedProposals({data, error}){
-        if(data){
-            this.errors = undefined;
-            this.wiredProposals = data.map(element => ({
-                Id: element.Id,
-                Name: element.Name,
-                Status: element.Status__c,
-                Total_Price: element.Total_Price__c,
-                Real_Margin: element.Real_Margin__c,
-                Disabled: true
-            }));
-            this.wiredProposals.forEach(element => {
-                element.Status == 'Draft' ? element.Disabled = false : element.Disabled = true;
-            });
-            console.log('Proposals ' + this.wiredProposals);
-        }
-        if (error){
-            this.errors = error;
-            this.categories = undefined;
-        }
-    }
-    navigateToProposal(event) {
-        this[NavigationMixin.Navigate]({
-            type: 'standard__recordPage',
-            attributes: {
-                recordId: event.target.value,
-                objectApiName: 'Proposal__c',
-                actionName: 'view'
+        gettedProposals({data, error}){
+            if(data){
+                this.errors = undefined;
+                this.wiredProposals = data.map(element => ({
+                    Id: element.Id,
+                    Name: element.Name,
+                    Status: element.Status__c,
+                    Total_Price: element.Total_Price__c,
+                    Real_Margin: element.Real_Margin__c,
+                    Disabled: true
+                }));
+                this.wiredProposals.forEach(element => {
+                    element.Status == 'Draft' ? element.Disabled = false : element.Disabled = true;
+                });
+                console.log('Proposals ' + this.wiredProposals);
             }
-        });
-    }
-
-    selectedItemValue;
+            if (error){
+                this.errors = error;
+                this.categories = undefined;
+            }
+        }
 
     handleDeleteProposal(event){
         deleteProposal({ proposalId: event.target.value })
@@ -83,5 +79,16 @@ export default class ProposalDatatable extends NavigationMixin(LightningElement)
 
     handleGetSaveDataEvent(detail) {
         console.log(detail);
-      }
+    }
+    
+    navigateToProposal(event) {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__recordPage',
+            attributes: {
+                recordId: event.target.value,
+                objectApiName: 'Proposal__c',
+                actionName: 'view'
+            }
+        });
+    }
 }

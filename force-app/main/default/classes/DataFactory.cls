@@ -46,8 +46,8 @@ public without sharing class DataFactory {
             ShippingStreet = 'Test Street',
             ShippingCity = 'Test City',
             ShippingPostalCode = '12345',
-            ShippingState = 'New York',
-            ShippingCountry = 'United States'
+            ShippingCountry = 'United States',
+            ShippingState = 'New York'
             );
         return acc;
     }
