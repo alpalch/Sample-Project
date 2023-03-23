@@ -2,53 +2,66 @@
  * @description       : 
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 06-03-2023
+ * @last modified on  : 23-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 @isTest
 public without sharing class OpportunityTriggerHandlerTest {
+
     @isTest
     public static void setPrimaryContactSuccessTest(){
+        // Given
+        List<Opportunity> opportunities = TestDataFactory.oppsForOppTriggerHandler(1, 2);
         
-        List<Opportunity> opps = DataFactory.oppsForOppTriggerHandler(1, 2);
-        List<OpportunityContactRole> ocrs = [SELECT Id FROM OpportunityContactRole WHERE OpportunityId IN :opps];
-        List<OpportunityContactRole> ocrsPrimary = [SELECT Id FROM OpportunityContactRole WHERE OpportunityId IN :opps AND isPrimary = true];
+        // When
+        Test.startTest();
+        List<OpportunityContactRole> ocrs = [SELECT Id FROM OpportunityContactRole WHERE OpportunityId IN :opportunities];
+        List<OpportunityContactRole> ocrsPrimary = [SELECT Id FROM OpportunityContactRole WHERE OpportunityId IN :opportunities AND isPrimary = true];
+        Test.stopTest();
 
+        // Then
         System.assertEquals(1, ocrs.size());
         System.assertEquals(1, ocrsPrimary.size());
     }
 
     @isTest
     public static void setClosedDateTodaySuccessTest(){
-        List<Opportunity> opps = DataFactory.createMultipleOpportunity(5);
-        insert opps;
-        for(Opportunity opp :opps){
-            opp.StageName = 'Closed Won';
+        // Given
+        List<Opportunity> opportunities = TestDataFactory.createOpportunities(5, true);
+
+        // When
+        Test.startTest();
+        for(Opportunity opportunity :opportunities){
+            opportunity.StageName = 'Closed Won';
         }
-        update opps;
+        update opportunities;
+        Test.stopTest();
 
-        List<Opportunity> listToAssert = [SELECT CloseDate FROM Opportunity WHERE Id IN :opps];
-
+        // Then
+        List<Opportunity> opportunitiesToAssert = [SELECT CloseDate FROM Opportunity WHERE Id IN :opportunities];
         Integer assertCounter = 0;
-        for(Opportunity opp :listToAssert){
-            if(opp.CloseDate == Date.today()){
+        for(Opportunity opportunity :opportunitiesToAssert){
+            if(opportunity.CloseDate == Date.today()){
                 assertCounter++;
             }
         }
-
         System.assertEquals(5, assertCounter);
     }
 
     @isTest
     public static void setActualAmountSuccessTest(){
-        Proposal_Equipment__c propEquip = DataFactory.createProposalEquipment();
-        insert propEquip;
+        // Given
+        List<Proposal_Equipment__c> proposalEquipments = TestDataFactory.createProposalEquipments(1, true);
 
-        Proposal__c prop = [SELECT Status__c, Total_Price__c, Opportunity__c FROM Proposal__c WHERE Id = :propEquip.Proposal__c][0];
-        prop.Status__c = 'Accepted';
-        update prop; 
+        // When
+        Test.startTest();
+        List<Proposal__c> proposals = [SELECT Status__c, Total_Price__c, Opportunity__c FROM Proposal__c WHERE Id = :proposalEquipments[0].Proposal__c];
+        proposals[0].Status__c = 'Accepted';
+        update proposals; 
+        Test.stopTest();
 
-        Opportunity opp = [SELECT Amount FROM Opportunity WHERE Id = :prop.Opportunity__c][0];
-        System.assertEquals(prop.Total_Price__c, opp.Amount);
+        // Then
+        List<Opportunity> opportunities = [SELECT Amount FROM Opportunity WHERE Id = :proposals[0].Opportunity__c];
+        System.assertEquals(proposals[0].Total_Price__c, opportunities[0].Amount);
     }
 }

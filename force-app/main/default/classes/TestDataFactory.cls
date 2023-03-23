@@ -182,19 +182,25 @@ public without sharing class TestDataFactory {
         return proposalsToReturn;
     }
 
-    public static Proposal_Equipment__c createProposalEquipment(){
+    public static List<Proposal_Equipment__c> createProposalEquipments(Integer numberOfRecords, Boolean isInsert){
         List<Proposal__c> proposals = createProposals(1, true);
         List<Equipment__c> equipments = createEquipments(1, true);
-        Proposal_Equipment__c proposalEquipmentToReturn = new Proposal_Equipment__c(
-            Name = 'Test',
-            Proposal__c = proposals[0].Id,
-            Equipment__c = equipments[0].Id
-        );
-        return proposalEquipmentToReturn;
+        List<Proposal_Equipment__c> proposalEquipmentsToReturn = new List<Proposal_Equipment__c>();
+        for(Integer i = 0; i < numberOfRecords; i++){
+            Proposal_Equipment__c proposalEquipment = new Proposal_Equipment__c(
+                Proposal__c = proposals[0].Id,
+                Equipment__c = equipments[0].Id
+            );
+            proposalEquipmentsToReturn.add(proposalEquipment);
+        }
+        if(isInsert){
+            insert proposalEquipmentsToReturn;
+        }
+        return proposalEquipmentsToReturn;
     }
 
-    public static Contact createContacts(Integer numberOfRecords, Boolean isInsert){
-        List<Account> accounts = createBuyerAccount(1, true);
+    public static List<Contact> createContacts(Integer numberOfRecords, Boolean isInsert){
+        List<Account> accounts = createBuyerAccounts(1, true);
         List<Contact> contactsToReturn = new List<Contact>();
 
         for(Integer i = 0; i < numberOfRecords; i++){
@@ -208,10 +214,10 @@ public without sharing class TestDataFactory {
         if(isInsert){
             insert contactsToReturn;
         }
-        return contactToReturn;
+        return contactsToReturn;
     }
 
-    public static OpportunityContactRole createOpportunitiesContactRoles(Integer numberOfRecords, Boolean isInsert){
+    public static List<OpportunityContactRole> createOpportunitiesContactRoles(Integer numberOfRecords, Boolean isInsert){
         List<Opportunity> opportunities = createOpportunities(1, true);
         List<Contact> contacts = createContacts(1, true);
         List<OpportunityContactRole> opportunitiesContactRolesToReturn = new List<OpportunityContactRole>();
