@@ -1,61 +1,39 @@
+/**
+ * @description       : Class for creating test data
+ * @author            : @ValeriyPalchenko
+ * @group             : 
+ * @last modified on  : 23-03-2023
+ * @last modified by  : @ValeriyPalchenko
+**/
+@isTest
 public without sharing class TestDataFactory {
 
-    // Method for the future
-    // public static List<Account> createMultipleVendorAccounts(Integer accNumber){
-    //     List<Account> accList = new List<Account>();
-    //     for(Integer i = 0; i < accNumber; i++){
-    //         Account acc = new Account(
-    //             recordTypeId = Constants.VENDOR_RECORD_TYPE_ID,
-    //             Payment__c = 'Wire',
-    //             Name = 'test '+ i,
-    //             Phone = '12345'+ i,
-    //             BillingStreet = 'Test Street',
-    //             BillingCity = 'Test City',
-    //             BillingPostalCode = '12345',
-    //             BillingState = 'New York',
-    //             BillingCountry = 'United States'
-    //             );
-    //         accList.add(acc);
-    //     }
-    //     return accList;
-    // }
-
-    public static Account createVendorAccount(){
-        
-        Account acc = new Account(
-            recordTypeId = Constants.VENDOR_RECORD_TYPE_ID,
-            Payment__c = 'Wire',
-            Name = 'test ',
-            Phone = '12345',
-            BillingStreet = 'Test Street',
-            BillingCity = 'Test City',
-            BillingPostalCode = '12345',
-            BillingState = 'New York',
-            BillingCountry = 'United States'
-            );
-        return acc;
+    public static List<Account> createVendorAccounts(Integer numberOfRecords, Boolean isInsert){
+        List<Account> accounts = new List<Account>();
+        for(Integer i = 0; i < numberOfRecords; i++){
+            Account account = new Account(
+                recordTypeId = Constants.VENDOR_RECORD_TYPE_ID,
+                Payment__c = 'Wire',
+                Name = 'test '+ i,
+                Phone = '12345'+ i,
+                BillingStreet = 'Test Street',
+                BillingCity = 'Test City',
+                BillingPostalCode = '12345',
+                BillingState = 'New York',
+                BillingCountry = 'United States'
+                );
+            accounts.add(account);
+        }
+        if(isInsert){
+            insert accounts;
+        }
+        return accounts;
     }
 
-    public static Account createBuyerAccount(){
-        
-        Account acc = new Account(
-            recordTypeId = Constants.BUYER_RECORD_TYPE_ID,
-            Payment__c = 'Wire',
-            Name = 'test ',
-            Phone = '12345',
-            ShippingStreet = 'Test Street',
-            ShippingCity = 'Test City',
-            ShippingPostalCode = '12345',
-            ShippingCountry = 'United States',
-            ShippingState = 'New York'
-            );
-        return acc;
-    }
-
-    public static List<Account> createMultipleBuyerAccounts(Integer accNumber){
-        List<Account> accList = new List<Account>();
-        for(Integer i = 0; i < accNumber; i++){
-            Account acc = new Account(
+    public static List<Account> createBuyerAccounts(Integer numberOfRecords, Boolean isInsert){
+        List<Account> accounts = new List<Account>();
+        for(Integer i = 0; i < numberOfRecords; i++){
+            Account account = new Account(
                 recordTypeId = Constants.Buyer_RECORD_TYPE_ID,
                 Payment__c = 'Wire',
                 Name = 'test '+ i,
@@ -66,209 +44,188 @@ public without sharing class TestDataFactory {
                 ShippingState = 'New York',
                 ShippingCountry = 'United States'
                 );
-            accList.add(acc);
+            accounts.add(account);
         }
-        return accList;
-    }
-
-    public static List<Equipment_Category__c> createMultipleEquipmentCategory(Integer catNumber){
-        List<Equipment_Category__c> listToReturn = new List<Equipment_Category__c>();
-        for(Integer i = 0; i < catNumber; i++){
-            Equipment_Category__c ec = new Equipment_Category__c();
-            ec.Name = 'Test ' + i;
-            ec.Margin__c = 5;
-            listToReturn.add(ec);
+        if(isInsert){
+            insert accounts;
         }
-        return listToReturn;
+        return accounts;
     }
 
-    public static Equipment_Category__c createEquipmentCategory(){
-            Equipment_Category__c ec = new Equipment_Category__c();
-            ec.Name = 'Test';
-            ec.Margin__c = 10; 
-        return ec;
+    public static List<Equipment_Category__c> createEquipmentCategories(Integer numberOfRecords, Boolean isInsert){
+        List<Equipment_Category__c> categoriesToReturn = new List<Equipment_Category__c>();
+        for(Integer i = 0; i < numberOfRecords; i++){
+            Equipment_Category__c equipmentCategory = new Equipment_Category__c();
+            equipmentCategory.Name = 'Test ' + i;
+            equipmentCategory.Margin__c = 5;
+            categoriesToReturn.add(equipmentCategory);
+        }
+        if(isInsert){
+            insert categoriesToReturn;
+        }
+        return categoriesToReturn;
     }
 
-    public static Equipment__c createEquipment(){
-        Account acc = createVendorAccount();
-        insert acc;
-        Equipment_Category__c eq = createEquipmentCategory();
-        insert eq;
-        Equipment__c equip = new Equipment__c(
-            Account__c = acc.Id,
-            Equipment_Category__c = eq.Id,
-            Name = 'Test',
-            Description__c = 'Test',
-            Cost__c = 10
-        );
-        return equip;
-    }
-
-    public static List<Equipment__c> createMultipleEquipment(Integer equipNumber){
-        Account acc = createVendorAccount();
-        insert acc;
-        Equipment_Category__c eq = createEquipmentCategory();
-        insert eq;
-        List<Equipment__c> listToReturn = new List<Equipment__c>();
-        for(Integer i = 0; i < equipNumber; i++){
-            Equipment__c equip = new Equipment__c(
-                Account__c = acc.Id,
-                Equipment_Category__c = eq.Id,
+    public static List<Equipment__c> createEquipments(Integer numberOfRecords, Boolean isInsert){
+        List<Account> accounts = createVendorAccounts(1, true);
+        List<Equipment_Category__c> equipmentCategories = createEquipmentCategories(1, true);
+        List<Equipment__c> equipmentsToReturn = new List<Equipment__c>();
+        for(Integer i = 0; i < numberOfRecords; i++){
+            Equipment__c equipment = new Equipment__c(
+                Account__c = accounts[0].Id,
+                Equipment_Category__c = equipmentCategories[0].Id,
                 Name = 'Test',
                 Description__c = 'Test',
                 Cost__c = 10
             );
-            listToReturn.add(equip);
+            equipmentsToReturn.add(equipment);
         }
-        return listToReturn;
+        if(isInsert){
+            insert equipmentsToReturn;
+        }
+        return equipmentsToReturn;
     }
 
-    public static List<Opportunity> createMultipleOpportunity(Integer oppNumber){
-        Account acc = createBuyerAccount();
-        insert acc;
-        List<Opportunity> listToReturn = new List<Opportunity>();
-        for(Integer i = 0; i < oppNumber; i++){
-            Opportunity opp = new Opportunity(
+    public static List<Opportunity> createOpportunities(Integer numberOfRecords, Boolean isInsert){
+        List<Account> accounts = createBuyerAccounts(1, true);
+        List<Opportunity> opportunitiesToReturn = new List<Opportunity>();
+        for(Integer i = 0; i < numberOfRecords; i++){
+            Opportunity opportunity = new Opportunity(
                 Name = 'testOpp ' + i,
                 StageName = 'Preparing Proposal',
                 CloseDate = Date.today() + 14,
-                AccountId = acc.Id,
+                AccountId = accounts[0].Id,
                 LeadId__c = '123456789012345678'
             );
-            listToReturn.add(opp);
+            opportunitiesToReturn.add(opportunity);
         }
-        return listToReturn;
+        if(isInsert){
+            insert opportunitiesToReturn;
+        }
+        return opportunitiesToReturn;
     }
 
-    public static Opportunity createOpportunity(){
-        Account acc = createBuyerAccount();
-        insert acc;
-        Opportunity oppToReturn = new Opportunity(
-            Name = 'testOpp ',
-            StageName = 'Preparing Proposal',
-            CloseDate = Date.today() + 14,
-            AccountId = acc.Id,
-            LeadId__c = '123456789012345678'
-            );
-        return oppToReturn;
-    }
+    public static List<Opportunity> oppsForOppTriggerHandler(Integer numberOfRecords, Integer contactNumber) {
+        List<Account> accounts = createBuyerAccounts(numberOfRecords, true);
+        List<Opportunity> opportunitiesToReturn = new List<Opportunity>();
+        List<Contact> contacts = new List<Contact>();
 
-    public static List<Opportunity> oppsForOppTriggerHandler(Integer oppCount, Integer conCount) {
-        List<Account> accList = createMultipleBuyerAccounts(oppCount);
-        insert accList;
-        List<Opportunity> oppList = new List<Opportunity>();
-        List<Contact> conList = new List<Contact>();
-
-        for(Account acc :accList){
-            Opportunity opp = new Opportunity(
+        for(Account account :accounts){
+            Opportunity opportunity = new Opportunity(
                 name = 'testOpp',
                 StageName = 'Preparing Proposal',
                 CloseDate = Date.today() + 14,
-                AccountId = acc.Id
+                AccountId = account.Id
             );
-            oppList.add(opp);
-            for(Integer i = 0; i < conCount; i++){
-                Contact con = new Contact(
+            opportunitiesToReturn.add(opportunity);
+            for(Integer i = 0; i < contactNumber; i++){
+                Contact contact = new Contact(
                     LastName = 'Test'+ i,
                     Email = 'test'+ i +'@gmail.com',
-                    AccountId = acc.ID
+                    AccountId = account.id
                 );
-                conList.add(con);
+                contacts.add(contact);
             }
         }
-        insert conList;
-        insert oppList;
+        insert contacts;
+        insert opportunitiesToReturn;
 
-        return oppList;      
+        return opportunitiesToReturn;      
     }
 
-    public static List<Proposal_Equipment__c> propEquipForProposalEquipmentHandler (Integer propEquipCount){
+    public static List<Proposal_Equipment__c> propEquipForProposalEquipmentHandler (Integer proposalEquipmentNumber){
 
-        Equipment__c equip = createEquipment();
-        insert equip;
+        List<Equipment__c> equipments = createEquipments(1, true);
 
-        Opportunity opp = createOpportunity();
-        insert opp;
+        List<Opportunity> opportunities = createOpportunities(1, true);
 
-        Proposal__c prop= new Proposal__c(Opportunity__c = opp.Id);
-        insert prop;
+        Proposal__c proposal= new Proposal__c(Opportunity__c = opportunities[0].Id);
+        insert proposal;
 
-        List<Proposal_Equipment__c> listToInsert = new List<Proposal_Equipment__c>();
-        for (Integer i = 0; i < propEquipCount; i++){
-            Proposal_Equipment__c propEquip = new Proposal_Equipment__c(
-                proposal__c = prop.Id,
-                Equipment__c = equip.Id,
+        List<Proposal_Equipment__c> proposalEquipmentsToReturn = new List<Proposal_Equipment__c>();
+        for (Integer i = 0; i < proposalEquipmentNumber; i++){
+            Proposal_Equipment__c proposalEquipment = new Proposal_Equipment__c(
+                proposal__c = proposal.Id,
+                Equipment__c = equipments[0].Id,
                 name = 'Test',
                 Quantity__c = 2,
                 cost__c = 0,
                 margin__c = 0
             );
-            listToInsert.add(propEquip);
+            proposalEquipmentsToReturn.add(proposalEquipment);
         }
-        return listToInsert;
+        return proposalEquipmentsToReturn;
     }
 
     public static Proposal__c createProposal(){
-        Opportunity opp = createOpportunity();
-        insert opp;
-        Proposal__c propToReturn = new Proposal__c(
-            Opportunity__c = opp.Id,
+        List<Opportunity> opportunities = createOpportunities(1, true);
+        Proposal__c proposalToReturn = new Proposal__c(
+            Opportunity__c = opportunities[0].Id,
             Status__c = 'Draft'
         );
-        return propToReturn;
+        return proposalToReturn;
     }
 
-    public static List<Proposal__c> createMultipleProposal(Integer proposalNumber){
-        Opportunity opp = createOpportunity();
-        insert opp;
-        List<Proposal__c> listToReturn = new List<Proposal__c>();
-        for(Integer i = 0; i < proposalNumber; i++){
-            Proposal__c prop = new Proposal__c(
+    public static List<Proposal__c> createProposals(Integer numberOfRecors, Boolean isInsert){
+        List<Opportunity> opportunities = createOpportunities(1, true);
+        List<Proposal__c> proposalsToReturn = new List<Proposal__c>();
+        for(Integer i = 0; i < numberOfRecors; i++){
+            Proposal__c proposal = new Proposal__c(
                 Status__c = 'Draft',
-                Opportunity__c = opp.Id
+                Opportunity__c = opportunities[0].Id
             );
-            listToReturn.add(prop);
+            proposalsToReturn.add(proposal);
         }
-        return listToReturn;
+        if(isInsert){
+            insert proposalsToReturn;
+        }
+        return proposalsToReturn;
     }
 
     public static Proposal_Equipment__c createProposalEquipment(){
-        Proposal__c prop = createProposal();
-        insert prop;
-        Equipment__c equip = createEquipment();
-        insert equip;
-        Proposal_Equipment__c eqToReturn = new Proposal_Equipment__c(
+        List<Proposal__c> proposals = createProposals(1, true);
+        List<Equipment__c> equipments = createEquipments(1, true);
+        Proposal_Equipment__c proposalEquipmentToReturn = new Proposal_Equipment__c(
             Name = 'Test',
-            Proposal__c = prop.Id,
-            Equipment__c = equip.Id
+            Proposal__c = proposals[0].Id,
+            Equipment__c = equipments[0].Id
         );
-        return eqToReturn;
+        return proposalEquipmentToReturn;
     }
 
-    public static Contact createContact(){
-        Account acc = createBuyerAccount();
-        insert acc;
+    public static Contact createContacts(Integer numberOfRecords, Boolean isInsert){
+        List<Account> accounts = createBuyerAccount(1, true);
+        List<Contact> contactsToReturn = new List<Contact>();
 
-        Contact contactToReturn = new Contact(
-            LastName = 'Doe',
-            Email = 'test@test.com',
-            AccountId = acc.Id
-        );
+        for(Integer i = 0; i < numberOfRecords; i++){
+            Contact contact = new Contact(
+                LastName = 'Doe',
+                Email = 'test@test.com',
+                AccountId = accounts[0].Id
+            );
+            contactsToReturn.add(contact);
+        }
+        if(isInsert){
+            insert contactsToReturn;
+        }
         return contactToReturn;
     }
 
-    public static OpportunityContactRole createOCR(){
-        Opportunity opp = createOpportunity();
-        insert opp;
-        Contact con = createContact();
-        insert con;
-
-        OpportunityContactRole ocrToReturn = new OpportunityContactRole(
-            OpportunityId = opp.Id,
-            ContactId = con.Id,
-            IsPrimary = true
-        );
-
-        return ocrToReturn;
+    public static OpportunityContactRole createOpportunitiesContactRoles(Integer numberOfRecords, Boolean isInsert){
+        List<Opportunity> opportunities = createOpportunities(1, true);
+        List<Contact> contacts = createContacts(1, true);
+        List<OpportunityContactRole> opportunitiesContactRolesToReturn = new List<OpportunityContactRole>();
+        for(Integer i = 0; i < numberOfRecords; i++) {
+            OpportunityContactRole opportunityContactRole = new OpportunityContactRole(
+                OpportunityId = opportunities[0].Id,
+                ContactId = contacts[0].Id,
+                IsPrimary = true
+            );
+            opportunitiesContactRolesToReturn.add(opportunityContactRole);
+        }
+        if(isInsert){
+            insert opportunitiesContactRolesToReturn;
+        }
+        return opportunitiesContactRolesToReturn;
     }
 }
