@@ -105,7 +105,7 @@ public without sharing class TestDataFactory {
         return opportunitiesToReturn;
     }
 
-    public static List<Opportunity> oppsForOppTriggerHandler(Integer numberOfRecords, Integer contactNumber) {
+    public static List<Opportunity> dataForOpportunityTriggerHandlerTest(Integer numberOfRecords, Integer contactNumber) {
         List<Account> accounts = createBuyerAccounts(numberOfRecords, true);
         List<Opportunity> opportunitiesToReturn = new List<Opportunity>();
         List<Contact> contacts = new List<Contact>();
@@ -133,7 +133,7 @@ public without sharing class TestDataFactory {
         return opportunitiesToReturn;      
     }
 
-    public static List<Proposal_Equipment__c> propEquipForProposalEquipmentHandler (Integer proposalEquipmentNumber){
+    public static List<Proposal_Equipment__c> dataForProposalEquipmentTriggerHandlerTest (Integer proposalEquipmentNumber){
 
         List<Equipment__c> equipments = createEquipments(1, true);
 
@@ -147,10 +147,10 @@ public without sharing class TestDataFactory {
             Proposal_Equipment__c proposalEquipment = new Proposal_Equipment__c(
                 proposal__c = proposal.Id,
                 Equipment__c = equipments[0].Id,
-                name = 'Test',
+                Name = 'Test',
                 Quantity__c = 2,
-                cost__c = 0,
-                margin__c = 0
+                Cost__c = 0,
+                Margin__c = 0
             );
             proposalEquipmentsToReturn.add(proposalEquipment);
         }

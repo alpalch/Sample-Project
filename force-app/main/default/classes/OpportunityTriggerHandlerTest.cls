@@ -1,5 +1,5 @@
 /**
- * @description       : 
+ * @description       : Test class for OpportunityTriggerHandler
  * @author            : @ValeriyPalchenko
  * @group             : 
  * @last modified on  : 23-03-2023
@@ -11,7 +11,7 @@ public without sharing class OpportunityTriggerHandlerTest {
     @isTest
     public static void setPrimaryContactSuccessTest(){
         // Given
-        List<Opportunity> opportunities = TestDataFactory.oppsForOppTriggerHandler(1, 2);
+        List<Opportunity> opportunities = TestDataFactory.dataForOpportunityTriggerHandlerTest(1, 2);
         
         // When
         Test.startTest();

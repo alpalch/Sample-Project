@@ -1,21 +1,31 @@
 /**
- * @description       : 
+ * @description       : Test class for ProposalEquipmentTriggerHandler
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 07-03-2023
+ * @last modified on  : 23-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 @isTest
 public class ProposalEquipmentTriggerHandlerTest {
+
     @isTest
     public static void mainTest(){
-        List<Proposal_Equipment__c> propEquipBefore = DataFactory.propEquipForProposalEquipmentHandler(1);
+        //Given
+        List<Proposal_Equipment__c> proposalEquipmentBeforeTrigger = TestDataFactory.dataForProposalEquipmentTriggerHandlerTest(1);
 
-        insert propEquipBefore;
+        //When
+        Test.startTest();
+        insert proposalEquipmentBeforeTrigger;
+        Test.stopTest();
 
-        List<Proposal_Equipment__c> propEquipAfter = [SELECT cost__c, margin__c FROM Proposal_Equipment__c WHERE Id = :propEquipBefore[0].Id];
+        //Then
+        List<Proposal_Equipment__c> proposalEquipmentAfterTrigger = [
+                                                                    SELECT Cost__c, Margin__c 
+                                                                    FROM Proposal_Equipment__c 
+                                                                    WHERE Id = :proposalEquipmentBeforeTrigger[0].Id
+                                                                    ];
 
-        System.assertEquals(10, propEquipAfter[0].cost__c);
-        System.assertEquals(10, propEquipAfter[0].margin__c);
+        System.assertEquals(5, proposalEquipmentAfterTrigger[0].Cost__c);
+        System.assertEquals(5, proposalEquipmentAfterTrigger[0].Margin__c);
     }
 }
