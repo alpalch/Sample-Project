@@ -26,7 +26,7 @@ export default class ModalWindow extends LightningModal {
   }
     
   handleSaveClick() {
-    const saveEvent = new CustomEvent('getsavedata', {detail: this.equipmentIds});
+    const saveEvent = new CustomEvent('saveproposaldata', {detail: this.equipmentIds});
     this.dispatchEvent(saveEvent);
     this.close('save');
   }

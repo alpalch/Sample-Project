@@ -9,32 +9,26 @@
     <lightning-layout-item flexibility="auto" padding="horizontal-small" class="slds-float_right" alignment-bump="right">
         <div class="slds-var-m-bottom_small">
             <button 
-            class="slds-button slds-button_brand" 
-            onclick={handleClick}
-            aria-haspopup="modal">Add</button>
+            class="slds-button slds-button_neutral"
+            onclick={handleOpenProposalModal}
+            aria-haspopup="modal">Add Proposal</button>
         </div>
     </lightning-layout-item>
     <div>
         <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
-            <thead>
-                <th class="" scope="col">
-                    <div class="slds-truncate" title="Name">Proposal Number</div>
-                </th>
-                <th>
-                    <div class="slds-truncate" title="Total Price">Total Price</div>
-                </th>
-                <th>
-                    <div class="slds-truncate" title="Real Margin">Real Margin</div>
-                </th>
-                <th>
-                    <div class="slds-truncate" title="Status">Status</div>
-                </th>
-                <th>
-                    <div class="slds-truncate" title="Actions">Actions</div>
-                </th>
+            <thead style={displayTable}>
+                <tr class="slds-line-height_reset">
+                    <template for:each={columns} for:item="column">
+                        <th class="" scope="col" key={column} style={column.width}>
+                            <div class="slds-truncate slds-align_absolute-center">
+                                {column.name}
+                            </div>
+                        </th>
+                    </template>
+                </tr>
             </thead>
             <tbody>
-                <template for:each={wiredProposals} for:item="proposal">
+                <template for:each={retrivedProposals} for:item="proposal">
                     <tr key={proposal.Name}>
                         <td><lightning-button variant='base' label={proposal.Name} onclick={navigateToProposal} value={proposal.Id}></lightning-button></td>
                         <td>{proposal.Total_Price}</td>
