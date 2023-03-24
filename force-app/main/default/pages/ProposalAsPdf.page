@@ -1,4 +1,13 @@
+<!--
+  @description       : This is a PDF template for Proposal object
+  @author            : @ValeriyPalchenko
+  @group             : 
+  @last modified on  : 24-03-2023
+  @last modified by  : @ValeriyPalchenko
+-->
+
 <apex:page controller="ProposalAsPdfController" renderAs="pdf">
+    <!-- first page -->
     <apex:pageBlock >
         <div>
             <div style="margin-left: 15%">
@@ -19,6 +28,7 @@
     
     <p style="page-break-after: always"></p>
 
+    <!-- second page -->
     <apex:pageBlock >
         <h4><b>{!$Label.Legal_Text_part_1}</b></h4>
         <p>{!$Label.Legal_Text_part_2}
@@ -40,6 +50,7 @@
 
     <p style="page-break-after: always"></p>
     
+    <!-- third page -->
     <apex:pageBlock >
         <p>{!proposal.Name}</p>
         <apex:dataTable value="{!proposalEquipment}" var="equip" style="width: 100%">
@@ -50,5 +61,4 @@
         </apex:dataTable>
         <p>Total: <apex:outputText value="{!proposal.Total_Price__c}" style="float: right; margin-right: 20%"></apex:outputText></p>
     </apex:pageBlock>
-
 </apex:page>

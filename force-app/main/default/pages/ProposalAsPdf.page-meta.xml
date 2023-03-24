@@ -3,5 +3,5 @@
     <apiVersion>56.0</apiVersion>
     <availableInTouch>false</availableInTouch>
     <confirmationTokenRequired>false</confirmationTokenRequired>
-    <label>RenderProposalAsPdf</label>
+    <label>ProposalAsPdf</label>
 </ApexPage>

@@ -1,55 +1,75 @@
 /**
- * @description       : 
+ * @description       : This is a controller for ProposalAsPdf VisualForce page.
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 07-03-2023
+ * @last modified on  : 24-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
-public class ProposalAsPdfController {
+public without sharing class ProposalAsPdfController {
 
-    public String currentProposalId;
+    public String proposalId;
     public Proposal__c proposal = new Proposal__c();
 
     public ProposalAsPdfController() {
-        this.currentProposalId = ApexPages.CurrentPage().getparameters().get('proposalId');
+        this.proposalId = ApexPages.CurrentPage().getparameters().get('proposalId');
     }
 
-    public void assignProposal(){
-        this.proposal = [SELECT Id, Name, Opportunity__c, Total_Price__c FROM Proposal__c WHERE Id = :Id.valueOf(this.currentProposalId)][0];
+    public void assignProposal() {
+        List<Proposal__c> proposals = [SELECT Id, Name, Opportunity__c, Total_Price__c 
+                                       FROM Proposal__c 
+                                       WHERE Id = :(Id)this.proposalId
+                                       ];
+        this.proposal = proposals[0];
     }
     
-    public Proposal__c getProposal(){
+    public Proposal__c getProposal() {
         this.assignProposal();
         return proposal;
     }
 
-    public List<Map<String, String>> getProposalEquipment(){
-        List<Proposal_Equipment__c> proposalEquipments = [
-            SELECT Equipment__r.Name , Quantity__c, Price__c 
-            FROM Proposal_Equipment__c 
-            WHERE Proposal__c = :Id.valueOf(currentProposalId)];
-        List<Map<String, String>> listToReturn = new List<Map<String,String>>();
-        for(Proposal_Equipment__c pe :proposalEquipments){
-            Map<String, String> mapPE = new Map<String, String>{
-                'equipmentName' => pe.Equipment__r.Name,
-                'Quantity' => String.valueOf(pe.Quantity__c),
-                'Price' => String.valueOf(pe.Price__c),
-                'totalPrice' => String.valueOf(pe.Price__c * pe.Quantity__c)
+    public List<Map<String, String>> getProposalEquipment() {
+        List<Proposal_Equipment__c> proposalEquipments = [SELECT Equipment__r.Name , Quantity__c, Price__c 
+                                                          FROM Proposal_Equipment__c 
+                                                          WHERE Proposal__c = :Id.valueOf(proposalId)
+                                                          ];
+        List<Map<String, String>> equipmentsToDisplay = new List<Map<String,String>>();
+        for(Proposal_Equipment__c propEquipment :proposalEquipments) {
+            Map<String, String> proposalEquipmentsByRow = new Map<String, String> {
+                'equipmentName' => propEquipment.Equipment__r.Name,
+                'Quantity' => String.valueOf(propEquipment.Quantity__c),
+                'Price' => String.valueOf(propEquipment.Price__c),
+                'totalPrice' => String.valueOf(propEquipment.Price__c * propEquipment.Quantity__c)
             };
-            listToReturn.add(mapPE);
+            equipmentsToDisplay.add(proposalEquipmentsByRow);
         }
-        return listToReturn;
+        return equipmentsToDisplay;
     }
 
-    public Account getProposalAccount(){
+    public Account getProposalAccount() {
         this.assignProposal();
-        List<Opportunity> listOpp = [SELECT AccountId FROM Opportunity WHERE Id = :proposal.Opportunity__c];
-        return [SELECT Name FROM Account WHERE Id = :listOpp[0].AccountId][0];
+        List<Opportunity> opportunities = [SELECT AccountId 
+                                           FROM Opportunity 
+                                           WHERE Id = :proposal.Opportunity__c
+                                           ];
+        List<Account> accounts = [SELECT Name 
+                                  FROM Account 
+                                  WHERE Id = :opportunities[0].AccountId 
+                                  LIMIT 1
+                                  ];
+        return accounts[0];
     }
 
-    public Contact getProposalContact(){
+    public Contact getProposalContact() {
         this.assignProposal();
-        List<OpportunityContactRole> listOCR = [SELECT Id, ContactId FROM OpportunityContactRole WHERE OpportunityId = :proposal.Opportunity__c AND IsPrimary = true];
-        return [SELECT Name, Email FROM Contact WHERE Id = :listOCR[0].ContactId][0];
+        List<OpportunityContactRole> oppContactRoles = [SELECT Id, ContactId 
+                                                        FROM OpportunityContactRole 
+                                                        WHERE OpportunityId = :proposal.Opportunity__c AND IsPrimary = true
+                                                        ];
+        List<Contact> contacts = [SELECT Name, Email 
+                                  FROM Contact 
+                                  WHERE Id = :oppContactRoles[0].ContactId
+                                  LIMIT 1
+                                  ];
+        return contacts[0];
     }
 }
