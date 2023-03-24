@@ -7,8 +7,8 @@
 **/
 import { api, track, wire } from 'lwc';
 import LightningModal from 'lightning/modal';
-import getEquipment from '@salesforce/apex/ModalWindowController.getEquipment';
-import getEquipmentCategories from '@salesforce/apex/ModalPicklistAndSearchboxController.getEquipmentCategories';
+import getEquipment from '@salesforce/apex/ManageProposalsController.getEquipment';
+import getEquipmentCategories from '@salesforce/apex/ManageProposalsController.getEquipmentCategories';
 
 export default class ModalWindow extends LightningModal {
   @api content;

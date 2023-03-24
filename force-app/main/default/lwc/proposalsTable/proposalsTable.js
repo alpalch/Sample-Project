@@ -8,7 +8,7 @@
 
 import { LightningElement, wire, track, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import ModalWindow from 'c/modalWindow';
+import addProposalModal from 'c/addProposalModal';
 import sendProposalModal from 'c/sendProposalModal';
 
 import createNewProposal from '@salesforce/apex/ProposalsTableController.createNewProposal';
@@ -36,7 +36,7 @@ export default class ProposalsTable extends NavigationMixin(LightningElement) {
       }
 
     async handleClick() {
-        ModalWindow.open({
+        addProposalModal.open({
             size: 'medium',
             description: 'Accessible description of modals purpose',
             content: 'Passed into content api',

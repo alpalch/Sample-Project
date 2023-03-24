@@ -5,7 +5,7 @@
  * @last modified on  : 24-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
-public with sharing class PreviewModalController {
+public with sharing class ManageProposalsController {
     @AuraEnabled(cacheable=false)
     // cacheable=false to avoid DML exception
     public static Id getContentDocumentId(String proposalId){
@@ -50,5 +50,24 @@ public with sharing class PreviewModalController {
         email.setFileAttachments(new Messaging.EmailFileAttachment[] {efa});
 
         Messaging.SendEmailResult [] result = Messaging.sendEmail(new Messaging.SingleEmailMessage[] {email});
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<Equipment__c> getEquipment(String searchCategory, String searchEquipment){
+        String searchKey = '%' + searchEquipment + '%';
+        
+        if(searchEquipment == 'undefined'){
+            searchKey = '%%';
+        }
+
+        return [
+            SELECT Equipment_Category__r.Name, Name, Cost__c 
+            FROM Equipment__c 
+            WHERE Equipment_Category__c = :Id.valueOf(searchCategory) AND Name LIKE :searchKey];
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<Equipment_Category__c> getEquipmentCategories(){
+        return [SELECT Id, Name FROM Equipment_Category__c];
     }
 }

@@ -7,9 +7,9 @@
 **/
 import { api, track, wire } from 'lwc';
 import LightningModal from 'lightning/modal';
-import getContentDocumentId from '@salesforce/apex/PreviewModalController.getContentDocumentId';
-import sendEmailWithAttachment from '@salesforce/apex/PreviewModalController.sendEmailWithAttachment';
-import closePreview from '@salesforce/apex/PreviewModalController.closePreview';
+import getContentDocumentId from '@salesforce/apex/ManageProposalsController.getContentDocumentId';
+import sendEmailWithAttachment from '@salesforce/apex/ManageProposalsController.sendEmailWithAttachment';
+import closePreview from '@salesforce/apex/ManageProposalsController.closePreview';
 import ContactMobile from '@salesforce/schema/Case.ContactMobile';
 
 export default class PreviewModal extends LightningModal {
