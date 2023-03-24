@@ -147,10 +147,10 @@ public without sharing class TestDataFactory {
             Proposal_Equipment__c proposalEquipment = new Proposal_Equipment__c(
                 proposal__c = proposal.Id,
                 Equipment__c = equipments[0].Id,
-                Name = 'Test',
+                name = 'Test',
                 Quantity__c = 2,
-                Cost__c = 0,
-                Margin__c = 0
+                cost__c = 0,
+                margin__c = 0
             );
             proposalEquipmentsToReturn.add(proposalEquipment);
         }

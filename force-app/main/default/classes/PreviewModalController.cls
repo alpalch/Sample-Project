@@ -2,14 +2,14 @@
  * @description       : 
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 06-03-2023
+ * @last modified on  : 24-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 public with sharing class PreviewModalController {
     @AuraEnabled(cacheable=false)
     // cacheable=false to avoid DML exception
     public static Id getContentDocumentId(String proposalId){
-        return SaveDocument.getContentDocumentId(proposalId);
+        return GenerateProposal.getContentDocumentId(proposalId);
     }
 
     @AuraEnabled(cacheable=false)

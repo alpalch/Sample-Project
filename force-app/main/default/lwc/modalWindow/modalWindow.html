@@ -1,8 +1,35 @@
+<!--
+  @description       : this is a modal window for adding new proposal
+  @author            : @ValeriyPalchenko
+  @group             : 
+  @last modified on  : 24-03-2023
+  @last modified by  : @ValeriyPalchenko
+-->
 <template>
     <lightning-modal-header label="New Proposal"></lightning-modal-header>
     <lightning-modal-body>
         <div>
-            <c-modal-picklist-and-searchbox ongetsearchvalue={handleSearchValue}></c-modal-picklist-and-searchbox>
+            <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+                <lightning-layout multiple-rows>
+                    <lightning-layout-item size="4" padding="around-large">
+                        <lightning-combobox
+                            name="progress"
+                            value={value}
+                            placeholder="Select Equipment Category"
+                            options={categories}
+                            onchange={handleChange}>
+                        </lightning-combobox>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="6" padding="around-large">
+                        <lightning-input type="text" placeholder="Enter Equipment Name" onchange={handleInputChange}></lightning-input>
+                    </lightning-layout-item>
+                    <div class="slds-align_absolute-center">
+                        <lightning-layout-item size="12" padding="around-small">
+                            <lightning-button variant="success" label="Search" title="Successful action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+                        </lightning-layout-item>
+                    </div>
+                </lightning-layout>
+            </div>
         </div>
         <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
             <thead>
