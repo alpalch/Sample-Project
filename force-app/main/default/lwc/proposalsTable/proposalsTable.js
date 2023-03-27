@@ -2,19 +2,27 @@
  * @description       : This component is used to display proposals table
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 24-03-2023
+ * @last modified on  : 27-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 
 import { LightningElement, wire, track, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { refreshApex } from '@salesforce/apex';
 import addProposalModal from 'c/addProposalModal';
 import sendProposalModal from 'c/sendProposalModal';
 
 import createNewProposal from '@salesforce/apex/ProposalsTableController.createNewProposal';
 import getProposals from '@salesforce/apex/ProposalsTableController.getProposals';
 import deleteProposal from '@salesforce/apex/ProposalsTableController.deleteProposal';
+
+const ERROR_TOAST_MESSAGE = 'Something went wrong. Ask your administrator to check logs.';
+const ERROR_TOAST_TITLE = 'Error';
+const ERROR_TOAST_VARIANT = 'error';
+const SUCCESS_CREATED_TOAST_MESSAGE = 'Proposal has been created';
+const SUCCESS_TOAST_TITLE = 'Success';
+const SUCCESS_TOAST_VARIANT = 'success';
 
 export default class ProposalsTable extends NavigationMixin(LightningElement) {
 
@@ -32,7 +40,9 @@ export default class ProposalsTable extends NavigationMixin(LightningElement) {
     ];
 
     @wire(getProposals, { opportunityId: '$recordId' }) 
-        wiredProposals({data, error}) {
+        wiredGetProposals(value) {
+            this.wiredProposals = value;
+            const { data, error } = value;
             if(data) {
                 this.error = undefined;
                 this.retrivedProposals = data.map(element => ({
@@ -41,7 +51,7 @@ export default class ProposalsTable extends NavigationMixin(LightningElement) {
                     Status: element.Status__c,
                     Total_Price: element.Total_Price__c,
                     Real_Margin: element.Real_Margin__c,
-                    Disabled: element.Status__c == 'Draft' ? false : true
+                    Disabled: element.Status__c === 'Draft' ? false : true
                 }));
                 this.retrivedProposals.length > 0 ? this.displayTable = '' : this.displayTable = 'display:none';
             }
@@ -57,7 +67,7 @@ export default class ProposalsTable extends NavigationMixin(LightningElement) {
         createNewProposal( {equipIds: this.proposalSaveData, OppId: this.recordId} )
             .then((result) => {
                 refreshApex(this.wiredProposals);
-                this.showSuccessToast('Proposal has been created');
+                this.showSuccessToast(SUCCESS_CREATED_TOAST_MESSAGE);
             })
             .catch((error) => {
                 console.log('Error has been happen in handleSaveProposalData. Error: ' + error);
@@ -72,7 +82,7 @@ export default class ProposalsTable extends NavigationMixin(LightningElement) {
             content: 'Passed into content api',
             onsaveproposaldata: (event) => {
                 event.stopPropagation();
-                this.handleGetSaveDataEvent(event.detail);
+                this.handleSaveProposalData(event.detail);
             }
         });
     }  
@@ -114,18 +124,18 @@ export default class ProposalsTable extends NavigationMixin(LightningElement) {
 
     showErrorToast() {
         const event = new ShowToastEvent({
-            title: 'Error',
-            message: 'Something went wrong. Ask your administrator to check logs.',
-            variant: 'error',
+            title: ERROR_TOAST_TITLE,
+            message: ERROR_TOAST_MESSAGE,
+            variant: ERROR_TOAST_VARIANT,
         });
         this.dispatchEvent(event);
     }
 
     showSuccessToast(message) {
         const event = new ShowToastEvent({
-            title: 'Success',
+            title: SUCCESS_TOAST_TITLE,
             message: message,
-            variant: 'success',
+            variant: SUCCESS_TOAST_VARIANT,
         });
         this.dispatchEvent(event);
     }

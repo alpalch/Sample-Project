@@ -2,11 +2,11 @@
   @description       : this is a modal window for adding new proposal
   @author            : @ValeriyPalchenko
   @group             : 
-  @last modified on  : 24-03-2023
+  @last modified on  : 27-03-2023
   @last modified by  : @ValeriyPalchenko
 -->
 <template>
-    <lightning-modal-header label="New Proposal"></lightning-modal-header>
+    <lightning-modal-header label="Create New Proposal"></lightning-modal-header>
     <lightning-modal-body>
         <div>
             <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
@@ -16,35 +16,36 @@
                             name="progress"
                             value={value}
                             placeholder="Select Equipment Category"
-                            options={categories}
-                            onchange={handleChange}>
+                            options={categoryOptions}
+                            onchange={handleCategoryChange}>
                         </lightning-combobox>
                     </lightning-layout-item>
                     <lightning-layout-item size="6" padding="around-large">
-                        <lightning-input type="text" placeholder="Enter Equipment Name" onchange={handleInputChange}></lightning-input>
+                        <lightning-input type="text" placeholder="Enter Equipment Name" onchange={handleEquipmentNameChange}></lightning-input>
                     </lightning-layout-item>
                     <div class="slds-align_absolute-center">
                         <lightning-layout-item size="12" padding="around-small">
-                            <lightning-button variant="success" label="Search" title="Successful action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+                            <lightning-button variant="success" 
+                                              label="Search" title="Successful action" 
+                                              onclick={handleEquipmentSearch} 
+                                              class="slds-m-left_x-small">
+                            </lightning-button>
                         </lightning-layout-item>
                     </div>
                 </lightning-layout>
             </div>
         </div>
         <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
-            <thead>
-                <th class="" scope="col">
-                    <div class="slds-truncate" title="Name">Equipment Category</div>
-                </th>
-                <th>
-                    <div class="slds-truncate" title="Total Price">Product Name</div>
-                </th>
-                <th>
-                    <div class="slds-truncate" title="Real Margin">Amount</div>
-                </th>
-                <th>
-                    <div class="slds-truncate" title="Status">Select</div>
-                </th>
+            <thead style={displayTable}>
+                <tr class="slds-line-height_reset">
+                    <template for:each={columns} for:item="column">
+                        <th class="" scope="col" key={column} style={column.width}>
+                            <div class="slds-truncate slds-align_absolute-center">
+                                {column.name}
+                            </div>
+                        </th>
+                    </template>
+                </tr>
             </thead>
             <tbody>
                 <template for:each={tableData} for:item="equipment">
@@ -64,6 +65,6 @@
     </lightning-modal-body>
     <lightning-modal-footer>
         <button onclick={handleCloseClick} aria-label="Cancel and close" class="slds-button slds-button_destructive">Cancel</button>
-        <button onclick={handleSaveClick} class="slds-button slds-button_success" disabled={disabledButton}>Save</button>
+        <button onclick={handleSaveClick} class="slds-button slds-button_success" disabled={isSaveButtonDisabled}>Save</button>
     </lightning-modal-footer>
 </template>

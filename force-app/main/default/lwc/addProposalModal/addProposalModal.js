@@ -1,106 +1,101 @@
 /**
- * @description       : 
- * @author            : @ValeriyPalchenko
- * @group             : 
- * @last modified on  : 24-03-2023
- * @last modified by  : @ValeriyPalchenko
-**/
-import { api, track, wire } from 'lwc';
-import LightningModal from 'lightning/modal';
-import getEquipment from '@salesforce/apex/ManageProposalsController.getEquipment';
-import getEquipmentCategories from '@salesforce/apex/ManageProposalsController.getEquipmentCategories';
+    * @description       : 
+    * @author            : @ValeriyPalchenko
+    * @group             : 
+    * @last modified on  : 27-03-2023
+    * @last modified by  : @ValeriyPalchenko
+    **/
+    import { wire } from 'lwc';
+    import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+    import LightningModal from 'lightning/modal';
+    import getEquipment from '@salesforce/apex/ManageProposalsController.getEquipment';
+    import getEquipmentCategories from '@salesforce/apex/ManageProposalsController.getEquipmentCategories';
 
-export default class ModalWindow extends LightningModal {
-  @api content;
-  @track searchValue;
-  @track searchParams;
-  @track tableData;
-  @track error;
-  // Value from Add button
-  @track equipmentIds = [];
-    
-  disabledButton = true;
+    const ERROR_TOAST_MESSAGE = 'Something went wrong. Ask your administrator to check logs.';
+    const ERROR_TOAST_TITLE = 'Error';
+    const ERROR_TOAST_VARIANT = 'error';
 
-  handleCloseClick() {
-    this.close('canceled');
-  }
-    
-  handleSaveClick() {
-    const saveEvent = new CustomEvent('saveproposaldata', {detail: this.equipmentIds});
-    this.dispatchEvent(saveEvent);
-    this.close('save');
-  }
-
-
-    
-  handleSearchValue(event){
-    this.searchValue = event.detail;
-    if(this.searchValue){
-      this.searchParams = this.searchValue.split('/');
-    }
-    getEquipment({searchCategory: this.searchParams[1], searchEquipment: this.searchParams[0]})
-      .then((result) => {
-        this.tableData = result;
-        this.error = undefined;
-      })
-      .catch((error) => {
-        this.error = error;
-        this.tableData = undefined;
-      });
-    }
-
-  handleAddClick(event) {
-    this.equipmentIds.push(event.target.value);
-    this.enableButton();
-  }
-
-  enableButton(){
-    if(this.equipmentIds.length > 0){
-      this.disabledButton = false;
-    }
-  }
-  errors;
+    export default class addProposalModal extends LightningModal {
+    equipmentIds = [];
+    categoryOptions = [];
+    tableData;
+    error;
     selectedCategory;
-    textEquipmentName;
-    clickedButtonLabel;
-    categories =[];
-    
+    equipmentName;
+    isSaveButtonDisabled = true;
+    displayTable = 'display: none';
+
+    columns = [
+        { name: 'Equipment Category', width: 'width: 30%', },
+        { name: 'Product Name', width: 'width: 30%', },
+        { name: 'Amount', width: 'width: 20%', },
+        { name: 'Select', width: 'width: 20%', },
+    ];
+
     @wire(getEquipmentCategories)
-    transformDataForOptions({data, error}){
-        if(data){
-            this.errors = undefined;
-           // data.forEach(element => this.categories.push( {label: element.Name, value: element.Id} ));
-            this.categories = data.map(element => ({ label: element.Name, value: element.Id }));
+    wiredGetEquipmentCategories( result ) {
+    const { data, error } = result;
+        if (data) {
+        this.error = undefined;
+        // data.forEach(element => this.categoryOptions.push( {label: element.Name, value: element.Id} ));
+        this.categoryOptions = data.map(element => ({ label: element.Name, value: element.Id }));
         }
-        if (error){
-            this.errors = error;
-            this.categories = undefined;
+        if (error) {
+        this.error = error;
+        this.categoryOptions = undefined;
         }
     }
 
-    handleChange(event) {
+    handleCategoryChange(event) {
         this.selectedCategory = event.detail.value;
     }
 
-    handleInputFocus(event) {
-        // modify parent to properly highlight visually
-        const classList = event.target.parentNode.classList;
-        classList.add('lgc-highlight');
+    handleEquipmentNameChange(event) {
+        this.equipmentName = event.detail.value;
     }
 
-    handleInputBlur(event) {
-        // modify parent to properly remove highlight
-        const classList = event.target.parentNode.classList;
-        classList.remove('lgc-highlight');
+    handleEquipmentSearch() {
+        getEquipment({ searchCategory: this.selectedCategory, searchEquipment: this.equipmentName })
+        .then((result) => {
+            this.tableData = result;
+            this.tableData.length > 0 ? this.displayTable = '' : this.displayTable = 'display:none';
+            this.error = undefined;
+        })
+        .catch((error) => {
+            this.error = error;
+            console.log('handleEquipmentSearch error: ', error);
+            this.showErrorToast();
+        });
+        
     }
 
-    handleInputChange(event) {
-        this.textEquipmentName = event.detail.value;
+    handleAddClick(event) {
+        this.equipmentIds.push(event.target.value);
+        this.enableSaveButton();
     }
 
-    handleClick(event) {
-        this.clickedButtonLabel = this.textEquipmentName + '/' + this.selectedCategory;
-        const searchEvent = new CustomEvent('getsearchvalue', {detail: this.clickedButtonLabel});
-        this.dispatchEvent(searchEvent);
+    enableSaveButton() {
+        if(this.equipmentIds.length > 0) {
+        this.isSaveButtonDisabled = false;
+        }
+    }
+
+    handleCloseClick() {
+        this.close('canceled');
+    }
+
+    handleSaveClick() {
+        const saveEvent = new CustomEvent('saveproposaldata', { detail: this.equipmentIds });
+        this.dispatchEvent(saveEvent);
+        this.close('save');
+    }
+
+    showErrorToast() {
+        const event = new ShowToastEvent({
+            title: ERROR_TOAST_TITLE,
+            message: ERROR_TOAST_MESSAGE,
+            variant: ERROR_TOAST_VARIANT,
+        });
+        this.dispatchEvent(event);
     }
 }

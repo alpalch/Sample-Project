@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 24-03-2023
+ * @last modified on  : 27-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 public with sharing class ManageProposalsController {
@@ -54,9 +54,8 @@ public with sharing class ManageProposalsController {
 
     @AuraEnabled(cacheable=true)
     public static List<Equipment__c> getEquipment(String searchCategory, String searchEquipment){
-        String searchKey = '%' + searchEquipment + '%';
-        
-        if(searchEquipment == 'undefined'){
+        String searchKey = '%' + searchEquipment + '%';        
+        if(searchEquipment == null){
             searchKey = '%%';
         }
 
