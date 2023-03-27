@@ -2,7 +2,7 @@
  * @description       : This is a controller for ProposalsTable component
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 24-03-2023
+ * @last modified on  : 27-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 public with sharing class ProposalsTableController {
@@ -10,12 +10,6 @@ public with sharing class ProposalsTableController {
     @AuraEnabled(cacheable=true)
     public static List<Proposal__c> getProposals(String opportunityId){
         return [SELECT id, Name, Total_Price__c, Real_Margin__c, Status__c FROM Proposal__c WHERE Opportunity__c = :Id.valueOf(opportunityId)];
-    }
-
-    @AuraEnabled(cacheable=false)
-    public static void deleteProposal(String proposalId){
-        Proposal__c proposal = [SELECT Id FROM Proposal__c WHERE Id = :Id.valueOf(proposalId)][0];
-        delete proposal;
     }
 
     @AuraEnabled(cacheable=false)

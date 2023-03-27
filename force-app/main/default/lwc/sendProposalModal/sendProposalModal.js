@@ -8,9 +8,10 @@
 import { api } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import LightningModal from 'lightning/modal';
+
 import getContentDocumentId from '@salesforce/apex/ManageProposalsController.getContentDocumentId';
 import sendEmailWithAttachment from '@salesforce/apex/ManageProposalsController.sendEmailWithAttachment';
-import deleteProposal from '@salesforce/apex/ManageProposalsController.deleteProposal';
+import deleteProposal from '@salesforce/apex/ManageProposalsController.deleteProposalDocument';
 
 const ERROR_TOAST_MESSAGE = 'Something went wrong. Ask your administrator to check logs.';
 const ERROR_TOAST_TITLE = 'Error';

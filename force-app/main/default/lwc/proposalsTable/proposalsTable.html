@@ -38,7 +38,7 @@
                             <lightning-button-menu alternative-text="Show menu" variant="container" >
                                 <!-- onselect={handleOnselect} -->
                                 <lightning-menu-item 
-                                onclick={handleDeleteProposal} label="Delete" 
+                                onclick={handleDeleteProposal} label="Delete" aria-haspopup="modal"
                                 value={proposal.Id} disabled={proposal.Disabled}></lightning-menu-item>
                                 <lightning-menu-item 
                                 onclick={handlePreview} label="Preview as PDF" aria-haspopup="modal" 

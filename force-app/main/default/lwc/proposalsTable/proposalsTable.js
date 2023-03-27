@@ -12,10 +12,10 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
 import addProposalModal from 'c/addProposalModal';
 import sendProposalModal from 'c/sendProposalModal';
+import deleteProposalModal from 'c/deleteProposalModal';
 
 import createNewProposal from '@salesforce/apex/ProposalsTableController.createNewProposal';
 import getProposals from '@salesforce/apex/ProposalsTableController.getProposals';
-import deleteProposal from '@salesforce/apex/ProposalsTableController.deleteProposal';
 
 const ERROR_TOAST_MESSAGE = 'Something went wrong. Ask your administrator to check logs.';
 const ERROR_TOAST_TITLE = 'Error';
@@ -65,7 +65,7 @@ export default class ProposalsTable extends NavigationMixin(LightningElement) {
     handleSaveProposalData(detail) {
         this.proposalSaveData = detail;
         createNewProposal( {equipIds: this.proposalSaveData, OppId: this.recordId} )
-            .then((result) => {
+            .then(() => {
                 refreshApex(this.wiredProposals);
                 this.showSuccessToast(SUCCESS_CREATED_TOAST_MESSAGE);
             })
@@ -87,20 +87,22 @@ export default class ProposalsTable extends NavigationMixin(LightningElement) {
         });
     }  
 
-    handleDeleteProposal(event){
-        deleteProposal({ proposalId: event.target.value })
-            .then(result => {
-                if(result){
-                    console.log('Deleted');
-                }
-            })
-            .catch(error => {
-                if(error){
-                    console.log('Error while deleting proposal');
-                    console.log(error);
-                }
-            })
-        window.location.reload(true);
+    async handleDeleteProposal(event) {
+        deleteProposalModal.open({
+            size: 'small',
+            description: 'This is modal window for deleting proposal',
+            proposalId: event.target.value,
+            onsuccessfulproposaldelete: (closeEvent) => {
+                this.handleSuccessfulProposalDelete(closeEvent);
+            }
+        });
+    }
+
+    handleSuccessfulProposalDelete(event) {
+        event.stopPropagation();
+        if(event.detail === 'successful') {
+            refreshApex(this.wiredProposals);
+        }
     }
 
     async handlePreview(event) {

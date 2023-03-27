@@ -5,7 +5,7 @@
  * @last modified on  : 27-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
-public with sharing class ManageProposalsController {
+public without sharing class ManageProposalsController {
     @AuraEnabled(cacheable=false)
     // cacheable=false to avoid DML exception
     public static Id getContentDocumentId(String proposalId) {
@@ -15,7 +15,7 @@ public with sharing class ManageProposalsController {
 
     @AuraEnabled(cacheable=false)
     // cacheable=false to avoid DML exception
-    public static void deleteProposal(String contentDocumentId) {
+    public static void deleteProposalDocument(String contentDocumentId) {
         List<ContentDocument> contentDocuments = [SELECT Id FROM ContentDocument WHERE Id = :Id.ValueOf(contentDocumentId) LIMIT 1];
         delete contentDocuments[0];
     }
@@ -84,5 +84,16 @@ public with sharing class ManageProposalsController {
     public static List<Equipment_Category__c> getEquipmentCategories() {
         List<Equipment_Category__c> categories= [SELECT Id, Name FROM Equipment_Category__c];
         return categories;
+    }
+
+    @AuraEnabled(cacheable=false)
+    public static void deleteProposal(String proposalId) {
+        List<Proposal__c> proposals = [
+                                      SELECT Id 
+                                      FROM Proposal__c 
+                                      WHERE Id = :(Id)proposalId 
+                                      LIMIT 1
+                                      ];
+        delete proposals[0];
     }
 }
