@@ -16,15 +16,30 @@ public without sharing class ManageProposalsController {
     @AuraEnabled(cacheable=false)
     // cacheable=false to avoid DML exception
     public static void deleteProposalDocument(String contentDocumentId) {
-        List<ContentDocument> contentDocuments = [SELECT Id FROM ContentDocument WHERE Id = :Id.ValueOf(contentDocumentId) LIMIT 1];
+        List<ContentDocument> contentDocuments = [
+                                                 SELECT Id 
+                                                 FROM ContentDocument 
+                                                 WHERE Id = :(Id)contentDocumentId 
+                                                 LIMIT 1
+                                                 ];
         delete contentDocuments[0];
     }
 
     @AuraEnabled(cacheable=true)
     public static void sendEmailWithAttachment(String contentDocumentId, String proposalId) {
         // Select recipient's email address
-        list<Proposal__c> proposals = [SELECT Name, Opportunity__c FROM Proposal__c WHERE Id = :Id.ValueOf(proposalId) LIMIT 1];
-        List<Opportunity> opprtunities = [SELECT Id FROM Opportunity WHERE Id = :proposals[0].Opportunity__c LIMIT 1];
+        List<Proposal__c> proposals = [
+                                      SELECT Name, Opportunity__c 
+                                      FROM Proposal__c 
+                                      WHERE Id = :(Id)proposalId 
+                                      LIMIT 1
+                                      ];
+        List<Opportunity> opprtunities = [
+                                         SELECT Id 
+                                         FROM Opportunity 
+                                         WHERE Id = :proposals[0].Opportunity__c 
+                                         LIMIT 1
+                                         ];
         List<OpportunityContactRole> oppContactRoles = [
                                                        SELECT ContactId FROM OpportunityContactRole 
                                                        WHERE OpportunityId = :opprtunities[0].Id AND IsPrimary = true
@@ -38,7 +53,7 @@ public without sharing class ManageProposalsController {
         // Select ContentVesion
         List<ContentDocument> contentDocuments = [
                                                  SELECT LatestPublishedVersionId 
-                                                 FROM ContentDocument WHERE Id = :Id.valueOf(contentDocumentId)
+                                                 FROM ContentDocument WHERE Id = :(Id)contentDocumentId
                                                  ];
         List<ContentVersion> contentVersions = [
                                                SELECT Title, VersionData 
@@ -82,7 +97,10 @@ public without sharing class ManageProposalsController {
 
     @AuraEnabled(cacheable=true)
     public static List<Equipment_Category__c> getEquipmentCategories() {
-        List<Equipment_Category__c> categories= [SELECT Id, Name FROM Equipment_Category__c];
+        List<Equipment_Category__c> categories= [
+                                                SELECT Id, Name 
+                                                FROM Equipment_Category__c
+                                                ];
         return categories;
     }
 
