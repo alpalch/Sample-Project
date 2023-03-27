@@ -15,7 +15,7 @@ import addProposalModal from 'c/addProposalModal';
 import sendProposalModal from 'c/sendProposalModal';
 import deleteProposalModal from 'c/deleteProposalModal';
 
-import createNewProposal from '@salesforce/apex/ProposalsTableController.createNewProposal';
+import createProposal from '@salesforce/apex/ProposalsTableController.createProposal';
 import getProposals from '@salesforce/apex/ProposalsTableController.getProposals';
 
 const ERROR_TOAST_MESSAGE = 'Something went wrong. Ask your administrator to check logs.';
@@ -64,8 +64,8 @@ export default class ProposalsTable extends NavigationMixin(LightningElement) {
         }
 
     handleSaveProposalData(detail) {
-        this.proposalSaveData = detail;
-        createNewProposal( {equipIds: this.proposalSaveData, OppId: this.recordId} )
+        this.proposalSaveData = Object.values(detail);
+        createProposal( {equipmentIds: this.proposalSaveData, opportunityId: this.recordId} )
             .then(() => {
                 refreshApex(this.wiredProposals);
                 this.showSuccessToast(SUCCESS_CREATED_TOAST_MESSAGE);

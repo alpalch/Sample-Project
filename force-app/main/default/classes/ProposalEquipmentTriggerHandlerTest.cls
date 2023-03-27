@@ -2,14 +2,14 @@
  * @description       : Test class for ProposalEquipmentTriggerHandler
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 23-03-2023
+ * @last modified on  : 27-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 @isTest
 public class ProposalEquipmentTriggerHandlerTest {
 
     @isTest
-    public static void mainTest(){
+    public static void mainTest() {
         //Given
         List<Proposal_Equipment__c> proposalEquipmentBeforeTrigger = TestDataFactory.dataForProposalEquipmentTriggerHandlerTest(1);
 
