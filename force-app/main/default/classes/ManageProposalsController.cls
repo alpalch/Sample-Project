@@ -14,7 +14,7 @@ public with sharing class ManageProposalsController {
 
     @AuraEnabled(cacheable=false)
     // cacheable=false to avoid DML exception
-    public static void closePreview(String contentDocumentId){
+    public static void deleteProposal(String contentDocumentId){
         List<ContentDocument> contentDocuments = [SELECT Id FROM ContentDocument WHERE Id = :Id.ValueOf(contentDocumentId) LIMIT 1];
         delete contentDocuments[0];
     }
@@ -53,20 +53,24 @@ public with sharing class ManageProposalsController {
     }
 
     @AuraEnabled(cacheable=true)
-    public static List<Equipment__c> getEquipment(String searchCategory, String searchEquipment){
+    public static List<Equipment__c> getEquipment(String searchCategory, String searchEquipment) {
         String searchKey = '%' + searchEquipment + '%';        
         if(searchEquipment == null){
             searchKey = '%%';
         }
 
-        return [
-            SELECT Equipment_Category__r.Name, Name, Cost__c 
-            FROM Equipment__c 
-            WHERE Equipment_Category__c = :Id.valueOf(searchCategory) AND Name LIKE :searchKey];
+        List<Equipment__c> equipments = [SELECT Equipment_Category__r.Name, Name, Cost__c 
+                                         FROM Equipment__c 
+                                         WHERE Equipment_Category__c = :Id.valueOf(searchCategory) AND Name LIKE :searchKey
+                                         ORDER BY Name ASC
+                                        ];
+
+        return equipments;
     }
 
     @AuraEnabled(cacheable=true)
-    public static List<Equipment_Category__c> getEquipmentCategories(){
-        return [SELECT Id, Name FROM Equipment_Category__c];
+    public static List<Equipment_Category__c> getEquipmentCategories() {
+        List<Equipment_Category__c> categories= [SELECT Id, Name FROM Equipment_Category__c];
+        return categories;
     }
 }

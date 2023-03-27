@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 07-03-2023
+ * @last modified on  : 27-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 public with sharing class GenerateProposal {
@@ -11,7 +11,7 @@ public with sharing class GenerateProposal {
     public static Id makeContentVersion(String proposalId){
         Account account = getProposalAccount();
         Blob body;
-        PageReference pageRef = new PageReference('/apex/RenderProposalAsPdf');
+        PageReference pageRef = new PageReference('/apex/ProposalAsPdf');
         pageRef.getParameters().put('proposalId', proposalId );
         if(Test.isRunningTest()) { 
             body = blob.valueOf('Unit.Test');
