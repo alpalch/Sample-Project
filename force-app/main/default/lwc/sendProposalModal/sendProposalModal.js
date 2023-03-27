@@ -48,12 +48,12 @@ export default class sendProposalModal extends LightningModal {
     handleSendProposal() {
         sendEmailWithAttachment( {contentDocumentId: this.result, proposalId: this.content} )
             .then(result => {
-                if(result){
+                if(result) {
                     this.showSuccessToast(SUCCESS_SENDED_TOAST_MESSAGE);
                 }
             })
             .catch(error => {
-                if(error){
+                if(error) {
                     console.log('Error while sending email: ' + error);
                     this.showErrorToast();
                 }
@@ -64,12 +64,12 @@ export default class sendProposalModal extends LightningModal {
     handleCancel() {
         deleteProposal( {contentDocumentId: this.result} )
             .then(result => {
-                if(result){
+                if(result) {
                     console.log('Canceled');
                 }
             })
             .catch(error => {
-                if(error){
+                if(error) {
                     console.log('Error while canceling preview');
                     console.log(error);
                 }

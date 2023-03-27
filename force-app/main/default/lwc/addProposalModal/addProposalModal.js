@@ -42,7 +42,7 @@
         }
         if (error) {
         this.error = error;
-        this.categoryOptions = undefined;
+        this.showErrorToast();
         }
     }
 

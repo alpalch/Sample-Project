@@ -6,10 +6,11 @@
  * @last modified by  : @ValeriyPalchenko
 **/
 
-import { LightningElement, wire, track, api } from 'lwc';
+import { LightningElement, wire, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
+
 import addProposalModal from 'c/addProposalModal';
 import sendProposalModal from 'c/sendProposalModal';
 import deleteProposalModal from 'c/deleteProposalModal';
@@ -27,8 +28,8 @@ const SUCCESS_TOAST_VARIANT = 'success';
 export default class ProposalsTable extends NavigationMixin(LightningElement) {
 
     @api recordId;
-    @track error;
-    @track retrivedProposals = [];
+    error;
+    retrivedProposals = [];
     proposalSaveData;
     displayTable = 'display: none';
     columns = [
