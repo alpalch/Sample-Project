@@ -21,6 +21,7 @@ public without sharing class ProposalAsPdfControllerTest {
             isPrimary = true
         );
         insert opportunityContactRole;
+
         // When
         Test.startTest();
         Pagereference pageRef = new Pagereference('/apex/ProposalAsPdf');
@@ -28,6 +29,7 @@ public without sharing class ProposalAsPdfControllerTest {
         ApexPages.currentPage().getParameters().put('proposalId', proposals[0].Id);
         ProposalAsPdfController prAsPdf = new ProposalAsPdfController();
         Test.stopTest();
+        
         // Then
         System.assertEquals(proposals[0].Id, prAsPdf.proposalId);
         Proposal__c proposal = prAsPdf.getProposal();

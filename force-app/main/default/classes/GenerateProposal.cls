@@ -1,8 +1,8 @@
 /**
- * @description       : 
+ * @description       : This is a class for generating Proposal__c as PDF and saving it as ContentDocumentLink
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 27-03-2023
+ * @last modified on  : 28-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 public with sharing class GenerateProposal {

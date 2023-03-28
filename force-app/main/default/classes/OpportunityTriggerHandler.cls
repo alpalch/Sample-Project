@@ -2,7 +2,7 @@
  * @description       : Handler for OpportunityTrigger
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 24-03-2023
+ * @last modified on  : 28-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 public without sharing class OpportunityTriggerHandler {
@@ -10,7 +10,8 @@ public without sharing class OpportunityTriggerHandler {
     public static void setPrimaryContact(List<Opportunity> opportunities) {
         // not execute the trigger if the opportunity created by lead conversion
         if(opportunities[0].LeadId__c == null) {
-            List<AccountContactRelation> firstAccountContactRelations = [SELECT CreatedDate, ContactId 
+            List<AccountContactRelation> firstAccountContactRelations = [
+                                                                         SELECT CreatedDate, ContactId 
                                                                          FROM AccountContactRelation 
                                                                          WHERE AccountId = :opportunities[0].AccountId 
                                                                          ORDER BY CreatedDate DESC LIMIT 1
@@ -30,7 +31,7 @@ public without sharing class OpportunityTriggerHandler {
 
     public static void setClosedDateToday(Opportunity newOpprotunity, Opportunity oldOpportunity) {
         if(newOpprotunity.StageName != oldOpportunity.StageName) {
-            if(newOpprotunity.StageName == 'Closed Won' || newOpprotunity.StageName == 'Closed Lost'){
+            if(newOpprotunity.StageName == 'Closed Won' || newOpprotunity.StageName == 'Closed Lost') {
                 newOpprotunity.CloseDate = Date.today();
             }
         }     

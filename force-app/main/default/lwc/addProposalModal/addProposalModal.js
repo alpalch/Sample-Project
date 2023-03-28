@@ -1,8 +1,8 @@
 /**
-    * @description       : 
+    * @description       : This is a modal window for adding new proposal.
     * @author            : @ValeriyPalchenko
     * @group             : 
-    * @last modified on  : 27-03-2023
+    * @last modified on  : 28-03-2023
     * @last modified by  : @ValeriyPalchenko
     **/
     import { wire } from 'lwc';

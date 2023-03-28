@@ -1,8 +1,8 @@
 /**
- * @description       : 
+ * @description       : This class contains constants for the application
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 27-03-2023
+ * @last modified on  : 28-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 global without sharing class Constants {

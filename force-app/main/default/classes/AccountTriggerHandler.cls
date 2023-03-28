@@ -1,8 +1,8 @@
 /**
- * @description       : 
+ * @description       : This class is Handler for AccountTrigger
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 27-03-2023
+ * @last modified on  : 28-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 public without sharing class AccountTriggerHandler {

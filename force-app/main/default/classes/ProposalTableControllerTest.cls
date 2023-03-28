@@ -38,9 +38,17 @@ public without sharing class ProposalTableControllerTest {
         Test.stopTest();
 
         //Then
-        List<Proposal__c> resultProposal = [SELECT Id FROM Proposal__c WHERE Opportunity__c = :opportunities[0].Id];
+        List<Proposal__c> resultProposal = [
+                                            SELECT Id 
+                                            FROM Proposal__c 
+                                            WHERE Opportunity__c = :opportunities[0].Id
+                                            ];
         System.assertEquals(1, resultProposal.size());
-        List<Proposal_Equipment__c> resultProposalEquipments = [SELECT Id FROM Proposal_Equipment__c WHERE Proposal__c = :resultProposal[0].Id];
+        List<Proposal_Equipment__c> resultProposalEquipments = [
+                                                                SELECT Id 
+                                                                FROM Proposal_Equipment__c 
+                                                                WHERE Proposal__c = :resultProposal[0].Id
+                                                                ];
         System.assertEquals(equipments.size(), resultProposalEquipments.size());
 
     }

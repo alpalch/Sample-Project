@@ -1,11 +1,12 @@
 /**
- * @description       : 
+ * @description       : This is a controller for addProposalsModal, sendProposalsModal, and deleteProposalsModal
  * @author            : @ValeriyPalchenko
  * @group             : 
  * @last modified on  : 28-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 public without sharing class ManageProposalsController {
+
     @AuraEnabled(cacheable=false)
     // cacheable=false to avoid DML exception
     public static Id getContentDocumentId(String proposalId) {
@@ -86,7 +87,8 @@ public without sharing class ManageProposalsController {
             searchKey = '%%';
         }
 
-        List<Equipment__c> equipments = [SELECT Equipment_Category__r.Name, Name, Cost__c 
+        List<Equipment__c> equipments = [
+                                         SELECT Equipment_Category__r.Name, Name, Cost__c 
                                          FROM Equipment__c 
                                          WHERE Equipment_Category__c = :(Id)searchCategory AND Name LIKE :searchKey
                                          ORDER BY Name ASC
