@@ -1,8 +1,15 @@
 /**
+ * @description       : 
+ * @author            : @ValeriyPalchenko
+ * @group             : 
+ * @last modified on  : 29-03-2023
+ * @last modified by  : @ValeriyPalchenko
+**/
+/**
  * @description       : Test class for ProposalAsPdfController
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 28-03-2023
+ * @last modified on  : 29-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 @isTest
@@ -34,7 +41,8 @@ public without sharing class ProposalAsPdfControllerTest {
         System.assertEquals(proposals[0].Id, prAsPdf.proposalId);
         Proposal__c proposal = prAsPdf.getProposal();
         List<Map<String, String>> proposalEquipmentsMap = prAsPdf.getProposalEquipment();
-        Account account = prAsPdf.getProposalAccount();
-        Contact contact = prAsPdf.getProposalContact();
+        String accountName = prAsPdf.getAccountName();
+        String contactName = prAsPdf.getContactName();
+        String contactEmail = prAsPdf.getContactEmail();
     }
 }

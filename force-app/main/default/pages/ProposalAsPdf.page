@@ -2,7 +2,7 @@
   @description       : This is a PDF template for Proposal object
   @author            : @ValeriyPalchenko
   @group             : 
-  @last modified on  : 24-03-2023
+  @last modified on  : 29-03-2023
   @last modified by  : @ValeriyPalchenko
 -->
 
@@ -16,14 +16,14 @@
             </div>
         </div>
         <div style="margin:auto; width:100%">
-            <h2 style="text-align: center">{!proposalAccount.Name}</h2>
+            <h2 style="text-align: center">{!accountName}</h2>
         </div>
         <div style="display: block; margin-left: auto; margin-right: auto; width: 50%;">
             <apex:image url="{!$Resource.Logo2}" width="400"></apex:image>
         </div>
         <h2 style="text-align: center; color:gray">Prepared for:</h2>
-        <h2 style="text-align: center">{!proposalContact.Name}</h2>
-        <h3 style="text-align: center">{!proposalContact.Email}</h3>
+        <h2 style="text-align: center">{!contactName}</h2>
+        <h3 style="text-align: center">{!ContactEmail}</h3>
     </apex:pageBlock>
     
     <p style="page-break-after: always"></p>
@@ -32,7 +32,7 @@
     <apex:pageBlock >
         <h4><b>{!$Label.Legal_Text_part_1}</b></h4>
         <p>{!$Label.Legal_Text_part_2}
-            {!proposalAccount.Name}
+            {!accountName}
             {!$Label.Legal_Text_part_3}</p>
         <h4><b>{!$Label.Legal_Text_part_4}</b></h4>
         <p>{!$Label.Legal_Text_part_5}</p>

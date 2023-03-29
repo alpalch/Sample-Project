@@ -2,16 +2,24 @@
  * @description       : This is a controller for ProposalAsPdf VisualForce page.
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 28-03-2023
+ * @last modified on  : 29-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 public without sharing class ProposalAsPdfController {
 
     public String proposalId;
     public Proposal__c proposal = new Proposal__c();
+    public OpportunityContactRole oppContactRole = new OpportunityContactRole();
+    public String accountName {get; set;}
+    public String contactName {get; set;}
+    public String contactEmail {get; set;}
 
     public ProposalAsPdfController() {
         this.proposalId = ApexPages.CurrentPage().getparameters().get('proposalId');
+        this.oppContactRole = getOpportunityContactRole();
+        this.accountName = getAccountName();
+        this.contactName = getContactName();
+        this.contactEmail = getContactEmail();
     }
 
     public void assignProposal() {
@@ -22,10 +30,42 @@ public without sharing class ProposalAsPdfController {
                                        ];
         this.proposal = proposals[0];
     }
+
+    public OpportunityContactRole getOpportunityContactRole() {
+        this.assignProposal();
+        List<OpportunityContactRole> oppContactRoles = [
+                                                        SELECT Id, Contact.Name, Contact.Email 
+                                                        FROM OpportunityContactRole 
+                                                        WHERE OpportunityId = :proposal.Opportunity__c AND IsPrimary = true
+                                                        LIMIT 1
+                                                        ];
+        return oppContactRoles[0];
+    }
     
     public Proposal__c getProposal() {
         this.assignProposal();
         return proposal;
+    }
+
+    public String getAccountName() {
+        this.assignProposal();
+        List<Opportunity> opportunities = [
+                                          SELECT Account.Name
+                                          FROM Opportunity
+                                          WHERE Id = :proposal.Opportunity__c
+                                          LIMIT 1
+                                          ];
+        return opportunities[0].Account.Name;
+    }
+
+    public String getContactName() {
+        String contactName = this.oppContactRole.Contact.Name;
+        return contactName;
+    }
+
+    public String getContactEmail() {
+        String contactEmail = this.oppContactRole.Contact.Email;
+        return contactEmail;
     }
 
     public List<Map<String, String>> getProposalEquipment() {
@@ -45,37 +85,5 @@ public without sharing class ProposalAsPdfController {
             equipmentsToDisplay.add(proposalEquipmentsByRow);
         }
         return equipmentsToDisplay;
-    }
-
-    public Account getProposalAccount() {
-        this.assignProposal();
-        List<Opportunity> opportunities = [
-                                          SELECT AccountId 
-                                          FROM Opportunity 
-                                          WHERE Id = :proposal.Opportunity__c
-                                          ];
-        List<Account> accounts = [
-                                 SELECT Name 
-                                 FROM Account 
-                                 WHERE Id = :opportunities[0].AccountId 
-                                 LIMIT 1
-                                 ];
-        return accounts[0];
-    }
-
-    public Contact getProposalContact() {
-        this.assignProposal();
-        List<OpportunityContactRole> oppContactRoles = [
-                                                        SELECT Id, ContactId 
-                                                        FROM OpportunityContactRole 
-                                                        WHERE OpportunityId = :proposal.Opportunity__c AND IsPrimary = true
-                                                        ];
-        List<Contact> contacts = [
-                                  SELECT Name, Email 
-                                  FROM Contact 
-                                  WHERE Id = :oppContactRoles[0].ContactId
-                                  LIMIT 1
-                                  ];
-        return contacts[0];
     }
 }
