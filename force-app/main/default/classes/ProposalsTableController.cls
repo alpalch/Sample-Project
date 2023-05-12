@@ -2,7 +2,7 @@
  * @description       : This is a controller for ProposalsTable component
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 27-03-2023
+ * @last modified on  : 30-03-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 public with sharing class ProposalsTableController {

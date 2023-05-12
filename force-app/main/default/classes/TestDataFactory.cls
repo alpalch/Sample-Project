@@ -2,10 +2,10 @@
  * @description       : Class for creating test data
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 28-03-2023
+ * @last modified on  : 13-04-2023
  * @last modified by  : @ValeriyPalchenko
 **/
-@isTest
+@IsTest
 public without sharing class TestDataFactory {
 
     public static List<Account> createVendorAccounts(Integer numberOfRecords, Boolean isInsert) {
@@ -170,7 +170,8 @@ public without sharing class TestDataFactory {
         for(Integer i = 0; i < numberOfRecors; i++) {
             Proposal__c proposal = new Proposal__c(
                 Status__c = 'Draft',
-                Opportunity__c = opportunities[0].Id
+                Opportunity__c = opportunities[0].Id,
+                isExpandedTableRow__c = false
             );
             proposalsToReturn.add(proposal);
         }
@@ -232,5 +233,78 @@ public without sharing class TestDataFactory {
             insert opportunitiesContactRolesToReturn;
         }
         return opportunitiesContactRolesToReturn;
+    }
+
+    public static Pricebook2 createPricebook() {
+        Pricebook2 pricebook = new Pricebook2(
+            Name = 'Standard Price Book',
+            isActive = true
+        );
+        insert pricebook;
+        return pricebook;
+    }
+
+    public static List<Product2> createProducts() {
+        List<Product2> productsToReturn = new List<Product2>();
+        Pricebook2 pricebook = createPricebook();
+        for(Integer i = 0; i < 5; i++) {
+            Product2 product = new Product2(
+                Name = 'Test Product ' + i,
+                ProductCode = 'Test Product Code ' + i,
+                Description = 'Test Product Description ' + i,
+                IsActive = true
+            );
+            productsToReturn.add(product);
+        }
+        insert productsToReturn;
+        return productsToReturn;
+    }
+
+    public static List<PricebookEntry> createPricebookEntries() {
+        List<Product2> products = createProducts();
+        List<PricebookEntry> standardPricebookEntries = new List<PricebookEntry>();
+        List<PricebookEntry> pricebookEntriesToReturn = new List<PricebookEntry>();
+        Pricebook2 pricebook = createPricebook();
+        for(Integer i = 0; i < 5; i++) {
+            PricebookEntry standardPricebookEntry = new PricebookEntry(
+                Product2Id = products[i].Id,
+                Pricebook2Id = Test.getStandardPricebookId(),
+                UnitPrice = 100,
+                IsActive = true
+            );
+            standardPricebookEntries.add(standardPricebookEntry);
+        }
+        insert standardPricebookEntries;
+
+        for(Integer i = 0; i < 5; i++) {
+            PricebookEntry pricebookEntry = new PricebookEntry(
+                Product2Id = products[i].Id,
+                Pricebook2Id = pricebook.Id,
+                UnitPrice = 100,
+                IsActive = true
+            );
+            pricebookEntriesToReturn.add(pricebookEntry);
+        }
+        insert pricebookEntriesToReturn;
+        return pricebookEntriesToReturn;
+    }
+
+    public static List<OpportunityLineItem> createOpportunityLineItems(Integer numberOfRecords, Boolean isInsert) {
+        List<Opportunity> opportunities = createOpportunities(1, true);
+        List<PricebookEntry> pricebookEntries = createPricebookEntries();
+        List<OpportunityLineItem> opportunityLineItemsToReturn = new List<OpportunityLineItem>();
+        for(Integer i = 0; i < numberOfRecords; i++) {
+            OpportunityLineItem opportunityLineItem = new OpportunityLineItem(
+                OpportunityId = opportunities[0].Id,
+                PricebookEntryId = pricebookEntries[i].Id,
+                Quantity = 1,
+                TotalPrice = 100
+            );
+            opportunityLineItemsToReturn.add(opportunityLineItem);
+        }
+        if(isInsert) {
+            insert opportunityLineItemsToReturn;
+        }
+        return opportunityLineItemsToReturn;
     }
 }

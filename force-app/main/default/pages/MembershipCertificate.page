@@ -1,0 +1,19 @@
+<!--
+  @description       : 
+  @author            : @ValeriyPalchenko
+  @group             : 
+  @last modified on  : 25-04-2023
+  @last modified by  : @ValeriyPalchenko
+-->
+<apex:page controller="MembershipCertificatePageController" renderAs="pdf" applyBodyTag="false">
+    <head>
+    </head>
+    <body style="background-image: url({!URLFOR($Resource.VeryTalentedNephew)});background-size: cover;opacity: 0.5">
+        <h1 style="text-align: center; margin-top: 10%; color: rgb(70, 70, 70)">Certificate of Membership</h1>
+        <h2 style="margin-left: 10%; margin-top: 15%;font-family: Comic Sans MS; color: rgb(70, 70, 70); font-size: 30px;">{!contactName},</h2>
+        <h4 style="margin-top: 5%;font-family: Comic Sans MS; color: rgb(70, 70, 70); font-size: 30px;">Welcome to the club buddy!</h4>
+        <div style="position: relative">
+            <apex:outputText value="{0,date,dd.MM.yyyy}" style="position: fixed; bottom: 20%; left: 10%; width:100%;font-family: Comic Sans MS; text-align: left; color: rgb(70, 70, 70); font-size: 30px"> <apex:param value="{!TODAY()}" /> </apex:outputText>
+        </div>
+    </body>
+</apex:page>

@@ -2,7 +2,7 @@
  * @description       : Test class for ProposalEquipmentTriggerHandler
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 27-03-2023
+ * @last modified on  : 04-04-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 @isTest
@@ -25,7 +25,7 @@ public class ProposalEquipmentTriggerHandlerTest {
                                                                     WHERE Id = :proposalEquipmentBeforeTrigger[0].Id
                                                                     ];
 
-        System.assertEquals(10, proposalEquipmentAfterTrigger[0].Cost__c);
+        System.assertEquals(20, proposalEquipmentAfterTrigger[0].Cost__c);
         System.assertEquals(5, proposalEquipmentAfterTrigger[0].Margin__c);
     }
 }

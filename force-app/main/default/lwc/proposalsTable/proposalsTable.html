@@ -2,16 +2,13 @@
   @description       : This component is used to display proposals table
   @author            : @ValeriyPalchenko
   @group             : 
-  @last modified on  : 28-03-2023
+  @last modified on  : 06-04-2023
   @last modified by  : @ValeriyPalchenko
 -->
 <template>
     <lightning-layout-item flexibility="auto" padding="horizontal-small" class="slds-float_right" alignment-bump="right">
         <div class="slds-var-m-bottom_small">
-            <button 
-            class="slds-button slds-button_neutral"
-            onclick={handleOpenProposalModal}
-            aria-haspopup="modal">Add Proposal</button>
+            <lightning-button label="Add Proposal" onclick={handleOpenProposalModal} variant="brand"></lightning-button>
         </div>
     </lightning-layout-item>
     <div>

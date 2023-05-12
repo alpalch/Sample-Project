@@ -1,0 +1,118 @@
+<!-- sldsValidatorIgnore -->
+<!--
+  @description       : 
+  @author            : @ValeriyPalchenko
+  @group             : 
+  @last modified on  : 13-04-2023
+  @last modified by  : @ValeriyPalchenko
+-->
+<template>
+    <lightning-modal-header label="Manage Opportunity"></lightning-modal-header>
+    <lightning-modal-body>
+        <lightning-layout>
+            <lightning-layout-item size="12">
+                <p>Opportunity Name: {parentOpportunity.name}</p>
+                <p>Opportunity Stage: {parentOpportunity.stage}</p>
+                <p>Opportunity Amount: {parentOpportunity.amount}</p>
+                <p>Opportunity Close Date: {parentOpportunity.closeDate}</p>
+            </lightning-layout-item>
+        </lightning-layout>
+        <lightning-layout>
+            <!-- left side of the form starts here -->
+            <lightning-layout-item size="6" padding="around-small">
+                <!-- Cloned opportunity Name -->
+                <lightning-input
+                    placeholder="Type cloned opportunity name here..."
+                    variant="label-hidden"
+                    onchange={handleOpportunityNameChange}
+                    style="margin-top: 1%">
+                </lightning-input>
+                <!-- Inline search for the opportunity -->
+                <lightning-input
+                    placeholder="Type to search items"
+                    variant="label-hidden"
+                    onchange={handleSearchInput}
+                    style="margin-top: 1%; margin-bottom: 1%">
+                </lightning-input>
+                <lightning-button label="Add Opportunity" onclick={handleAddOpportunity}></lightning-button>
+                <!-- Table with the list of the opportunity products -->
+                <div style="height: 500px;">
+                    <lightning-datatable
+                        class="opportunity-products-table"
+                        data={opportunityProductsData}
+                        key-field="opportunityProductId"
+                        columns={productColumns}
+                        style="margin-top: 2%;">
+                    </lightning-datatable>
+                </div>
+            </lightning-layout-item>
+            <!-- right side of the form starts here -->
+            <lightning-layout-item size="6">
+                <!-- List with the created opportunity -->
+                <div style="max-height: 500px;">
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                        <!-- table heat starts here -->
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <template for:each={treeGridColumns} for:item="column">
+                                    <th class="" scope="col" key={column}>
+                                        <div class="slds-truncate slds-align_absolute-center">
+                                            {column.name}
+                                        </div>
+                                    </th>
+                                </template>
+                            </tr>
+                        </thead>
+                        <!-- table body starts here -->
+                        <tbody>
+                            <template for:each={treeGridData} for:item="opportunity">
+                                <tr key={opportunity.opportunityName}>
+                                    <td>
+                                        <lightning-button-icon
+                                            icon-name={opportunity.iconName}
+                                            onclick={handleRowsExpand}
+                                            value={opportunity.opportunityName}
+                                            variant="bare">
+                                        </lightning-button-icon>
+                                        {opportunity.opportunityName}
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <lightning-button-icon
+                                            icon-name="utility:delete"
+                                            onclick={handleDeleteOpportunity}
+                                            value={opportunity.opportunityName}
+                                            variant="bare">
+                                        </lightning-button-icon>
+                                    </td>
+                                </tr>
+                            <template for:each={opportunity.lineItems} for:item="lineItem" if:true={opportunity.opportunityIsExpanded}>
+                                <tr key={lineItem.Id}>
+                                    <td></td>
+                                    <td>{lineItem.productName}</td>
+                                    <td>{lineItem.productPrice}</td>
+                                    <td>
+                                        <lightning-button-icon
+                                            icon-name="utility:delete"
+                                            onclick={handleDeleteProduct}
+                                            value={lineItem.productId}
+                                            variant="bare">
+                                        </lightning-button-icon>
+                                    </td>
+                                </tr>
+                            </template>
+                            </template>
+                        </tbody>
+                    </table>                                                
+                </div>
+                <!-- end of the table -->
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-modal-body>
+    <!-- footer -->
+    <lightning-modal-footer>
+        <lightning-button variant="neutral" label="Cancel" onclick={handleCancel}></lightning-button>
+        <lightning-button variant="brand" label="Save and Close" class="slds-m-left_x-small" onclick={handleSave}></lightning-button>
+    </lightning-modal-footer>
+</template>

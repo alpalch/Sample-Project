@@ -1,0 +1,37 @@
+<!--
+  @description       : This is a modal window for adding proposal to the opportunity
+  @author            : @ValeriyPalchenko
+  @group             : 
+  @last modified on  : 04-04-2023
+  @last modified by  : @ValeriyPalchenko
+-->
+<template>
+    <lightning-modal-header label="Add Proposal"></lightning-modal-header>
+
+    <lightning-modal-body> 
+        <lightning-input-rich-text
+            value={richTextValue}
+            onchange={handleRichTextValueChange}
+            label="Internal Message"
+            label-visible="true">
+        </lightning-input-rich-text>
+        <lightning-textarea 
+            label="Note" 
+            placeholder="type here..."
+            max-length="255"
+            value={note}
+            onchange={handleNoteChange}>
+        </lightning-textarea>
+    </lightning-modal-body>
+
+    <lightning-modal-footer>
+        <lightning-layout horizontal-align="center">
+            <lightning-layout-item padding="horizontal-small">
+                <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item padding="horizontal-small">
+                <lightning-button label="Save" onclick={handleSaveProposal} variant="brand"></lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-modal-footer>
+</template>

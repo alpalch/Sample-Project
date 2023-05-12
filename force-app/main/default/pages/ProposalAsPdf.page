@@ -2,7 +2,7 @@
   @description       : This is a PDF template for Proposal object
   @author            : @ValeriyPalchenko
   @group             : 
-  @last modified on  : 29-03-2023
+  @last modified on  : 14-04-2023
   @last modified by  : @ValeriyPalchenko
 -->
 
@@ -12,7 +12,7 @@
         <div>
             <div style="margin-left: 15%">
                 <apex:image url="{!$Resource.Logo1}" width="80" height="60"></apex:image>
-                <apex:outputText value="{0,date, DD.MM.YYYY}" style="float:right; margin-top:1cm"> <apex:param value="{!TODAY()}" /> </apex:outputText>
+                <apex:outputText value="{0,date,dd.MM.yyyy}" style="float:right; margin-top:1cm"> <apex:param value="{!TODAY()}" /> </apex:outputText>
             </div>
         </div>
         <div style="margin:auto; width:100%">

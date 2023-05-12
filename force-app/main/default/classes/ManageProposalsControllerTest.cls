@@ -2,7 +2,7 @@
  * @description       : Test class for ManageProposalsController
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 28-03-2023
+ * @last modified on  : 04-04-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 @isTest
@@ -138,4 +138,71 @@ public without sharing class ManageProposalsControllerTest {
                                             ];
         System.assert(!emailMessages.isEmpty());
     }
+
+    @isTest
+    public static void createProposalWithDescriptionTest() {
+        //Given
+        Opportunity opportunity = TestDataFactory.createOpportunities(1, true)[0];
+        Map<String, String> proposalData= new Map<String, String>();
+        proposalData.put('internalMessage', 'Test Internal Message');
+        proposalData.put('opportunityId', (String)opportunity.Id);
+        proposalData.put('note', 'Test Note');
+
+        //When
+        Test.startTest();
+        ManageProposalsController.createProposalWithDescription(proposalData);
+        Test.stopTest();
+
+        //Then
+        List<Proposal__c> proposals = [
+                                        SELECT Id, Internal_Message__c, Note__c 
+                                        FROM Proposal__c 
+                                        WHERE Opportunity__c = :(Id)opportunity.Id 
+                                        LIMIT 1
+                                        ];
+        System.assert(proposals[0].Internal_Message__c == 'Test Internal Message');
+        System.assert(proposals[0].Note__c == 'Test Note');
+    }
+
+    @isTest
+    public static void getProposalTest() {
+        //Given
+        Proposal__c proposal = TestDataFactory.createProposals(1, true)[0];
+
+        //When
+        Test.startTest();
+        Proposal__c result = ManageProposalsController.getProposal((String)proposal.Id);
+        Test.stopTest();
+
+        //Then
+        System.assertEquals(proposal.Id, result.Id);
+    }
+
+    @isTest
+    public static void editProposalWithAttachmentTest() {
+        //Given
+        Proposal__c proposal = TestDataFactory.createProposals(1, false)[0];
+        proposal.Note__c = 'Test Note';
+        proposal.Internal_Message__c = 'Test Internal Message';
+        insert proposal;
+        Map<String, String> proposalData= new Map<String, String>();
+        proposalData.put('internalMessage', 'New Test Internal Message');
+        proposalData.put('note', 'New Test Note');
+        proposalData.put('Id', (String)proposal.Id);
+
+        //When
+        Test.startTest();
+        ManageProposalsController.editProposalWithAttachment(proposalData);
+        Test.stopTest();
+
+        //Then
+        List<Proposal__c> proposals = [
+                                        SELECT Id, Internal_Message__c, Note__c 
+                                        FROM Proposal__c 
+                                        WHERE Id = :(Id)proposal.Id 
+                                        LIMIT 1
+                                        ];
+        System.assert(proposals[0].Internal_Message__c == 'New Test Internal Message');
+        System.assert(proposals[0].Note__c == 'New Test Note');
+    } 
 }

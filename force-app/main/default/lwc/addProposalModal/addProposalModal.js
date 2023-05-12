@@ -1,36 +1,36 @@
 /**
-    * @description       : This is a modal window for adding new proposal.
-    * @author            : @ValeriyPalchenko
-    * @group             : 
-    * @last modified on  : 28-03-2023
-    * @last modified by  : @ValeriyPalchenko
-    **/
-    import { wire } from 'lwc';
-    import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-    import LightningModal from 'lightning/modal';
-    import getEquipment from '@salesforce/apex/ManageProposalsController.getEquipment';
-    import getEquipmentCategories from '@salesforce/apex/ManageProposalsController.getEquipmentCategories';
+* @description       : This is a modal window for adding new proposal.
+* @author            : @ValeriyPalchenko
+* @group             : 
+* @last modified on  : 06-04-2023
+* @last modified by  : @ValeriyPalchenko
+**/
+import { wire } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import LightningModal from 'lightning/modal';
+import getEquipment from '@salesforce/apex/ManageProposalsController.getEquipment';
+import getEquipmentCategories from '@salesforce/apex/ManageProposalsController.getEquipmentCategories';
 
-    const ERROR_TOAST_MESSAGE = 'Something went wrong. Ask your administrator to check logs.';
-    const ERROR_TOAST_TITLE = 'Error';
-    const ERROR_TOAST_VARIANT = 'error';
+const ERROR_TOAST_MESSAGE = 'Something went wrong. Ask your administrator to check logs.';
+const ERROR_TOAST_TITLE = 'Error';
+const ERROR_TOAST_VARIANT = 'error';
 
-    export default class addProposalModal extends LightningModal {
-    equipmentIds = [];
-    categoryOptions = [];
+const columns = [{ name: 'Equipment Category', width: 'width: 30%', },
+                 { name: 'Product Name', width: 'width: 30%', },
+                 { name: 'Amount', width: 'width: 20%', },
+                 { name: 'Select', width: 'width: 20%', },];
+
+export default class addProposalModal extends LightningModal {
+    
     tableData;
     error;
     selectedCategory;
     equipmentName;
+    equipmentIds = [];
+    categoryOptions = [];
     isSaveButtonDisabled = true;
     displayTable = 'display: none';
-
-    columns = [
-        { name: 'Equipment Category', width: 'width: 30%', },
-        { name: 'Product Name', width: 'width: 30%', },
-        { name: 'Amount', width: 'width: 20%', },
-        { name: 'Select', width: 'width: 20%', },
-    ];
+    columns = columns;
 
     @wire(getEquipmentCategories)
     wiredGetEquipmentCategories( result ) {
@@ -58,7 +58,7 @@
         getEquipment({ searchCategory: this.selectedCategory, searchEquipment: this.equipmentName })
         .then((result) => {
             this.tableData = result;
-            this.tableData.length > 0 ? this.displayTable = '' : this.displayTable = 'display:none';
+            this.displayTable = this.tableData.length > 0 ? '' : 'display:none';
             this.error = undefined;
         })
         .catch((error) => {

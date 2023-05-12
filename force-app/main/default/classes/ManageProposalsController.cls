@@ -2,7 +2,7 @@
  * @description       : This is a controller for addProposalsModal, sendProposalsModal, and deleteProposalsModal
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 28-03-2023
+ * @last modified on  : 19-04-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 public without sharing class ManageProposalsController {
@@ -54,7 +54,8 @@ public without sharing class ManageProposalsController {
         // Select ContentVesion
         List<ContentDocument> contentDocuments = [
                                                  SELECT LatestPublishedVersionId 
-                                                 FROM ContentDocument WHERE Id = :(Id)contentDocumentId
+                                                 FROM ContentDocument 
+                                                 WHERE Id = :(Id)contentDocumentId
                                                  ];
         List<ContentVersion> contentVersions = [
                                                SELECT Title, VersionData 
@@ -87,8 +88,7 @@ public without sharing class ManageProposalsController {
             searchKey = '%%';
         }
 
-        List<Equipment__c> equipments = [
-                                         SELECT Equipment_Category__r.Name, Name, Cost__c 
+        List<Equipment__c> equipments = [SELECT Equipment_Category__r.Name, Name, Cost__c 
                                          FROM Equipment__c 
                                          WHERE Equipment_Category__c = :(Id)searchCategory AND Name LIKE :searchKey
                                          ORDER BY Name ASC
@@ -115,5 +115,36 @@ public without sharing class ManageProposalsController {
                                       LIMIT 1
                                       ];
         delete proposals[0];
+    }
+
+    @AuraEnabled(cacheable=false)
+    public static void createProposalWithDescription(Map<String, String> proposalData) {
+        Proposal__c proposal = new Proposal__c(
+            Opportunity__c = (Id)proposalData.get('opportunityId'),
+            Note__c = proposalData.get('note'),
+            Internal_Message__c	= proposalData.get('internalMessage')
+        );
+        insert proposal;
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static Proposal__c getProposal(String proposalId) {
+        List<Proposal__c> proposals = [SELECT Id, Name, Note__c, Internal_Message__c, Total_Cost__c, Total_Price__c, Real_Margin__c
+                                       FROM Proposal__c 
+                                       WHERE Id = :(Id)proposalId 
+                                       LIMIT 1
+                                       ];
+        return proposals[0];
+    }
+
+    @AuraEnabled(cacheable=false)
+    public static void editProposalWithAttachment(Map<String, String> proposalData) {
+        List<Proposal__c> proposals = [SELECT Id, Note__c, Internal_Message__c
+                                       FROM Proposal__c
+                                       WHERE Id = :(Id)proposalData.get('Id')
+                                       LIMIT 1];
+        proposals[0].Note__c = proposalData.get('note');
+        proposals[0].Internal_Message__c = proposalData.get('internalMessage');
+        update proposals;
     }
 }

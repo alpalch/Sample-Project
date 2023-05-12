@@ -2,13 +2,12 @@
  * @description       : This is a modal window for deleting proposal confirmation.
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 28-03-2023
+ * @last modified on  : 04-04-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 import { api } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import LightningModal from 'lightning/modal';
-
 
 import deleteProposal from '@salesforce/apex/ManageProposalsController.deleteProposal';
 
@@ -23,13 +22,13 @@ export default class deleteProposalModal extends LightningModal {
     @api proposalId;
     error;
 
-    handleAccept() {
+    handleDelete() {
         deleteProposal({ proposalId: this.proposalId })
             .then(() => {
                 this.showSuccessToast(SUCCESS_CREATED_TOAST_MESSAGE);
-                const successfulDelete = new CustomEvent('successfulproposaldelete', { detail: 'successful' });
+                const successfulDelete = new CustomEvent('successfulproposaldelete', { detail: 'success' });
                 this.dispatchEvent(successfulDelete);
-                this.close();
+                this.close('save');
             })
             .catch((error) => {
                 if(error) {
