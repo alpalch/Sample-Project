@@ -2,19 +2,17 @@
  * @description       : This is a class for generating Proposal__c as PDF and saving it as ContentDocumentLink
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 28-03-2023
+ * @last modified on  : 24-05-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 public with sharing class GenerateProposal {
 
-    public static Proposal__c proposalForView = new Proposal__c();
+    private static Proposal__c proposalForView = new Proposal__c();
 
     public static Id getContentDocumentId(String proposalId) {
-        List<Proposal__c> proposals = [
-                                      SELECT Id, Opportunity__c, LastAccessDateTime__c 
-                                      FROM Proposal__c 
-                                      WHERE Id = :(Id)proposalId
-                                      ];
+        List<Proposal__c> proposals = [SELECT Id, Opportunity__c, LastAccessDateTime__c 
+                                       FROM Proposal__c 
+                                       WHERE Id = :(Id)proposalId];
         proposalForView = proposals[0];
 
         // Updating LastAccessDateTime to pick this exact Proposal__c in ProposalAsPdfController
@@ -26,7 +24,7 @@ public with sharing class GenerateProposal {
         return contentDocumentLink.ContentDocumentId;
     }
 
-    public static ContentDocumentLink createContentDocumentLink(String proposalId) {
+    private static ContentDocumentLink createContentDocumentLink(String proposalId) {
         Account account = getProposalAccount();
         Blob body;
         PageReference pageRef = new PageReference('/apex/ProposalAsPdf');
@@ -45,17 +43,17 @@ public with sharing class GenerateProposal {
         insert contentVersion;
 
         Id contentVersionId = contentVersion.Id;
-        ContentDocument contentDocument = [
-                                          SELECT Id 
-                                          FROM ContentDocument 
-                                          WHERE LatestPublishedVersionId = :contentVersionId
-                                          ];
+        ContentDocument contentDocument = [SELECT Id 
+                                           FROM ContentDocument 
+                                           WHERE LatestPublishedVersionId = :contentVersionId];
+
          //ShareType: V - Viewer permission. C - Collaborator permission. I - Inferred permission.
         ContentDocumentLink contentDocumentLink = new contentDocumentLink(
             ContentDocumentId = contentDocument.Id,
             LinkedEntityId = proposalForView.Id,
             ShareType = 'V'
         );
+        
         insert contentDocumentLink;
         return contentDocumentLink;
     }

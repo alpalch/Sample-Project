@@ -2,7 +2,7 @@
   @description       : This is a modal window for adding equipment to the proposal
   @author            : @ValeriyPalchenko
   @group             : 
-  @last modified on  : 06-04-2023
+  @last modified on  : 24-05-2023
   @last modified by  : @ValeriyPalchenko
 -->
 <template>
@@ -10,6 +10,7 @@
 
     <lightning-modal-body>
         <lightning-layout>
+
             <lightning-layout-item size="3" padding="around-medium">
                 <lightning-input 
                     type="number" 
@@ -19,16 +20,21 @@
                     variant="label-hidden">
                 </lightning-input>
             </lightning-layout-item>
+
             <lightning-layout-item size="2" padding="around-medium">
                 <lightning-button label="Change Margin" onclick={handleMassMarginClick}></lightning-button>
             </lightning-layout-item>
+
             <lightning-layout-item size="5">
             </lightning-layout-item>
+
             <lightning-layout-item size="2" padding="around-medium">
                 <lightning-button label="Add Equipment" onclick={handleOpenAddEquipmentModal} value={proposalId}></lightning-button>
             </lightning-layout-item>
+
         </lightning-layout>
         <lightning-layout>
+
             <lightning-layout-item size="12" padding="around-medium">
                 <lightning-datatable 
                     hide-checkbox-column
@@ -40,6 +46,7 @@
                     errors={error}>
                 </lightning-datatable>
             </lightning-layout-item>
+            
         </lightning-layout>
     </lightning-modal-body>
     

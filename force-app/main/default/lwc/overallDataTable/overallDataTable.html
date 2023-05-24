@@ -1,23 +1,27 @@
+<!-- sldsValidatorIgnore -->
 <!--
   @description       : This is a table with all proposals for the opportunity
   @author            : @ValeriyPalchenko
   @group             : 
-  @last modified on  : 06-04-2023
+  @last modified on  : 24-05-2023
   @last modified by  : @ValeriyPalchenko
 -->
 <template>
     <lightning-layout-item flexibility="auto" padding="horizontal-small" class="slds-float_right" alignment-bump="right">
         <div class="slds-var-m-bottom_small">
             <button 
-            class="slds-button slds-button_brand"
-            onclick={handleOpenCreateProposalModal}
-            aria-haspopup="modal"
-            disabled={isDisabledAddButton}>Add Proposal</button>
+                class="slds-button slds-button_brand"
+                onclick={handleOpenCreateProposalModal}
+                aria-haspopup="modal"
+                disabled={isDisabledAddButton}>
+                    Add Proposal
+                </button>
         </div>
     </lightning-layout-item>
     <div>
         <!-- Table starts here -->
         <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+
             <!-- table head -->
             <thead>
                 <tr class="slds-line-height_reset">
@@ -30,6 +34,7 @@
                     </template>
                 </tr>
             </thead>
+
             <!-- table body -->
             <tbody>
                 <template for:each={tableData} for:item="proposal">
@@ -85,6 +90,7 @@
                         </td>
                     </tr>
                     <template if:true={proposal.proposalEquipments}>
+
                     <!-- Iteration though equipments -->
                     <template for:each={proposal.proposalEquipments} for:item="equipment" if:true={proposal.proposalIsExpanded}>
                         <tr key={equipment.proposalEquipmentId} class="indent">
@@ -111,6 +117,7 @@
                     </template>
                 </template>
             </tbody>
+
             <!-- table footer -->
             <tfoot style="background-color: darkslategray; 
                           color: rgb(183, 237, 250); 
@@ -124,6 +131,7 @@
                     <td></td>
                 </tr>
             </tfoot>
+            
         </table>
     </div>
 </template>

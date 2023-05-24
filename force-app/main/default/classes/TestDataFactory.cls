@@ -2,7 +2,7 @@
  * @description       : Class for creating test data
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 13-04-2023
+ * @last modified on  : 24-05-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 @IsTest
@@ -21,7 +21,7 @@ public without sharing class TestDataFactory {
                 BillingPostalCode = '12345',
                 BillingState = 'New York',
                 BillingCountry = 'United States'
-                );
+            );
             accounts.add(account);
         }
         if(isInsert) {
@@ -43,7 +43,7 @@ public without sharing class TestDataFactory {
                 ShippingPostalCode = '12345',
                 ShippingState = 'New York',
                 ShippingCountry = 'United States'
-                );
+            );
             accounts.add(account);
         }
         if(isInsert) {
@@ -54,6 +54,7 @@ public without sharing class TestDataFactory {
 
     public static List<Equipment_Category__c> createEquipmentCategories(Integer numberOfRecords, Boolean isInsert) {
         List<Equipment_Category__c> categoriesToReturn = new List<Equipment_Category__c>();
+
         for(Integer i = 0; i < numberOfRecords; i++) {
             Equipment_Category__c equipmentCategory = new Equipment_Category__c();
             equipmentCategory.Name = 'Test ' + i;
@@ -70,6 +71,7 @@ public without sharing class TestDataFactory {
         List<Account> accounts = createVendorAccounts(1, true);
         List<Equipment_Category__c> equipmentCategories = createEquipmentCategories(1, true);
         List<Equipment__c> equipmentsToReturn = new List<Equipment__c>();
+
         for(Integer i = 0; i < numberOfRecords; i++) {
             Equipment__c equipment = new Equipment__c(
                 Account__c = accounts[0].Id,
@@ -89,6 +91,7 @@ public without sharing class TestDataFactory {
     public static List<Opportunity> createOpportunities(Integer numberOfRecords, Boolean isInsert) {
         List<Account> accounts = createBuyerAccounts(1, true);
         List<Opportunity> opportunitiesToReturn = new List<Opportunity>();
+        
         for(Integer i = 0; i < numberOfRecords; i++) {
             Opportunity opportunity = new Opportunity(
                 Name = 'testOpp ' + i,
@@ -139,8 +142,8 @@ public without sharing class TestDataFactory {
         List<Opportunity> opportunities = createOpportunities(1, true);
         Proposal__c proposal= new Proposal__c(Opportunity__c = opportunities[0].Id);
         insert proposal;
-
         List<Proposal_Equipment__c> proposalEquipmentsToReturn = new List<Proposal_Equipment__c>();
+
         for (Integer i = 0; i < proposalEquipmentNumber; i++) {
             Proposal_Equipment__c proposalEquipment = new Proposal_Equipment__c(
                 proposal__c = proposal.Id,
@@ -167,6 +170,7 @@ public without sharing class TestDataFactory {
     public static List<Proposal__c> createProposals(Integer numberOfRecors, Boolean isInsert) {
         List<Opportunity> opportunities = createOpportunities(1, true);
         List<Proposal__c> proposalsToReturn = new List<Proposal__c>();
+
         for(Integer i = 0; i < numberOfRecors; i++) {
             Proposal__c proposal = new Proposal__c(
                 Status__c = 'Draft',
@@ -185,6 +189,7 @@ public without sharing class TestDataFactory {
         List<Proposal__c> proposals = createProposals(1, true);
         List<Equipment__c> equipments = createEquipments(1, true);
         List<Proposal_Equipment__c> proposalEquipmentsToReturn = new List<Proposal_Equipment__c>();
+
         for(Integer i = 0; i < numberOfRecords; i++) {
             Proposal_Equipment__c proposalEquipment = new Proposal_Equipment__c(
                 Proposal__c = proposals[0].Id,
@@ -247,6 +252,7 @@ public without sharing class TestDataFactory {
     public static List<Product2> createProducts() {
         List<Product2> productsToReturn = new List<Product2>();
         Pricebook2 pricebook = createPricebook();
+
         for(Integer i = 0; i < 5; i++) {
             Product2 product = new Product2(
                 Name = 'Test Product ' + i,
@@ -265,6 +271,7 @@ public without sharing class TestDataFactory {
         List<PricebookEntry> standardPricebookEntries = new List<PricebookEntry>();
         List<PricebookEntry> pricebookEntriesToReturn = new List<PricebookEntry>();
         Pricebook2 pricebook = createPricebook();
+
         for(Integer i = 0; i < 5; i++) {
             PricebookEntry standardPricebookEntry = new PricebookEntry(
                 Product2Id = products[i].Id,
@@ -293,6 +300,7 @@ public without sharing class TestDataFactory {
         List<Opportunity> opportunities = createOpportunities(1, true);
         List<PricebookEntry> pricebookEntries = createPricebookEntries();
         List<OpportunityLineItem> opportunityLineItemsToReturn = new List<OpportunityLineItem>();
+        
         for(Integer i = 0; i < numberOfRecords; i++) {
             OpportunityLineItem opportunityLineItem = new OpportunityLineItem(
                 OpportunityId = opportunities[0].Id,

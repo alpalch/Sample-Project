@@ -2,7 +2,7 @@
   @description       : This component is used to display proposals table
   @author            : @ValeriyPalchenko
   @group             : 
-  @last modified on  : 06-04-2023
+  @last modified on  : 24-05-2023
   @last modified by  : @ValeriyPalchenko
 -->
 <template>
@@ -12,7 +12,11 @@
         </div>
     </lightning-layout-item>
     <div>
+
+        <!-- Table starts here -->
         <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+
+            <!-- Table head -->
             <thead style={displayTable}>
                 <tr class="slds-line-height_reset">
                     <template for:each={columns} for:item="column">
@@ -24,6 +28,8 @@
                     </template>
                 </tr>
             </thead>
+
+            <!-- Table body -->
             <tbody>
                 <template for:each={retrivedProposals} for:item="proposal">
                     <tr key={proposal.Name}>
@@ -45,6 +51,7 @@
                     </tr>
                 </template>
             </tbody>
+            
         </table>
     </div>
 </template>

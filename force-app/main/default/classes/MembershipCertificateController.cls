@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 26-04-2023
+ * @last modified on  : 24-05-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 public without sharing class MembershipCertificateController {
@@ -10,12 +10,12 @@ public without sharing class MembershipCertificateController {
     @AuraEnabled
     public static String createMembership(String contactId) {
         String returnString = '';
+
         try {
             saveSertificateInDropbox((Id)contactId);
             sendEmailWithAttachment((Id)contactId);
             returnString = 'Success';
-        }
-        catch(CustomException e) {
+        } catch(CustomException e) {
             logError(contactId, e.getMessage(), e.getStackTraceString()); // log the error
             deleteMembershipCertificateInDropbox((Id)contactId); // delete certificate in Dropbox
             returnString = 'Error';
@@ -33,6 +33,7 @@ public without sharing class MembershipCertificateController {
         Blob body;
         PageReference pageRef = new PageReference('/apex/MembershipCertificate');
         pageRef.getParameters().put('Id', contact.Id);
+
         if(Test.isRunningTest()) {
             body = Blob.valueOf('Unit.Test');
         } else {
@@ -50,6 +51,7 @@ public without sharing class MembershipCertificateController {
         ContentDocument contentDocument = [SELECT Id
                                            FROM ContentDocument
                                            WHERE LatestPublishedVersionId = :contentVersionId];
+
         //ShareType: V - Viewer permission. C - Collaborator permission. I - Inferred permission.
         ContentDocumentLink contentDocumentLink = new ContentDocumentLink(
             ContentDocumentId = contentDocument.Id,
@@ -96,8 +98,7 @@ public without sharing class MembershipCertificateController {
 
         try {
             Messaging.SendEmailResult[] results = Messaging.sendEmail(new Messaging.SingleEmailMessage[] { email });
-        }
-        catch(EmailException e) {
+        } catch(EmailException e) {
             throw new CustomException('Email error: ' + e.getMessage());
         } 
     }
@@ -142,13 +143,13 @@ public without sharing class MembershipCertificateController {
     @future(callout=true)
     private static void logError(Id recordId, String errorBody, String stackTrace) {
         Error__c error = new Error__c();
+        
         if(errorBody.contains('Dropbox API error:')) { //dropbox api error
             error.Status__c = errorBody.substring(23, errorBody.indexOf('{') - 1);
             error.StatusCode__c = errorBody.substring(19, 22);
             error.ErrorType__c = 'Dropbox API error';
             error.ErrorBody__c = errorBody.substring(errorBody.indexOf('{'));
-        } 
-        else { //other errors
+        } else { //other errors
             error.ErrorType__c = errorBody.substring(0, errorBody.indexOf(':'));
             error.ErrorBody__c = errorBody.substring(errorBody.indexOf(':') + 2);
         }

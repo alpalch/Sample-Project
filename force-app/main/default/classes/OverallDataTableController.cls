@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 13-04-2023
+ * @last modified on  : 24-05-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 public without sharing class OverallDataTableController {
@@ -66,7 +66,6 @@ public without sharing class OverallDataTableController {
 
         for(Proposal proposal :proposals) {
             Proposal__c proposalToUpdate = new Proposal__c();
-            
             proposalToUpdate.Id = proposal.proposalId;
             proposalToUpdate.isExpandedTableRow__c = proposal.proposalIsExpanded;
             proposalsToUpdate.add(proposalToUpdate);

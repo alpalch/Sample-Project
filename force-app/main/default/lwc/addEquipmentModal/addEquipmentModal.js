@@ -2,7 +2,7 @@
  * @description       : This is a modal window for adding equipment to proposal.
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 06-04-2023
+ * @last modified on  : 24-05-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 import { api, wire } from 'lwc';

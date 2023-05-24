@@ -2,7 +2,7 @@
  * @description       : This is a modal window for searching equipment.
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 06-04-2023
+ * @last modified on  : 24-05-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 import { api, wire } from 'lwc';
@@ -23,7 +23,7 @@ const columns = [{ name: 'Equipment Name', width: 'width: 30%', },
                  { name: 'Cost', width: 'width: 10%', },
                  { name: 'Category', width: 'width: 20%', },
                  { name: 'Account', width: 'width: 20%', },
-                 { name: 'Description', width: 'width: 40%', },];
+                 { name: 'Description', width: 'width: 40%', }];
 
 export default class SearchEquipmentModal extends LightningModal {
     @api proposalId;

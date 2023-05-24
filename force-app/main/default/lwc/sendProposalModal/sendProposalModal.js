@@ -2,11 +2,12 @@
  * @description       : This is a modal window for Proposal preview and sending Proposal as PDF attachment.
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 28-03-2023
+ * @last modified on  : 24-05-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 import { api } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+
 import LightningModal from 'lightning/modal';
 
 import getContentDocumentId from '@salesforce/apex/ManageProposalsController.getContentDocumentId';

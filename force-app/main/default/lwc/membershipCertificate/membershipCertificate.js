@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 26-04-2023
+ * @last modified on  : 24-05-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 import { wire } from 'lwc';
@@ -11,6 +11,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { CloseActionScreenEvent } from 'lightning/actions';
 
 import LightningModal from 'lightning/modal';
+
 import createMembership from '@salesforce/apex/MembershipCertificateController.createMembership';
 
 const ERROR_TOAST_TITLE = 'Error';

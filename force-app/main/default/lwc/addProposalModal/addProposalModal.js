@@ -2,12 +2,14 @@
 * @description       : This is a modal window for adding new proposal.
 * @author            : @ValeriyPalchenko
 * @group             : 
-* @last modified on  : 06-04-2023
+* @last modified on  : 24-05-2023
 * @last modified by  : @ValeriyPalchenko
 **/
 import { wire } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+
 import LightningModal from 'lightning/modal';
+
 import getEquipment from '@salesforce/apex/ManageProposalsController.getEquipment';
 import getEquipmentCategories from '@salesforce/apex/ManageProposalsController.getEquipmentCategories';
 
@@ -36,13 +38,13 @@ export default class addProposalModal extends LightningModal {
     wiredGetEquipmentCategories( result ) {
     const { data, error } = result;
         if (data) {
-        this.error = undefined;
-        // data.forEach(element => this.categoryOptions.push( {label: element.Name, value: element.Id} ));
-        this.categoryOptions = data.map(element => ({ label: element.Name, value: element.Id }));
+            this.error = undefined;
+            // data.forEach(element => this.categoryOptions.push( {label: element.Name, value: element.Id} ));
+            this.categoryOptions = data.map(element => ({ label: element.Name, value: element.Id }));
         }
         if (error) {
-        this.error = error;
-        this.showErrorToast();
+            this.error = error;
+            this.showErrorToast();
         }
     }
 
@@ -74,12 +76,6 @@ export default class addProposalModal extends LightningModal {
         this.enableSaveButton();
     }
 
-    enableSaveButton() {
-        if(this.equipmentIds.length > 0) {
-        this.isSaveButtonDisabled = false;
-        }
-    }
-
     handleCloseClick() {
         this.close('canceled');
     }
@@ -88,6 +84,12 @@ export default class addProposalModal extends LightningModal {
         const saveEvent = new CustomEvent('saveproposaldata', { detail: this.equipmentIds });
         this.dispatchEvent(saveEvent);
         this.close('save');
+    }
+    
+    enableSaveButton() {
+        if(this.equipmentIds.length > 0) {
+        this.isSaveButtonDisabled = false;
+        }
     }
 
     showErrorToast() {

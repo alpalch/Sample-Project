@@ -2,7 +2,7 @@
  * @description       : This component is used to display proposals table
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 28-03-2023
+ * @last modified on  : 24-05-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 
@@ -25,6 +25,12 @@ const SUCCESS_CREATED_TOAST_MESSAGE = 'Proposal has been created';
 const SUCCESS_TOAST_TITLE = 'Success';
 const SUCCESS_TOAST_VARIANT = 'success';
 
+const columns = [{ name: 'Proposal Number', width: 'width: 20%', },
+                 { name: 'Total Price', width: 'width: 20%', },
+                 { name: 'Real Margin', width: 'width: 20%', },
+                 { name: 'Status', width: 'width: 30%', },
+                 { name: 'Actions', width: 'width: 10%', }];
+
 export default class ProposalsTable extends NavigationMixin(LightningElement) {
 
     @api recordId;
@@ -32,13 +38,7 @@ export default class ProposalsTable extends NavigationMixin(LightningElement) {
     retrivedProposals = [];
     proposalSaveData;
     displayTable = 'display: none';
-    columns = [
-        { name: 'Proposal Number', width: 'width: 20%', },
-        { name: 'Total Price', width: 'width: 20%', },
-        { name: 'Real Margin', width: 'width: 20%', },
-        { name: 'Status', width: 'width: 30%', },
-        { name: 'Actions', width: 'width: 10%', }
-    ];
+    columns = columns;
 
     @wire(getProposals, { opportunityId: '$recordId' }) 
         wiredGetProposals(value) {
@@ -54,6 +54,7 @@ export default class ProposalsTable extends NavigationMixin(LightningElement) {
                     Real_Margin: element.Real_Margin__c,
                     Disabled: element.Status__c === 'Draft' ? false : true
                 }));
+                // eslint-disable-next-line no-unused-expressions
                 this.retrivedProposals.length > 0 ? this.displayTable = '' : this.displayTable = 'display:none';
             }
             if (error) {
@@ -75,8 +76,8 @@ export default class ProposalsTable extends NavigationMixin(LightningElement) {
                 this.showErrorToast();
             });
       }
-
-    async handleOpenProposalModal() {
+    
+    handleOpenProposalModal() {
         addProposalModal.open({
             size: 'medium',
             description: 'This is modal window for adding new proposal',
@@ -88,7 +89,7 @@ export default class ProposalsTable extends NavigationMixin(LightningElement) {
         });
     }  
 
-    async handleDeleteProposal(event) {
+    handleDeleteProposal(event) {
         deleteProposalModal.open({
             size: 'small',
             description: 'This is modal window for deleting proposal',
@@ -106,7 +107,7 @@ export default class ProposalsTable extends NavigationMixin(LightningElement) {
         }
     }
 
-    async handlePreview(event) {
+    handlePreview(event) {
         sendProposalModal.open({
             size: 'medium',
             description: 'Accessible description of modals purpose',

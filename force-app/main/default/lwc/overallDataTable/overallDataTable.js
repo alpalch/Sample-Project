@@ -2,7 +2,7 @@
  * @description       : This is a table with all proposals for the opportunity
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 06-04-2023
+ * @last modified on  : 24-05-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 import { LightningElement, api, wire, track } from 'lwc';
@@ -112,7 +112,7 @@ export default class OverallDataTable extends LightningElement {
         });
     }
 
-    async handleOpenCreateProposalModal() {
+    handleOpenCreateProposalModal() {
         createProposalModal.open({
             size: 'medium',
             description: 'This is modal window for adding new proposal',

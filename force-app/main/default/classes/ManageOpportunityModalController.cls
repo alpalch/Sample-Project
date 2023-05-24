@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 14-04-2023
+ * @last modified on  : 24-05-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 public without sharing class ManageOpportunityModalController {
@@ -15,6 +15,7 @@ public without sharing class ManageOpportunityModalController {
                                                  FROM Opportunity
                                                  WHERE Id = :(Id)parentOpportunityId
                                                  LIMIT 1];
+
         List<ClonedOpportunity> clonedOpportunities = new List<ClonedOpportunity>();
         
         for(Opportunity opportunity :parentOpportunities) {
@@ -35,6 +36,7 @@ public without sharing class ManageOpportunityModalController {
     @AuraEnabled(cacheable=true)
     public static String handleProductSearch(String searchKey, String opportunityId) {
         List<OpportunityLineItem> products = new List<OpportunityLineItem>();
+
         if(String.isBlank(searchKey)) {
             products = [SELECT Id, OpportunityId, Name, UnitPrice, Quantity, Product2Id, Description
                         FROM OpportunityLineItem
@@ -101,6 +103,7 @@ public without sharing class ManageOpportunityModalController {
             }
         }
         insert newLineItems;
+
         if(!lineItemsToDelete.isEmpty()) {
             delete lineItemsToDelete;
         }
@@ -121,12 +124,12 @@ public without sharing class ManageOpportunityModalController {
                             newLineItem.OpportunityId = opportunity.Id;
                             newLineItems.add(newLineItem);
                             lineItemsToDelete.add(clonedLineItem);
-                        } 
-                        else {
+                        } else {
                             clonedLineItemIds.add(clonedLineItem.Id); 
                         }
                     }
                 }
+
                 for(OpportunityLineItem lineItem :opportunity.OpportunityLineItems) { // Line items that were deleted from this Opportunity on the front-end
                     if(!clonedLineItemIds.contains(lineItem.Id)) {
                         OpportunityLineItem newLineItem = lineItem.clone();
@@ -169,6 +172,7 @@ public without sharing class ManageOpportunityModalController {
     @AuraEnabled(cacheable=true)
     public static String getAlreadyCreatedChilds(String parentOpportunityId) {
         List<ClonedOpportunity> clonedOpportunities = new List<ClonedOpportunity>();
+        
         List<Opportunity> opportunities = [SELECT Id, Name,
                                                 (SELECT Id, OpportunityId, Name, UnitPrice, Quantity, Product2Id, PricebookEntryId, Description
                                                  FROM OpportunityLineItems)

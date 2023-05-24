@@ -3,12 +3,13 @@
   @description       : 
   @author            : @ValeriyPalchenko
   @group             : 
-  @last modified on  : 13-04-2023
+  @last modified on  : 24-05-2023
   @last modified by  : @ValeriyPalchenko
 -->
 <template>
     <lightning-modal-header label="Manage Opportunity"></lightning-modal-header>
     <lightning-modal-body>
+
         <lightning-layout>
             <lightning-layout-item size="12">
                 <p>Opportunity Name: {parentOpportunity.name}</p>
@@ -17,6 +18,7 @@
                 <p>Opportunity Close Date: {parentOpportunity.closeDate}</p>
             </lightning-layout-item>
         </lightning-layout>
+
         <lightning-layout>
             <!-- left side of the form starts here -->
             <lightning-layout-item size="6" padding="around-small">
@@ -34,6 +36,7 @@
                     onchange={handleSearchInput}
                     style="margin-top: 1%; margin-bottom: 1%">
                 </lightning-input>
+                
                 <lightning-button label="Add Opportunity" onclick={handleAddOpportunity}></lightning-button>
                 <!-- Table with the list of the opportunity products -->
                 <div style="height: 500px;">
@@ -46,11 +49,13 @@
                     </lightning-datatable>
                 </div>
             </lightning-layout-item>
+
             <!-- right side of the form starts here -->
             <lightning-layout-item size="6">
                 <!-- List with the created opportunity -->
                 <div style="max-height: 500px;">
                     <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+
                         <!-- table heat starts here -->
                         <thead>
                             <tr class="slds-line-height_reset">
@@ -63,6 +68,7 @@
                                 </template>
                             </tr>
                         </thead>
+
                         <!-- table body starts here -->
                         <tbody>
                             <template for:each={treeGridData} for:item="opportunity">
@@ -87,21 +93,23 @@
                                         </lightning-button-icon>
                                     </td>
                                 </tr>
-                            <template for:each={opportunity.lineItems} for:item="lineItem" if:true={opportunity.opportunityIsExpanded}>
-                                <tr key={lineItem.Id}>
-                                    <td></td>
-                                    <td>{lineItem.productName}</td>
-                                    <td>{lineItem.productPrice}</td>
-                                    <td>
-                                        <lightning-button-icon
-                                            icon-name="utility:delete"
-                                            onclick={handleDeleteProduct}
-                                            value={lineItem.productId}
-                                            variant="bare">
-                                        </lightning-button-icon>
-                                    </td>
-                                </tr>
-                            </template>
+
+                                <template for:each={opportunity.lineItems} for:item="lineItem" if:true={opportunity.opportunityIsExpanded}>
+                                    <tr key={lineItem.Id}>
+                                        <td></td>
+                                        <td>{lineItem.productName}</td>
+                                        <td>{lineItem.productPrice}</td>
+                                        <td>
+                                            <lightning-button-icon
+                                                icon-name="utility:delete"
+                                                onclick={handleDeleteProduct}
+                                                value={lineItem.productId}
+                                                variant="bare">
+                                            </lightning-button-icon>
+                                        </td>
+                                    </tr>
+                                </template>
+                                
                             </template>
                         </tbody>
                     </table>                                                
@@ -109,6 +117,7 @@
                 <!-- end of the table -->
             </lightning-layout-item>
         </lightning-layout>
+
     </lightning-modal-body>
     <!-- footer -->
     <lightning-modal-footer>

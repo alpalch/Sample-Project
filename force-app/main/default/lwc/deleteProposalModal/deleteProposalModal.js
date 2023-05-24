@@ -2,11 +2,12 @@
  * @description       : This is a modal window for deleting proposal confirmation.
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 04-04-2023
+ * @last modified on  : 24-05-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 import { api } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+
 import LightningModal from 'lightning/modal';
 
 import deleteProposal from '@salesforce/apex/ManageProposalsController.deleteProposal';

@@ -2,7 +2,7 @@
  * @description       : Handler for OpportunityTrigger
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 14-04-2023
+ * @last modified on  : 24-05-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 public without sharing class OpportunityTriggerHandler {
@@ -10,12 +10,10 @@ public without sharing class OpportunityTriggerHandler {
     public static void setPrimaryContact(List<Opportunity> opportunities) {
         // not execute the trigger if the opportunity created by lead conversion
         if(opportunities[0].LeadId__c == null) {
-            List<AccountContactRelation> firstAccountContactRelations = [
-                                                                         SELECT CreatedDate, ContactId 
+            List<AccountContactRelation> firstAccountContactRelations = [SELECT CreatedDate, ContactId 
                                                                          FROM AccountContactRelation 
                                                                          WHERE AccountId = :opportunities[0].AccountId 
-                                                                         ORDER BY CreatedDate DESC LIMIT 1
-                                                                         ];
+                                                                         ORDER BY CreatedDate DESC LIMIT 1];
 
             if(!firstAccountContactRelations.isEmpty()) {
                 OpportunityContactRole ocr = new OpportunityContactRole (
@@ -23,8 +21,8 @@ public without sharing class OpportunityTriggerHandler {
                     ContactId = firstAccountContactRelations[0].ContactId, 
                     isPrimary = true, 
                     Role = 'Decision Maker'
-                    );
-                    insert ocr;
+                );
+                insert ocr;
             }
         }
     }

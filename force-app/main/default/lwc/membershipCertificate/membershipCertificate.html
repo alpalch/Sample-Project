@@ -2,14 +2,16 @@
   @description       : 
   @author            : @ValeriyPalchenko
   @group             : 
-  @last modified on  : 25-04-2023
+  @last modified on  : 24-05-2023
   @last modified by  : @ValeriyPalchenko
 -->
 <template>
     <lightning-modal-header label="Send membership certificate"></lightning-modal-header>
+
     <lightning-modal-body> 
         <iframe id="pdfFrame" width="100%" height="600" src={link}></iframe>
     </lightning-modal-body>
+    
     <lightning-modal-footer>
         <lightning-button label="Send" onclick={handleSend} variant="brand" style="padding: 2%;"></lightning-button>
         <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>

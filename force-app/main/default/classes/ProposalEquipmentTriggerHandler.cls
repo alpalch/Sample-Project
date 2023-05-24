@@ -2,7 +2,7 @@
  * @description       : Handler for ProposalEquipmentTrigger
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 13-04-2023
+ * @last modified on  : 24-05-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 public without sharing class ProposalEquipmentTriggerHandler {
@@ -14,11 +14,9 @@ public without sharing class ProposalEquipmentTriggerHandler {
             proposalEquipmentByEquipId.put(proposalEquipment.Equipment__c, proposalEquipment);
         }
 
-        List <Equipment__c> equipments = [
-                                          SELECT Cost__c, Equipment_Category__r.Margin__c 
+        List <Equipment__c> equipments = [SELECT Cost__c, Equipment_Category__r.Margin__c 
                                           FROM Equipment__c 
-                                          WHERE Id IN :proposalEquipmentByEquipId.keySet()
-                                          ];
+                                          WHERE Id IN :proposalEquipmentByEquipId.keySet()];
         
         for(Equipment__c equipment :equipments) {
             Proposal_Equipment__c proposalEquipment = proposalEquipmentByEquipId.get(equipment.Id);
