@@ -37,5 +37,14 @@
     "**/{aura,lwc}/**": [
       "eslint"
     ]
+  },
+  "dependencies": {
+    "@lwc/compiler": "^2.41.1",
+    "@lwc/engine-dom": "^2.41.1",
+    "@lwc/engine-server": "^2.41.1",
+    "@lwc/features": "^2.41.1",
+    "@lwc/synthetic-shadow": "^2.41.1",
+    "@lwc/wire-service": "^2.41.1",
+    "dompurify": "^3.0.1"
   }
 }

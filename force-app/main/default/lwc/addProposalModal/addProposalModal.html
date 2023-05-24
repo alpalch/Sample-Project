@@ -1,0 +1,83 @@
+<!--
+  @description       : This is a modal window for adding new proposal
+  @author            : @ValeriyPalchenko
+  @group             : 
+  @last modified on  : 24-05-2023
+  @last modified by  : @ValeriyPalchenko
+-->
+<template>
+    <lightning-modal-header label="Create New Proposal"></lightning-modal-header>
+    <lightning-modal-body>
+        <div>
+            <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+                <lightning-layout multiple-rows>
+                    <lightning-layout-item size="4" padding="around-large">
+                        <lightning-combobox
+                            name="progress"
+                            value={value}
+                            placeholder="Select Equipment Category"
+                            options={categoryOptions}
+                            onchange={handleCategoryChange}>
+                        </lightning-combobox>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="6" padding="around-large">
+                        <lightning-input type="text" placeholder="Enter Equipment Name" onchange={handleEquipmentNameChange}></lightning-input>
+                    </lightning-layout-item>
+
+                    <div class="slds-align_absolute-center">
+                        <lightning-layout-item size="12" padding="around-small">
+                            <lightning-button variant="brand" 
+                                              label="Search" title="Successful action" 
+                                              onclick={handleEquipmentSearch} 
+                                              class="slds-m-left_x-small">
+                            </lightning-button>
+                        </lightning-layout-item>
+                    </div>
+                </lightning-layout>
+            </div>
+        </div>
+
+        <!-- Table starts here -->
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+
+            <thead style={displayTable}>
+                <tr class="slds-line-height_reset">
+                    <template for:each={columns} for:item="column">
+                        <th class="" scope="col" key={column} style={column.width}>
+                            <div class="slds-truncate slds-align_absolute-center">
+                                {column.name}
+                            </div>
+                        </th>
+                    </template>
+                </tr>
+            </thead>
+
+            <tbody>
+                <template for:each={tableData} for:item="equipment">
+                    <tr key={equipment.Name}>
+                        <td>{equipment.Equipment_Category__r.Name}</td>
+                        <td>{equipment.Name}</td>
+                        <td>{equipment.Cost__c}</td>
+                        <td>
+                            <lightning-input 
+                                type="checkbox-button" 
+                                label="Add" 
+                                title="Add action" 
+                                onclick={handleAddClick} 
+                                value={equipment.Id} 
+                                class="slds-m-left_x-small">
+                            </lightning-input>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+        <!-- Table ends here -->
+
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <button onclick={handleCloseClick} aria-label="Cancel and close" class="slds-button" style="padding-right: 2%;">Cancel</button>
+        <button onclick={handleSaveClick} class="slds-button slds-button_brand" disabled={isSaveButtonDisabled}>Save</button>
+    </lightning-modal-footer>
+</template>

@@ -1,0 +1,85 @@
+<!--
+  @description       : This is a modal window for searching equipment
+  @author            : @ValeriyPalchenko
+  @group             : 
+  @last modified on  : 24-05-2023
+  @last modified by  : @ValeriyPalchenko
+-->
+<template>
+    <lightning-modal-header label="Search Equipment"></lightning-modal-header>
+
+    <lightning-modal-body>
+
+        <lightning-layout>
+            
+            <lightning-layout-item size="5">
+                <lightning-combobox
+                    name="progress"
+                    label="Select Equipment Category"
+                    value={selectedCategory}
+                    placeholder="Select Equipment Category"
+                    options={categoryOptions}
+                    onchange={handleCategoryChange}>
+                </lightning-combobox>
+            </lightning-layout-item>
+
+            <lightning-layout-item size="5"></lightning-layout-item>
+
+            <lightning-layout-item size="2" padding="around-medium">
+                <lightning-button label="Clear Filters" onclick={handleClearFilters}></lightning-button>
+            </lightning-layout-item>
+
+        </lightning-layout>
+
+        <lightning-layout>
+
+            <lightning-layout-item flexibility="auto" padding="around-small">
+                <lightning-input type="text" placeholder="Enter Search Value" onchange={handleEquipmentNameChange}></lightning-input>
+            </lightning-layout-item>
+
+        </lightning-layout>
+
+        <!-- table start here -->
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+
+            <!-- Table head -->
+            <thead style={displayTable}>
+                <tr class="slds-line-height_reset">
+                    <template for:each={columns} for:item="column">
+                        <th class="" scope="col" key={column} style={column.width}>
+                            <div class="slds-truncate slds-align_absolute-center">
+                                {column.name}
+                            </div>
+                        </th>
+                    </template>
+                </tr>
+            </thead>
+
+            <!-- tbody -->
+            <tbody>
+                <template for:each={tableData} for:item="equipment">
+                    <tr key={equipment.Id}>
+                        <td>
+                            <lightning-button 
+                                label={equipment.equipmentName}
+                                value={equipment.equipmentId} 
+                                onclick={openAddEquipmentModal} 
+                                aria-haspopup="modal" 
+                                variant="base">
+                            </lightning-button>
+                        </td>
+                        <td>{equipment.equipmentCost}</td>
+                        <td>{equipment.equipmentCategoryName}</td>
+                        <td>{equipment.vendorName}</td>
+                        <td>{equipment.equipmentDescription}</td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </lightning-modal-body>
+    
+    <!-- Table footer -->
+    <lightning-modal-footer>
+        <lightning-button label="Close" onclick={handleCloseModal}></lightning-button>
+    </lightning-modal-footer>
+</template>

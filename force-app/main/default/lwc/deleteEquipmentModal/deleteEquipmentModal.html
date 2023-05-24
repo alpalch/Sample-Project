@@ -1,0 +1,19 @@
+<!--
+  @description       : This is a modal window for deleting equipment from the proposal
+  @author            : @ValeriyPalchenko
+  @group             : 
+  @last modified on  : 04-04-2023
+  @last modified by  : @ValeriyPalchenko
+-->
+<template>
+    <lightning-modal-header label="Delete Equipment"></lightning-modal-header>
+
+    <lightning-modal-body> 
+        <h1 style="text-align: center;">Are you sure you want to delete equipment from proposal?</h1>
+    </lightning-modal-body>
+    
+    <lightning-modal-footer>
+        <lightning-button label="Delete" onclick={handleDelete} variant="brand" style="padding: 2%;"></lightning-button>
+        <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+    </lightning-modal-footer>
+</template>

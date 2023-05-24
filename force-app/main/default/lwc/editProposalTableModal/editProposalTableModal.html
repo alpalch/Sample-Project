@@ -1,0 +1,56 @@
+<!--
+  @description       : This is a modal window for adding equipment to the proposal
+  @author            : @ValeriyPalchenko
+  @group             : 
+  @last modified on  : 24-05-2023
+  @last modified by  : @ValeriyPalchenko
+-->
+<template>
+    <lightning-modal-header label="Edit Proposal"></lightning-modal-header>
+
+    <lightning-modal-body>
+        <lightning-layout>
+
+            <lightning-layout-item size="3" padding="around-medium">
+                <lightning-input 
+                    type="number" 
+                    value={margin}
+                    formatter="percent-fixed"
+                    placeholder="New mass margin value..."
+                    variant="label-hidden">
+                </lightning-input>
+            </lightning-layout-item>
+
+            <lightning-layout-item size="2" padding="around-medium">
+                <lightning-button label="Change Margin" onclick={handleMassMarginClick}></lightning-button>
+            </lightning-layout-item>
+
+            <lightning-layout-item size="5">
+            </lightning-layout-item>
+
+            <lightning-layout-item size="2" padding="around-medium">
+                <lightning-button label="Add Equipment" onclick={handleOpenAddEquipmentModal} value={proposalId}></lightning-button>
+            </lightning-layout-item>
+
+        </lightning-layout>
+        <lightning-layout>
+
+            <lightning-layout-item size="12" padding="around-medium">
+                <lightning-datatable 
+                    hide-checkbox-column
+                    key-field="proposalEquipmentId"
+                    columns={columns}
+                    data={tableData}
+                    onsave={handleSave}
+                    onrowaction={handleRowActions}
+                    errors={error}>
+                </lightning-datatable>
+            </lightning-layout-item>
+            
+        </lightning-layout>
+    </lightning-modal-body>
+    
+    <lightning-modal-footer>
+        <lightning-button label="Close" onclick={handleCloseModal}></lightning-button>
+    </lightning-modal-footer>
+</template>

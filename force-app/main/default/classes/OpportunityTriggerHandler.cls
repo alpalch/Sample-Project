@@ -1,51 +1,57 @@
+/**
+ * @description       : Handler for OpportunityTrigger
+ * @author            : @ValeriyPalchenko
+ * @group             : 
+ * @last modified on  : 24-05-2023
+ * @last modified by  : @ValeriyPalchenko
+**/
 public without sharing class OpportunityTriggerHandler {
 	
-    public static void setPrimaryContact(List<Opportunity> triggerList){
+    public static void setPrimaryContact(List<Opportunity> opportunities) {
         // not execute the trigger if the opportunity created by lead conversion
-        if(triggerList[0].LeadId__c == null){
-            List<AccountContactRelation> listACR = [
-                SELECT CreatedDate, ContactId 
-                FROM AccountContactRelation 
-                WHERE AccountId = :triggerList[0].AccountId 
-                ORDER BY CreatedDate DESC LIMIT 1];
+        if(opportunities[0].LeadId__c == null) {
+            List<AccountContactRelation> firstAccountContactRelations = [SELECT CreatedDate, ContactId 
+                                                                         FROM AccountContactRelation 
+                                                                         WHERE AccountId = :opportunities[0].AccountId 
+                                                                         ORDER BY CreatedDate DESC LIMIT 1];
 
-            AccountContactRelation latestDate = listACR[0];
-
-            List<OpportunityContactRole> listOCR = new List<OpportunityContactRole>();
-            OpportunityContactRole ocr = new OpportunityContactRole(
-                    OpportunityId = triggerList[0].Id, 
-                    ContactId = latestDate.ContactId, 
+            if(!firstAccountContactRelations.isEmpty()) {
+                OpportunityContactRole ocr = new OpportunityContactRole (
+                    OpportunityId = opportunities[0].Id, 
+                    ContactId = firstAccountContactRelations[0].ContactId, 
                     isPrimary = true, 
                     Role = 'Decision Maker'
-                    );
-            listOCR.add(ocr);
-
-            insert ListOCR;
-        }
-    }
-
-    public static void setClosedDateToday(List<Opportunity> triggerNewList, List<Opportunity> triggerOldList){
-        // Foresee that several Opportunities may be updated
-        for(Opportunity newOpp: triggerNewList){
-            for(Opportunity oldOpp: triggerOldList){
-                if(newOpp.id == oldOpp.id && newOpp.StageName != oldOpp.StageName){
-                    if(newOpp.StageName == 'Closed Won' || newOpp.StageName == 'Closed Lost'){
-                        newOpp.CloseDate = Date.today();
-                    }
-                }
+                );
+                insert ocr;
             }
         }
     }
 
-    public static void setActualAmount(List<Opportunity> triggerNewList, List<Opportunity> triggerOldList){
-        for(Opportunity oppNew: triggerNewList){
-            for(Opportunity oppOld: triggerOldList){
-                if(oppNew.Actual_Sum_Of_Accepted_Proposals__c != oppOld.Actual_Sum_Of_Accepted_Proposals__c){
-                    // Actual_Sum_Of_Accepted_Proposals__c -> rollup sum of accepted proposals
-                    oppNew.Amount = oppNew.Actual_Sum_Of_Accepted_Proposals__c;
+    public static void setClosedDateToday(Opportunity newOpportunity, Opportunity oldOpportunity) {
+        if(newOpportunity.StageName != oldOpportunity.StageName) {
+            if(newOpportunity.StageName == 'Closed Won' || newOpportunity.StageName == 'Closed Lost') {
+                newOpportunity.CloseDate = Date.today();
+            }
+        }     
+    }
+
+    public static void setActualAmount(Opportunity newOpportunity, Opportunity oldOpportunity) {
+        if(newOpportunity.Actual_Sum_Of_Accepted_Proposals__c != oldOpportunity.Actual_Sum_Of_Accepted_Proposals__c) {
+            // Actual_Sum_Of_Accepted_Proposals__c -> rollup sum of accepted proposals
+            newOpportunity.Amount = newOpportunity.Actual_Sum_Of_Accepted_Proposals__c;
+        }
+    }
+
+    // Method iterates through two lists of Opportunity objects (newRecords and oldRecords)
+    // and calls the helper methods for each Opportunity object in both lists.
+    public static void updateChangedFields(List<Opportunity> newRecords, List<Opportunity> oldRecords) {
+        for(Opportunity newOpportunity :newRecords) {
+            for(Opportunity oldOpportunity: oldRecords) {
+                if(newOpportunity.id == oldOpportunity.id) {
+                    setActualAmount(newOpportunity, oldOpportunity);
+                    setClosedDateToday(newOpportunity, oldOpportunity);
                 }
             }
         }
     }
-    
 }

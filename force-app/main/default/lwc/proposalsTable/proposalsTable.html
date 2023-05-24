@@ -1,0 +1,57 @@
+<!--
+  @description       : This component is used to display proposals table
+  @author            : @ValeriyPalchenko
+  @group             : 
+  @last modified on  : 24-05-2023
+  @last modified by  : @ValeriyPalchenko
+-->
+<template>
+    <lightning-layout-item flexibility="auto" padding="horizontal-small" class="slds-float_right" alignment-bump="right">
+        <div class="slds-var-m-bottom_small">
+            <lightning-button label="Add Proposal" onclick={handleOpenProposalModal} variant="brand"></lightning-button>
+        </div>
+    </lightning-layout-item>
+    <div>
+
+        <!-- Table starts here -->
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+
+            <!-- Table head -->
+            <thead style={displayTable}>
+                <tr class="slds-line-height_reset">
+                    <template for:each={columns} for:item="column">
+                        <th class="" scope="col" key={column} style={column.width}>
+                            <div class="slds-truncate slds-align_absolute-center">
+                                {column.name}
+                            </div>
+                        </th>
+                    </template>
+                </tr>
+            </thead>
+
+            <!-- Table body -->
+            <tbody>
+                <template for:each={retrivedProposals} for:item="proposal">
+                    <tr key={proposal.Name}>
+                        <td><lightning-button variant='base' label={proposal.Name} onclick={navigateToProposal} value={proposal.Id}></lightning-button></td>
+                        <td>{proposal.Total_Price}</td>
+                        <td>{proposal.Real_Margin}%</td>
+                        <td>{proposal.Status}</td>
+                        <td><div class="slds-p-around_medium lgc-bg">
+                            <lightning-button-menu alternative-text="Show menu" variant="container" >
+                                <!-- onselect={handleOnselect} -->
+                                <lightning-menu-item 
+                                onclick={handleDeleteProposal} label="Delete" aria-haspopup="modal"
+                                value={proposal.Id} disabled={proposal.Disabled}></lightning-menu-item>
+                                <lightning-menu-item 
+                                onclick={handlePreview} label="Preview as PDF" aria-haspopup="modal" 
+                                value={proposal.Id} disabled={proposal.Disabled}></lightning-menu-item>
+                            </lightning-button-menu>
+                        </div></td>
+                    </tr>
+                </template>
+            </tbody>
+            
+        </table>
+    </div>
+</template>

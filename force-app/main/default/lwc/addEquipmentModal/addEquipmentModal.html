@@ -1,0 +1,30 @@
+<!--
+  @description       : This is a modal window for adding equipment to the proposal
+  @author            : @ValeriyPalchenko
+  @group             : 
+  @last modified on  : 04-04-2023
+  @last modified by  : @ValeriyPalchenko
+-->
+<template>
+    <lightning-modal-header label="Add Equipment"></lightning-modal-header>
+
+    <lightning-modal-body>
+        <p><b>Equipment Name: </b><lightning-formatted-text value={equipmentData.equipmentName} ></lightning-formatted-text></p>
+        <p><b>Equipment Description: </b><lightning-formatted-text value={equipmentData.equipmentDescription} ></lightning-formatted-text></p>
+        <p><b>Equipment Category: </b><lightning-formatted-text value={equipmentData.equipmentCategoryName} ></lightning-formatted-text></p>
+        <lightning-input 
+            label="Quantity" 
+            min="1" 
+            required 
+            value={equipmentQuantity} 
+            placeholder="Enter Quantity value"
+            type="number"
+            onchange={handleQuantityChange}>
+        </lightning-input>
+    </lightning-modal-body>
+    
+    <lightning-modal-footer>
+        <lightning-button label="Save" onclick={handleSave} variant="brand" style="padding: 2%;"></lightning-button>
+        <lightning-button label="Cancel" onclick={handleCancel} variant="destructive"></lightning-button>
+    </lightning-modal-footer>
+</template>

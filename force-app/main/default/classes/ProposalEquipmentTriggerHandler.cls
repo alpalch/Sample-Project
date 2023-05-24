@@ -1,18 +1,27 @@
+/**
+ * @description       : Handler for ProposalEquipmentTrigger
+ * @author            : @ValeriyPalchenko
+ * @group             : 
+ * @last modified on  : 24-05-2023
+ * @last modified by  : @ValeriyPalchenko
+**/
 public without sharing class ProposalEquipmentTriggerHandler {
 
-    public static void setEquipmentMargin(List<Proposal_Equipment__c> triggerList) {
-        Map<Id, Proposal_Equipment__c> mapEquipIdProposalEquip = new Map<Id, Proposal_Equipment__c>();
+    public static void setEquipmentMargin(List<Proposal_Equipment__c> proposalEquipments) {
+        Map<Id, Proposal_Equipment__c> proposalEquipmentByEquipId = new Map<Id, Proposal_Equipment__c>();
 
-        for(Proposal_Equipment__c propEq :triggerList){
-            mapEquipIdProposalEquip.put(propeq.Equipment__c, propEq);
+        for(Proposal_Equipment__c proposalEquipment :proposalEquipments) {
+            proposalEquipmentByEquipId.put(proposalEquipment.Equipment__c, proposalEquipment);
         }
 
-        List <Equipment__c> listEquip = [SELECT cost__c, Equipment_Category__r.margin__c FROM Equipment__c WHERE Id IN :mapEquipIdProposalEquip.keySet()];
+        List <Equipment__c> equipments = [SELECT Cost__c, Equipment_Category__r.Margin__c 
+                                          FROM Equipment__c 
+                                          WHERE Id IN :proposalEquipmentByEquipId.keySet()];
         
-        for(Equipment__c equip :listEquip){
-            Proposal_Equipment__c propEquip = mapEquipIdProposalEquip.get(equip.Id);
-            propEquip.cost__c = equip.cost__c;
-            propEquip.margin__c = equip.Equipment_Category__r.margin__c;
+        for(Equipment__c equipment :equipments) {
+            Proposal_Equipment__c proposalEquipment = proposalEquipmentByEquipId.get(equipment.Id);
+            proposalEquipment.Cost__c = equipment.Cost__c * proposalEquipment.Quantity__c;
+            proposalEquipment.Margin__c = equipment.Equipment_Category__r.Margin__c;
         }
     }
 }

@@ -1,0 +1,19 @@
+<!--
+  @description       : This is a modal window for Proposal preview and sending Proposal as PDF attachment.
+  @author            : @ValeriyPalchenko
+  @group             : 
+  @last modified on  : 24-05-2023
+  @last modified by  : @ValeriyPalchenko
+-->
+<template>
+    <lightning-modal-header label="Proposal Preview"></lightning-modal-header>
+
+    <lightning-modal-body> 
+        <iframe width="100%" height="600" src={link}></iframe>
+    </lightning-modal-body>
+    
+    <lightning-modal-footer>
+        <lightning-button label="Send" onclick={handleSendProposal} variant="brand"></lightning-button>
+        <lightning-button label="Cancel" onclick={handleCancel} style="padding-left: 2%;"></lightning-button>
+    </lightning-modal-footer>
+</template>

@@ -1,0 +1,19 @@
+<!--
+  @description       : This is a modal window for deleting Proposal confirmation.
+  @author            : @ValeriyPalchenko
+  @group             : 
+  @last modified on  : 14-04-2023
+  @last modified by  : @ValeriyPalchenko
+-->
+<template>
+    <lightning-modal-header label="Delete Proposal"></lightning-modal-header>
+
+    <lightning-modal-body> 
+        <h1 style="text-align: center;">Are you sure you want to delete proposal? All related Equipments will be also deleted.</h1>
+    </lightning-modal-body>
+    
+    <lightning-modal-footer>
+        <lightning-button label="Delete" onclick={handleDelete} variant="brand" style="padding: 2%;"></lightning-button>
+        <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+    </lightning-modal-footer>
+</template>
