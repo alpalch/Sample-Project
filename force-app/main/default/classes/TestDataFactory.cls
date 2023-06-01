@@ -2,7 +2,7 @@
  * @description       : Class for creating test data
  * @author            : @ValeriyPalchenko
  * @group             : 
- * @last modified on  : 24-05-2023
+ * @last modified on  : 01-06-2023
  * @last modified by  : @ValeriyPalchenko
 **/
 @IsTest
@@ -14,7 +14,7 @@ public without sharing class TestDataFactory {
             Account account = new Account(
                 recordTypeId = Constants.VENDOR_RECORD_TYPE_ID,
                 Payment__c = 'Wire',
-                Name = 'test '+ i,
+                Name = 'Test '+ i,
                 Phone = '12345'+ i,
                 BillingStreet = 'Test Street',
                 BillingCity = 'Test City',
@@ -36,7 +36,7 @@ public without sharing class TestDataFactory {
             Account account = new Account(
                 recordTypeId = Constants.Buyer_RECORD_TYPE_ID,
                 Payment__c = 'Wire',
-                Name = 'test '+ i,
+                Name = 'Test '+ i,
                 Phone = '12345'+ i,
                 ShippingStreet = 'Test Street',
                 ShippingCity = 'Test City',
