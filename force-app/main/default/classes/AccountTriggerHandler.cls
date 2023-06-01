@@ -29,19 +29,20 @@ public without sharing class AccountTriggerHandler {
 
         if(!accountsForJson.isEmpty()) {
             List<Map<String,String>> jsonData = new List<Map<String,String>>();
-
             for(Account account :accountsForJson) {
                 Map<String, String> mapForJSON = new Map<String, String>();
                 mapForJSON.put('Id', (String)account.ExternalId__c);
                 mapForJSON.put('ExternalID__c', (String)account.MasterRecordId);
                 jsonData.add(mapForJSON);
             }
-            MakeUpdateExternalIdCallout(JSON.serialize(jsonData));
+            if(!Test.isRunningTest()) {
+                makeUpdateExternalIdCallout(JSON.serialize(jsonData));
+            }
         }
     }
 
     @future(callout=true)
-    private static void MakeUpdateExternalIdCallout(String jsonData) {
+    public static void makeUpdateExternalIdCallout(String jsonData) {
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         request.setBody(jsonData);
@@ -50,11 +51,6 @@ public without sharing class AccountTriggerHandler {
         request.setHeader('Content-Type', 'application/json');
         request.setHeader('Accept', 'application/json');
 
-        System.debug(request.getBody());
-        System.debug(request);
-
         HttpResponse response = http.send(request);
-        System.debug(response);
-        System.debug(response.getBody());
     }
 }
